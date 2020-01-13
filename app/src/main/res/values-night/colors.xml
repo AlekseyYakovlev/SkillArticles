@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary">#121212</color>
+    <color name="color_primary_dark">#000000</color>
+    <color name="color_accent">#BB86FC</color>
+    <color name="color_accent_dark">#52337C</color>
+    <color name="color_surface">#1E1E1E</color>
+    <color name="color_on_surface">#BABABA</color>
+    <color name="color_gray">#4E545F</color>
+    <color name="color_gray_light">#272727</color>
+
+    <color name="color_article_bar">#121212</color>
+    <color name="color_on_article_bar">#FFFFFF</color>
+    <color name="color_divider">#1FFFFFFF</color>
+</resources>

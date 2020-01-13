@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_primary">#1C0E42</color>
+    <color name="color_primary_dark">#150A33</color>
+    <color name="color_accent">#FC4C4C</color>
+    <color name="color_accent_dark">#D64141</color>
+    <color name="color_gray">#9ca9ba</color>
+    <color name="color_gray_light">#EEEEEE</color>
+    <color name="color_surface">#F6F6F6</color>
+    <color name="color_on_surface">#202020</color>
+
+    <color name="color_article_bar">#FFFFFF</color>
+    <color name="color_on_article_bar">#1C0E42</color>
+    <color name="color_divider">#1F000000</color>
+</resources>
