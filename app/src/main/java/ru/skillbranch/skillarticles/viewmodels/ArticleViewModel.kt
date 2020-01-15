@@ -34,7 +34,9 @@ class ArticleViewModel(private val articleId: String) : IArticleViewModel,
                     content = content
 
                 )
-            }
+            } ?: state.copy(
+                isLoadingContent = true
+            )
         }
 
         subscribeOnDataSource(getArticlePersonalInfo()) { info, state ->
