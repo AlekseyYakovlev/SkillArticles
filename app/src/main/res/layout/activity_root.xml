@@ -50,7 +50,7 @@
         android:elevation="8dp"
         android:theme="@style/ArticleBarsTheme"
         android:visibility="gone"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:layout_behavior=".ui.custom.behaviors.SubmenuBehavior"
         app:layout_dodgeInsetEdges="bottom"
         tools:visibility="visible" />
 
@@ -61,8 +61,9 @@
         android:layout_gravity="bottom"
         android:elevation="4dp"
         android:theme="@style/ArticleBarsTheme"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:layout_behavior=".ui.custom.behaviors.BottombarBehavior"
         app:layout_insetEdge="bottom" />
+    <!--    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
