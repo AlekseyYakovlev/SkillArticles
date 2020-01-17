@@ -2,6 +2,7 @@ package ru.skillbranch.skillarticles.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
@@ -39,6 +40,12 @@ class RootActivity : AppCompatActivity() {
         }
 
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        //12:15
+//
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
     private fun renderNotifications(notify: Notify) {
         val snackbar = Snackbar.make(coordinator_container, notify.message, Snackbar.LENGTH_LONG)

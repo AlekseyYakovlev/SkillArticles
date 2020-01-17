@@ -22,7 +22,20 @@
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:logo="@drawable/logo_placeholder"
             app:subtitle="loading..."
-            app:title="@string/app_name" />
+            app:title="@string/app_name">
+
+            <SearchView
+                android:id="@+id/action_search"
+                style="@style/AppTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="end"
+
+                android:queryHint="Search"
+
+                />
+        </com.google.android.material.appbar.MaterialToolbar>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,7 +58,7 @@
         android:layout_width="200dp"
         android:layout_height="96dp"
         android:layout_gravity="end|bottom"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="8dp"
         android:theme="@style/ArticleBarsTheme"
@@ -63,6 +76,7 @@
         android:theme="@style/ArticleBarsTheme"
         app:layout_behavior=".ui.custom.behaviors.BottombarBehavior"
         app:layout_insetEdge="bottom" />
+
     <!--    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"-->
 
 
