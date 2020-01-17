@@ -25,7 +25,7 @@
             app:title="@string/app_name">
 
             <SearchView
-                android:id="@+id/action_search"
+                android:id="@+id/search_src_text"
                 style="@style/AppTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
