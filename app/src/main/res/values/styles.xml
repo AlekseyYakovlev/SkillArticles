@@ -20,6 +20,7 @@
         <item name="colorOnSurface">@color/color_on_surface</item>
 
         <item name="snackbarStyle">@style/CustomSnackbar</item>
+        <item name="android:editTextColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
