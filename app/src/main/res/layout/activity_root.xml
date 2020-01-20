@@ -24,16 +24,16 @@
             app:subtitle="loading..."
             app:title="@string/app_name">
 
-            <SearchView
-                android:id="@+id/search_src_text"
-                style="@style/AppTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="end"
+<!--            <SearchView-->
+<!--                android:id="@+id/search_src_text"-->
+<!--                style="@style/AppTheme"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="end"-->
 
-                android:queryHint="Search"
+<!--                android:queryHint="Search"-->
 
-                />
+<!--                />-->
         </com.google.android.material.appbar.MaterialToolbar>
 
 
