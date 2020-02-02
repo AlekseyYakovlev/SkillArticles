@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Skill Articles</string>
     <string name="search">Поиск</string>
+    <string name="loading">Загрузка…</string>
 </resources>

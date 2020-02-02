@@ -4,26 +4,36 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.marginEnd
-import kotlin.math.max
-import kotlin.math.min
+import androidx.core.view.marginRight
+import ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
+import ru.skillbranch.skillarticles.ui.custom.Bottombar
 
-class SubmenuBehavior <V : View>(context: Context, attrs: AttributeSet) :
-    CoordinatorLayout.Behavior<V>(context, attrs) {
+class SubmenuBehavior() :
+    CoordinatorLayout.Behavior<ArticleSubmenu>() {
+    constructor (context: Context, attrs: AttributeSet) : this()
 
-    override fun onStartNestedScroll(
-        coordinatorLayout: CoordinatorLayout, child: V, directTargetChild: View, target: View, axes: Int, type: Int
+    override fun layoutDependsOn(
+        parent: CoordinatorLayout,
+        child: ArticleSubmenu,
+        dependency: View
     ): Boolean {
-        return axes == ViewCompat.SCROLL_AXIS_VERTICAL
+        return dependency is Bottombar
     }
 
-    override fun onNestedPreScroll(
-        coordinatorLayout: CoordinatorLayout, child: V, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int
-    ) {
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
-        //child.translationY = max(0f, min(child.height.toFloat(), child.translationY + dy))
-        val childWidth = (child.marginEnd+child.width).toFloat()
-        child.translationX = max(0f, min(childWidth, child.translationX + dy*5))
+    override fun onDependentViewChanged(
+        parent: CoordinatorLayout,
+        child: ArticleSubmenu,
+        dependency: View
+    ): Boolean {
+        return if (child.isOpen && dependency.translationY >= 0f) {
+            animate(child, dependency)
+            true
+        } else false
+    }
+
+
+    private fun animate(child: View, dependency: View) {
+        val fraction = dependency.translationY / dependency.height
+        child.translationX = (child.width + child.marginRight) * fraction
     }
 }
