@@ -28,6 +28,7 @@
 
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -37,6 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:saveEnabled="false"
             android:text="@string/loading" />
 
     </androidx.core.widget.NestedScrollView>
@@ -52,9 +56,10 @@
         android:elevation="8dp"
         android:theme="@style/ArticleBarsTheme"
         android:visibility="gone"
-        app:layout_behavior=".ui.custom.behaviors.SubmenuBehavior"
         app:layout_dodgeInsetEdges="bottom"
         tools:visibility="visible" />
+<!--    app:layout_behavior=".ui.custom.behaviors.SubmenuBehavior"-->
+
 
     <ru.skillbranch.skillarticles.ui.custom.Bottombar
         android:id="@+id/bottombar"
@@ -63,9 +68,8 @@
         android:layout_gravity="bottom"
         android:elevation="4dp"
         android:theme="@style/ArticleBarsTheme"
-        app:layout_behavior=".ui.custom.behaviors.BottombarBehavior"
         app:layout_insetEdge="bottom" />
-
+    <!--    app:layout_behavior=".ui.custom.behaviors.BottombarBehavior"-->
     <!--    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"-->
 
 

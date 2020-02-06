@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Skill Articles</string>
-    <string name="search">Search</string>
+    <string name="menu_title_search">Search</string>
+    <string name="article_search_placeholder">Search</string>
+    <string name="bb_search_not_found">Not found</string>
     <string name="loading">Loading...</string>
+    <string name="search">Search</string>
+    <string name="bb_search_position">%d of %d</string>
 </resources>

@@ -3,4 +3,8 @@
     <string name="app_name">Skill Articles</string>
     <string name="search">Поиск</string>
     <string name="loading">Загрузка…</string>
+    <string name="bb_search_not_found">Не найдено</string>
+    <string name="menu_title_search">Поиск</string>
+    <string name="article_search_placeholder">Поиск</string>
+    <string name="bb_search_position">%d из %d</string>
 </resources>
