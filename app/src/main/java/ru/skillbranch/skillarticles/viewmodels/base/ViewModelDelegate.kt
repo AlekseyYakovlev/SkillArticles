@@ -12,16 +12,13 @@ class ViewModelDelegate<T : ViewModel>(
     private val arg: Any?
 ) : ReadOnlyProperty<FragmentActivity, T> {
 
-    lateinit var vmFactory :ViewModelFactory
-
-    internal inline fun provideViewModel(arg : Any?) : ViewModelDelegate<T>{
-        vmFactory = ViewModelFactory(arg?:"0")
-        //ViewModelProvider(this, vmFactory).get(clazz)
-        return this
-    }
+    private lateinit var viewModel :T
 
     override fun getValue(thisRef: FragmentActivity, property: KProperty<*>): T {
-        return ViewModelProvider(thisRef, vmFactory).get(clazz)
+        if (!this::viewModel.isInitialized) {
+            viewModel = ViewModelProvider(thisRef, ViewModelFactory(arg ?: "0")).get(clazz)
+        }
+        return viewModel
     }
 }
 
