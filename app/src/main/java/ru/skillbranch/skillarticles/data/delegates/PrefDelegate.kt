@@ -37,5 +37,5 @@ class PrefDelegate<T>(private val defaultValue: T) : ReadWriteProperty<PrefManag
     }
 
     class NotFoundRealizationException(defaultValue: Any?) :
-        Exception("not found realization for $defaultValue")
+        Exception("Not found realization for $defaultValue")
 }
