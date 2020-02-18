@@ -46,9 +46,9 @@ class RootActivity : BaseActivity<ArticleViewModel>(),
     public override val binding: ArticleBinding by lazy { ArticleBinding() }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-     val bgColor by AttrValue(R.attr.colorSecondary)
+    val bgColor by AttrValue(R.attr.colorSecondary)
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-     val fgColor by AttrValue(R.attr.colorOnSecondary)
+    val fgColor by AttrValue(R.attr.colorOnSecondary)
 
     override fun setupViews() {
         setupToolbar()
@@ -69,8 +69,6 @@ class RootActivity : BaseActivity<ArticleViewModel>(),
                 SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-        // scroll to the first element
-        renderSearchPosition(0)
     }
 
     override fun renderSearchPosition(searchPosition: Int) {
@@ -189,11 +187,13 @@ class RootActivity : BaseActivity<ArticleViewModel>(),
 
         btn_result_up.setOnClickListener {
             if (search_view.hasFocus()) search_view.clearFocus()
+            if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
             viewModel.handleUpResult()
         }
 
         btn_result_down.setOnClickListener {
             if (search_view.hasFocus()) search_view.clearFocus()
+            if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
             viewModel.handleDownResult()
         }
 
@@ -300,7 +300,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(),
             data.title?.let { title = it }
             data.category?.let { category = it }
             data.categoryIcon?.let { categoryIcon = it as Int }
-            if (data.content.isNotEmpty()) content = data.content.first() as String
+            data.content?.let { content = it }
 
             isLoadingContent = data.isLoadingContent
             isSearch = data.isSearch
@@ -318,7 +318,5 @@ class RootActivity : BaseActivity<ArticleViewModel>(),
         }
 
     }
-
-
 }
 
