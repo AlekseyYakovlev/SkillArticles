@@ -1,9 +1,6 @@
 package ru.skillbranch.skillarticles.extensions
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.TypedValue
 
 fun Context.dpToPx(dp: Int): Float {
@@ -22,6 +19,15 @@ fun Context.dpToIntPx(dp: Int): Int {
         this.resources.displayMetrics
     ).toInt()
 }
+
+
+fun Context.attrValue(res: Int):Int{
+    val tv = TypedValue()
+    return if (theme.resolveAttribute(res,tv,true)) tv.data else -1
+}
+
+
+
 
 //val Context.isNetworkAvailable: Boolean
 //    get() {
