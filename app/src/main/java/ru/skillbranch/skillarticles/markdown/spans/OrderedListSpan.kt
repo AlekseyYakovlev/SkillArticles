@@ -1,11 +1,9 @@
 package ru.skillbranch.skillarticles.markdown.spans
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.text.Layout
 import android.text.style.LeadingMarginSpan
-import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
@@ -20,16 +18,45 @@ class OrderedListSpan(
 ) : LeadingMarginSpan {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 
-    override fun getLeadingMargin(first: Boolean): Int {
-        //TODO implement me()
-        return 0
-    }
+    override fun getLeadingMargin(first: Boolean): Int =
+        (5 *gapWidth).toInt()
 
     override fun drawLeadingMargin(
         canvas: Canvas, paint: Paint, currentMarginLocation: Int, paragraphDirection: Int,
         lineTop: Int, lineBaseline: Int, lineBottom: Int, text: CharSequence?, lineStart: Int,
         lineEnd: Int, isFirstLine: Boolean, layout: Layout?
     ) {
-        //TODO implement me()
+        //draw bullet only for first line
+        if(isFirstLine){
+            //paint.withCustomText {
+                canvas.drawText(
+                    order,
+                    gapWidth+currentMarginLocation,
+                    (lineTop+lineBottom)/2f,
+                    paint
+
+                )
+
+//                canvas.drawCircle(
+//                    gapWidth+currentMarginLocation+bulletRadius,
+//                    (lineTop+lineBottom)/2f,
+//                    bulletRadius,
+//                    paint
+//                )
+            //}
+        }
     }
+
+//    private inline fun Paint.withCustomText(block: () -> Unit) {
+//        val oldColor  = color
+//        val oldStyle = style
+//
+//        color = bulletColor
+//        style = Paint.Style.FILL
+//
+//        block()
+//
+//        color = oldColor
+//        style = oldStyle
+//    }
 }

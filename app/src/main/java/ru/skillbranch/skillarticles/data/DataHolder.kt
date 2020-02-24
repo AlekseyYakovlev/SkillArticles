@@ -69,7 +69,7 @@ data class ArticleData(
     val date: Date,
     val author: Any? = null,
     val poster: String? = null,
-    val content: List<Any> = emptyList()
+    val content: String?  = null
 )
 
 data class ArticlePersonalInfo(
