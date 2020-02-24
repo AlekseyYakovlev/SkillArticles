@@ -12,7 +12,6 @@ class ViewModelDelegate<T : ViewModel>(
     private val clazz: Class<T>,
     private val arg: Any?
 ) : ReadOnlyProperty<FragmentActivity, T> {
-
     private lateinit var viewModel: T
 
 //    override fun getValue(thisRef: FragmentActivity, property: KProperty<*>): T {
@@ -26,7 +25,7 @@ class ViewModelDelegate<T : ViewModel>(
 //    }
 
     override fun getValue(thisRef: FragmentActivity, property: KProperty<*>): T {
-        if (!this::viewModel.isInitialized) viewModel = when (arg) {
+        if (!::viewModel.isInitialized) viewModel = when (arg) {
             null -> ViewModelProviders.of(thisRef).get(clazz)
             else -> ViewModelProviders.of(thisRef, ViewModelFactory(arg)).get(clazz)
         }
