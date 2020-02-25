@@ -192,8 +192,6 @@ object MarkdownParser {
                     val size = lines.size
 
                     lines.forEachIndexed { index, line ->
-
-                        val subElements = findElements(line)
                         val elementType = when {
                             size == 1 -> Element.BlockCode.Type.SINGLE
                             index == 0 -> Element.BlockCode.Type.START
@@ -201,6 +199,7 @@ object MarkdownParser {
                             index in 1..size.minus(2) -> Element.BlockCode.Type.MIDDLE
                             else -> error("Out of index exception")
                         }
+                        val subElements = findElements(line)
                         val element = Element.BlockCode(elementType, line, subElements)
                         parents.add(element)
                     }
