@@ -137,7 +137,6 @@ class MarkdownBuilder(context: Context) {
                         append(element.text)
 //                        for (child in element.elements) {
 //                            buildElement(child, builder)
-//
 //                        }
                     }
                 }
