@@ -101,7 +101,7 @@ class MarkdownBuilder(context: Context) {
                 }
                 is Element.Rule -> {
                     inSpans(
-                        HorizontalRuleSpan(ruleWidth,colorDivider)
+                        HorizontalRuleSpan(ruleWidth, colorDivider)
                     ) {
                         append(element.text)
                     }
@@ -123,15 +123,24 @@ class MarkdownBuilder(context: Context) {
                 }
                 is Element.OrderedListItem -> {
                     inSpans(
-                       OrderedListSpan(gap, element.order, colorSecondary)
+                        OrderedListSpan(gap, element.order, colorSecondary)
                     ) {
                         for (child in element.elements) {
                             buildElement(child, builder)
                         }
                     }
                 }
-//                is Element.BlockCode -> {
-//                }
+                is Element.BlockCode -> {
+                    inSpans(
+                        BlockCodeSpan(colorOnSurface, colorSurface, cornerRadius, gap, element.type)
+                    ) {
+                        append(element.text)
+//                        for (child in element.elements) {
+//                            buildElement(child, builder)
+//
+//                        }
+                    }
+                }
                 else -> append(element.text)
             }
         }

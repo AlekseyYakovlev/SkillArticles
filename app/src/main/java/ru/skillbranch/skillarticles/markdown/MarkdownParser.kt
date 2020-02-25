@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.markdown
 
+import android.util.Log
 import java.util.regex.Pattern
 
 object MarkdownParser {
@@ -17,7 +18,7 @@ object MarkdownParser {
     private const val RULE_GROUP = "(^[-_*]{3}$)"
     private const val INLINE_GROUP = "((?<!`)`[^`\\s].*?[^`\\s]?`(?!`))"
     private const val LINK_GROUP = "(\\[[^\\[\\]]*?]\\(.+?\\)|^\\[*?]\\(.*?\\))"
-    private const val BLOCK_CODE_GROUP = "(^`{3}[^`][\\s\\S]*[^`]`{3}$)"
+    private const val BLOCK_CODE_GROUP = "(^`{3}[^`][\\s\\S]*?[^`]`{3}$)"
     private const val ORDER_LIST_GROUP = "(^[\\d]+[.] .+$)"
 
     //result regex
@@ -188,22 +189,33 @@ object MarkdownParser {
                 10 -> {
                     //text without "```{}```"
                     text = string.subSequence(startIndex.plus(3), endIndex.minus(3))
-                    val lines = text.split("\\n")
+                    val lines = text.split(LINE_SEPARATOR)
                     val size = lines.size
 
                     lines.forEachIndexed { index, line ->
                         val elementType = when {
-                            size == 1 -> Element.BlockCode.Type.SINGLE
-                            index == 0 -> Element.BlockCode.Type.START
-                            index == size.dec() -> Element.BlockCode.Type.END
-                            index in 1..size.minus(2) -> Element.BlockCode.Type.MIDDLE
+                            size == 1 -> {
+                                text=line
+                                Element.BlockCode.Type.SINGLE
+                            }
+                            index == 0 -> {
+                                text="$line$LINE_SEPARATOR"
+                                Element.BlockCode.Type.START
+                            }
+                            index == size.dec() -> {
+                                text=line
+                                Element.BlockCode.Type.END
+                            }
+                            index in 1..size.minus(2) -> {
+                                text="$line$LINE_SEPARATOR"
+                                Element.BlockCode.Type.MIDDLE
+                            }
                             else -> error("Out of index exception")
                         }
                         val subElements = findElements(line)
-                        val element = Element.BlockCode(elementType, line, subElements)
+                        val element = Element.BlockCode(elementType, text, subElements)
                         parents.add(element)
                     }
-
                     lastStartIndex = endIndex
                 }
 
