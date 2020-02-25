@@ -28,35 +28,28 @@ class OrderedListSpan(
     ) {
         //draw bullet only for first line
         if(isFirstLine){
-            //paint.withCustomText {
+            paint.withCustomText {
                 canvas.drawText(
                     order,
-                    gapWidth+currentMarginLocation,
+                    gapWidth + currentMarginLocation,
                     lineBaseline.toFloat(),
                     paint
 
                 )
-
-//                canvas.drawCircle(
-//                    gapWidth+currentMarginLocation+bulletRadius,
-//                    (lineTop+lineBottom)/2f,
-//                    bulletRadius,
-//                    paint
-//                )
-            //}
+            }
         }
     }
 
-//    private inline fun Paint.withCustomText(block: () -> Unit) {
-//        val oldColor  = color
-//        val oldStyle = style
-//
-//        color = bulletColor
-//        style = Paint.Style.FILL
-//
-//        block()
-//
-//        color = oldColor
-//        style = oldStyle
-//    }
+    private inline fun Paint.withCustomText(block: () -> Unit) {
+        val oldColor  = color
+        val oldStyle = style
+
+        color = orderColor
+        style = Paint.Style.FILL
+
+        block()
+
+        color = oldColor
+        style = oldStyle
+    }
 }
