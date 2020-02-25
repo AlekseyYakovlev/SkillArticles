@@ -217,7 +217,7 @@ object MarkdownParser {
 //                    text = textWithOrder.toString().substringAfter(". ")
 //                    val order = textWithOrder.toString().substringBefore(". ")
                     text = string.subSequence(startIndex.plus(3), endIndex)
-                    val order = string.subSequence(startIndex, startIndex.plus(1)).toString()
+                    val order = string.subSequence(startIndex, startIndex.plus(2)).toString()
                     //find inner elements
                     val subs = findElements(text)
                     val element = Element.OrderedListItem(order, text, subs)
