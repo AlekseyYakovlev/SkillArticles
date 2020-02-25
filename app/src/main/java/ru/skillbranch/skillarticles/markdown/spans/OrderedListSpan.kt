@@ -19,7 +19,7 @@ class OrderedListSpan(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 
     override fun getLeadingMargin(first: Boolean): Int =
-        (5 *gapWidth).toInt()
+        (3 *gapWidth).toInt()
 
     override fun drawLeadingMargin(
         canvas: Canvas, paint: Paint, currentMarginLocation: Int, paragraphDirection: Int,
@@ -32,7 +32,7 @@ class OrderedListSpan(
                 canvas.drawText(
                     order,
                     gapWidth+currentMarginLocation,
-                    (lineTop+lineBottom)/2f,
+                    lineBaseline.toFloat(),
                     paint
 
                 )
