@@ -24,6 +24,8 @@ class BlockCodeSpan(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var path = Path()
 
+    private val linePadding = 0.4f
+
     override fun getSize(
         paint: Paint,
         text: CharSequence,
@@ -31,6 +33,19 @@ class BlockCodeSpan(
         end: Int,
         fm: Paint.FontMetricsInt?
     ): Int {
+        fm?: return 0
+
+        when (type) {
+            Element.BlockCode.Type.START ->
+                fm.ascent = (fm.ascent - paint.textSize * linePadding).toInt()
+            Element.BlockCode.Type.END ->
+                fm.descent = (fm.descent + paint.textSize * linePadding).toInt()
+            Element.BlockCode.Type.MIDDLE -> {}
+            Element.BlockCode.Type.SINGLE -> {
+                fm.ascent = (fm.ascent - paint.textSize * linePadding).toInt()
+                fm.descent = (fm.descent + paint.textSize * linePadding).toInt()
+            }
+        }
         return 0
     }
 
@@ -46,30 +61,26 @@ class BlockCodeSpan(
         paint: Paint
     ) {
         paint.forBackground {
-            when(type){
+            when (type) {
                 Element.BlockCode.Type.START -> {
-//                    paint.color=Color.RED
                     rect.set(0f, top.toFloat(), canvas.width.toFloat(), bottom.toFloat())
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
-                    rect.set(0f, (bottom+top)/2f, canvas.width.toFloat(), bottom.toFloat())
+                    rect.set(0f, (bottom + top) / 2f, canvas.width.toFloat(), bottom.toFloat())
                     canvas.drawRect(rect, paint)
                 }
                 Element.BlockCode.Type.END -> {
-//                    paint.color=Color.GREEN
                     rect.set(0f, top.toFloat(), canvas.width.toFloat(), bottom.toFloat())
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
-                    rect.set(0f, top.toFloat(), canvas.width.toFloat(), (bottom+top)/2f)
+                    rect.set(0f, top.toFloat(), canvas.width.toFloat(), (bottom + top) / 2f)
                     canvas.drawRect(rect, paint)
                 }
                 Element.BlockCode.Type.MIDDLE -> {
-//                    paint.color=Color.BLUE
                     rect.set(0f, top.toFloat(), canvas.width.toFloat(), bottom.toFloat())
                     canvas.drawRect(rect, paint)
                 }
                 Element.BlockCode.Type.SINGLE -> {
                     rect.set(0f, top.toFloat(), canvas.width.toFloat(), bottom.toFloat())
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
-//                    canvas.drawRect(rect, paint)
                 }
             }
         }
@@ -84,6 +95,7 @@ class BlockCodeSpan(
         val oldStyle = typeface?.style ?: 0
         val oldFont = typeface
         val oldColor = color
+
 
         color = textColor
         typeface = Typeface.create(Typeface.MONOSPACE, oldStyle)
