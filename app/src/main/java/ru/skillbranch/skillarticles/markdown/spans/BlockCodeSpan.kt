@@ -76,9 +76,6 @@ class BlockCodeSpan(
         bottom: Int,
         paint: Paint
     ) {
-        val ascent = paint.fontMetrics.ascent
-        val descent = paint.fontMetrics.descent
-
         paint.forBackground {
             when (type) {
                 Element.BlockCode.Type.START -> {
