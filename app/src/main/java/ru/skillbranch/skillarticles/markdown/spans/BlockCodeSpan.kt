@@ -30,7 +30,7 @@ class BlockCodeSpan(
     var path = Path()
 
     private val codeMagnifier = 0.85f
-    private val codeMagnifier1 = 1f
+    private val codeMagnifier1 = 0.95f
 
     override fun getSize(
         paint: Paint,
