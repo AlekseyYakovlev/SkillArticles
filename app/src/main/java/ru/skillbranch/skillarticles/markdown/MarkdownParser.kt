@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.markdown
 
-import android.util.Log
 import java.util.regex.Pattern
 
 object MarkdownParser {
@@ -30,7 +29,7 @@ object MarkdownParser {
 
     private val hashRegex = "^#{1,6}".toRegex()
     private val linkRegex = "\\[(.*)]\\((.*)\\)".toRegex()
-    private val ordedListRegex = "^[\\d]+[.]".toRegex()
+    private val orderedListRegex = "^[\\d]+[.]".toRegex()
 
     /**
      * parse markdown text to elements
@@ -221,7 +220,7 @@ object MarkdownParser {
                 //11 -> NUMERIC LIST
                 11 -> {
                     val textWithOrder = string.subSequence(startIndex, endIndex)
-                    val order= ordedListRegex.find(textWithOrder)!!.value
+                    val order= orderedListRegex.find(textWithOrder)!!.value
                     text = textWithOrder.removeRange(0..order.length)
                     val subs = findElements(text)
                     val element = Element.OrderedListItem(order, text, subs)

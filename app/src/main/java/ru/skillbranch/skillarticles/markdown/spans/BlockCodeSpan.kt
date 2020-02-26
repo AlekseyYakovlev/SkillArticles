@@ -23,13 +23,13 @@ class BlockCodeSpan(
     @Px
     private val padding: Float,
     private val type: Element.BlockCode.Type
-) : ReplacementSpan(), LeadingMarginSpan {
+) : ReplacementSpan() {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var rect = RectF()
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var path = Path()
 
-    private val linePadding = 0.4f
+    private val codeMagnifier = 0.85f
 
     override fun getSize(
         paint: Paint,
@@ -40,17 +40,25 @@ class BlockCodeSpan(
     ): Int {
         fm ?: return 0
 
+        val defaultAscent = paint.ascent()
+        val defaultDescent = paint.descent()
+
         when (type) {
             Element.BlockCode.Type.START -> {
-                fm.ascent = (fm.ascent - paint.textSize * 1.4f).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier - 2 * padding).toInt()
+                fm.descent = (defaultDescent * codeMagnifier).toInt()
             }
-            Element.BlockCode.Type.END ->
-                fm.descent = (fm.descent + paint.textSize * 1.4f).toInt()
+            Element.BlockCode.Type.END -> {
+                fm.ascent = (defaultAscent * codeMagnifier).toInt()
+                fm.descent = (defaultDescent * codeMagnifier + 2 * padding).toInt()
+            }
             Element.BlockCode.Type.MIDDLE -> {
+                fm.ascent = (defaultAscent * codeMagnifier).toInt()
+                fm.descent = (defaultDescent * codeMagnifier).toInt()
             }
             Element.BlockCode.Type.SINGLE -> {
-                fm.ascent = (fm.ascent - paint.textSize * 1.4f).toInt()
-                fm.descent = (fm.descent + paint.textSize * 1.4f).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier - 2 * padding).toInt()
+                fm.descent = (defaultDescent * codeMagnifier + 2 * padding).toInt()
             }
         }
         return 0
@@ -70,28 +78,19 @@ class BlockCodeSpan(
         val ascent = paint.fontMetrics.ascent
         val descent = paint.fontMetrics.descent
 
-        Log.d("991234567",""" 
-    ascent $ascent     descent $descent 
-    ascent - descent ${ascent-descent}
-    textSize         ${paint.textSize}
-    top $top           bottom $bottom
-    top - bottom ${top-bottom}
-    
-    """)
-
         paint.forBackground {
             when (type) {
                 Element.BlockCode.Type.START -> {
                     rect.set(
                         0f,
-                        top.toFloat() + paint.textSize,
+                        top + padding,
                         canvas.width.toFloat(),
                         bottom.toFloat()
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
-                        (bottom + paint.textSize + top) / 2f,
+                        (bottom + padding + top) / 2f,
                         canvas.width.toFloat(),
                         bottom.toFloat()
                     )
@@ -102,14 +101,14 @@ class BlockCodeSpan(
                         0f,
                         top.toFloat(),
                         canvas.width.toFloat(),
-                        bottom.toFloat() - paint.textSize
+                        bottom.toFloat() - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
                         top.toFloat(),
                         canvas.width.toFloat(),
-                        (bottom - paint.textSize + top) / 2f
+                        (bottom - padding + top) / 2f
                     )
                     canvas.drawRect(rect, paint)
                 }
@@ -120,9 +119,9 @@ class BlockCodeSpan(
                 Element.BlockCode.Type.SINGLE -> {
                     rect.set(
                         0f,
-                        top.toFloat() + paint.textSize,
+                        top.toFloat() + padding,
                         canvas.width.toFloat(),
-                        bottom.toFloat() - paint.textSize
+                        bottom.toFloat() - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                 }
@@ -144,11 +143,7 @@ class BlockCodeSpan(
 
         color = textColor
         typeface = Typeface.create(Typeface.MONOSPACE, oldStyle)
-        textSize *= 0.85f
-        Log.d("991234567",""" 
-    textSize $textSize 
-    oldSize $oldSize 
-    """)
+        textSize *= codeMagnifier
 
         block()
 
@@ -170,21 +165,4 @@ class BlockCodeSpan(
         style = oldStyle
     }
 
-    override fun drawLeadingMargin(
-        canvas: Canvas, paint: Paint, currentMarginLocation: Int, paragraphDirection: Int,
-        lineTop: Int, lineBaseline: Int, lineBottom: Int, text: CharSequence?, lineStart: Int,
-        lineEnd: Int, isFirstLine: Boolean, layout: Layout?
-    ) {
-        //for 1st & 2nd levels & the last line
-Log.d("991234567",""" 
-    currentMarginLocation $currentMarginLocation 
-    lineTop $lineTop 
-    lineBaseline $lineBaseline
-    lineBottom $lineBottom
-    """)
-    }
-
-    override fun getLeadingMargin(first: Boolean): Int {
-        return 0
-    }
 }
