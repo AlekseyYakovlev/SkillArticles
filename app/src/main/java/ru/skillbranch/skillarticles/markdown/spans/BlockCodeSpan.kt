@@ -30,6 +30,7 @@ class BlockCodeSpan(
     var path = Path()
 
     private val codeMagnifier = 0.85f
+    private val codeMagnifier1 = 1f
 
     override fun getSize(
         paint: Paint,
@@ -40,25 +41,25 @@ class BlockCodeSpan(
     ): Int {
         fm ?: return 0
 
-        val defaultAscent = paint.ascent()
-        val defaultDescent = paint.descent()
+        val defaultAscent = fm.ascent
+        val defaultDescent = fm.descent
 
         when (type) {
             Element.BlockCode.Type.START -> {
-                fm.ascent = (defaultAscent * codeMagnifier - 2 * padding).toInt()
-                fm.descent = (defaultDescent * codeMagnifier).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier1 - 2 * padding).toInt()
+                fm.descent = (defaultDescent * codeMagnifier1).toInt()
             }
             Element.BlockCode.Type.END -> {
-                fm.ascent = (defaultAscent * codeMagnifier).toInt()
-                fm.descent = (defaultDescent * codeMagnifier + 2 * padding).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier1).toInt()
+                fm.descent = (defaultDescent * codeMagnifier1 + 2 * padding).toInt()
             }
             Element.BlockCode.Type.MIDDLE -> {
-                fm.ascent = (defaultAscent * codeMagnifier).toInt()
-                fm.descent = (defaultDescent * codeMagnifier).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier1).toInt()
+                fm.descent = (defaultDescent * codeMagnifier1).toInt()
             }
             Element.BlockCode.Type.SINGLE -> {
-                fm.ascent = (defaultAscent * codeMagnifier - 2 * padding).toInt()
-                fm.descent = (defaultDescent * codeMagnifier + 2 * padding).toInt()
+                fm.ascent = (defaultAscent * codeMagnifier1 - 2 * padding).toInt()
+                fm.descent = (defaultDescent * codeMagnifier1 + 2 * padding).toInt()
             }
         }
         return 0
