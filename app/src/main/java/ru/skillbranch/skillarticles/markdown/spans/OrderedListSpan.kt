@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.text.Layout
 import android.text.style.LeadingMarginSpan
+import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
@@ -38,6 +39,14 @@ class OrderedListSpan(
                 )
             }
         }
+        Log.d("9981234567",""" 
+    currentMarginLocation $currentMarginLocation 
+    gapWidth + currentMarginLocation ${gapWidth + currentMarginLocation}
+    lineTop $lineTop 
+    lineBaseline $lineBaseline
+    lineBottom $lineBottom
+    """)
+
     }
 
     private inline fun Paint.withCustomText(block: () -> Unit) {
