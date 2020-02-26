@@ -2,7 +2,11 @@ package ru.skillbranch.skillarticles.markdown.spans
 
 
 import android.graphics.*
+import android.text.Layout
+import android.text.Spanned
+import android.text.style.LeadingMarginSpan
 import android.text.style.ReplacementSpan
+import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
@@ -19,11 +23,11 @@ class BlockCodeSpan(
     @Px
     private val padding: Float,
     private val type: Element.BlockCode.Type
-) : ReplacementSpan() {
+) : ReplacementSpan(), LeadingMarginSpan {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var rect = RectF()
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var path = Path()
+//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+//    var path = Path()
 
     private val linePadding = 0.4f
 
@@ -65,6 +69,16 @@ class BlockCodeSpan(
     ) {
         val ascent = paint.fontMetrics.ascent
         val descent = paint.fontMetrics.descent
+
+        Log.d("991234567",""" 
+    ascent $ascent     descent $descent 
+    ascent - descent ${ascent-descent}
+    textSize         ${paint.textSize}
+    top $top           bottom $bottom
+    top - bottom ${top-bottom}
+    
+    """)
+
         paint.forBackground {
             when (type) {
                 Element.BlockCode.Type.START -> {
@@ -118,6 +132,7 @@ class BlockCodeSpan(
         paint.forText {
             canvas.drawText(text, start, end, x + padding, y.toFloat(), paint)
         }
+
     }
 
     private inline fun Paint.forText(block: () -> Unit) {
@@ -130,6 +145,10 @@ class BlockCodeSpan(
         color = textColor
         typeface = Typeface.create(Typeface.MONOSPACE, oldStyle)
         textSize *= 0.85f
+        Log.d("991234567",""" 
+    textSize $textSize 
+    oldSize $oldSize 
+    """)
 
         block()
 
@@ -149,5 +168,23 @@ class BlockCodeSpan(
 
         color = oldColor
         style = oldStyle
+    }
+
+    override fun drawLeadingMargin(
+        canvas: Canvas, paint: Paint, currentMarginLocation: Int, paragraphDirection: Int,
+        lineTop: Int, lineBaseline: Int, lineBottom: Int, text: CharSequence?, lineStart: Int,
+        lineEnd: Int, isFirstLine: Boolean, layout: Layout?
+    ) {
+        //for 1st & 2nd levels & the last line
+Log.d("991234567",""" 
+    currentMarginLocation $currentMarginLocation 
+    lineTop $lineTop 
+    lineBaseline $lineBaseline
+    lineBottom $lineBottom
+    """)
+    }
+
+    override fun getLeadingMargin(first: Boolean): Int {
+        return 0
     }
 }
