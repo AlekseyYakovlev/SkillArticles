@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.markdown.spans
 
+
 import android.graphics.*
 import android.text.style.ReplacementSpan
 import androidx.annotation.ColorInt
@@ -24,7 +25,7 @@ class BlockCodeSpan(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var path = Path()
 
-    private val linePadding = 0.4f
+    private val linePadding = 0.8f
 
     override fun getSize(
         paint: Paint,
@@ -36,8 +37,10 @@ class BlockCodeSpan(
         fm?: return 0
 
         when (type) {
-            Element.BlockCode.Type.START ->
+            Element.BlockCode.Type.START ->{
                 fm.ascent = (fm.ascent - paint.textSize * linePadding).toInt()
+
+            }
             Element.BlockCode.Type.END ->
                 fm.descent = (fm.descent + paint.textSize * linePadding).toInt()
             Element.BlockCode.Type.MIDDLE -> {}
