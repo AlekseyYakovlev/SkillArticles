@@ -26,8 +26,8 @@ class BlockCodeSpan(
 ) : ReplacementSpan(), LeadingMarginSpan {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var rect = RectF()
-//    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-//    var path = Path()
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var path = Path()
 
     private val linePadding = 0.4f
 
