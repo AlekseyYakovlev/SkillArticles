@@ -20,14 +20,14 @@ class OrderedListSpan(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 
     override fun getLeadingMargin(first: Boolean): Int =
-        (3 *gapWidth).toInt()
+        (order.length.inc() *gapWidth).toInt()
 
     override fun drawLeadingMargin(
         canvas: Canvas, paint: Paint, currentMarginLocation: Int, paragraphDirection: Int,
         lineTop: Int, lineBaseline: Int, lineBottom: Int, text: CharSequence?, lineStart: Int,
         lineEnd: Int, isFirstLine: Boolean, layout: Layout?
     ) {
-        //draw bullet only for first line
+        //draw number only for first line
         if(isFirstLine){
             paint.withCustomText {
                 canvas.drawText(
@@ -35,18 +35,9 @@ class OrderedListSpan(
                     gapWidth + currentMarginLocation,
                     lineBaseline.toFloat(),
                     paint
-
                 )
             }
         }
-        Log.d("9981234567",""" 
-    currentMarginLocation $currentMarginLocation 
-    gapWidth + currentMarginLocation ${gapWidth + currentMarginLocation}
-    lineTop $lineTop 
-    lineBaseline $lineBaseline
-    lineBottom $lineBottom
-    """)
-
     }
 
     private inline fun Paint.withCustomText(block: () -> Unit) {

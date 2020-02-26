@@ -30,6 +30,7 @@ object MarkdownParser {
 
     private val hashRegex = "^#{1,6}".toRegex()
     private val linkRegex = "\\[(.*)]\\((.*)\\)".toRegex()
+    private val ordedListRegex = "^[\\d]+[.]".toRegex()
 
     /**
      * parse markdown text to elements
@@ -167,9 +168,7 @@ object MarkdownParser {
                 //INLINE CODE
                 8 -> {
                     //text without "`{}`"
-
                     text = string.subSequence(startIndex.inc(), endIndex.dec())
-                    // println("${startIndex.inc()}, ${endIndex.dec()}")
                     val element = Element.InlineCode(text)
                     parents.add(element)
                     lastStartIndex = endIndex
@@ -221,15 +220,9 @@ object MarkdownParser {
 
                 //11 -> NUMERIC LIST
                 11 -> {
-                    //FIXME
-                    //text without "1. "
-//                    val textWithOrder = string.subSequence(startIndex, endIndex)
-//
-//                    text = textWithOrder.toString().substringAfter(". ")
-//                    val order = textWithOrder.toString().substringBefore(". ")
-                    text = string.subSequence(startIndex.plus(3), endIndex)
-                    val order = string.subSequence(startIndex, startIndex.plus(2)).toString()
-                    //find inner elements
+                    val textWithOrder = string.subSequence(startIndex, endIndex)
+                    val order= ordedListRegex.find(textWithOrder)!!.value
+                    text = textWithOrder.removeRange(0..order.length)
                     val subs = findElements(text)
                     val element = Element.OrderedListItem(order, text, subs)
                     parents.add(element)
