@@ -77,6 +77,7 @@ class BlockCodeSpan(
         paint: Paint
     ) {
         paint.forBackground {
+            path.reset()
             when (type) {
                 Element.BlockCode.Type.START -> {
                     rect.set(
