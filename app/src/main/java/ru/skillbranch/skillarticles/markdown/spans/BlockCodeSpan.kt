@@ -30,7 +30,7 @@ class BlockCodeSpan(
     var path = Path()
 
     private val codeMagnifier = 0.85f
-    private val codeMagnifier1 = 0.86f
+    private val codeMagnifier1 = 0.85f
 
     override fun getSize(
         paint: Paint,
@@ -41,8 +41,8 @@ class BlockCodeSpan(
     ): Int {
         fm ?: return 0
 
-        val defaultAscent = fm.ascent
-        val defaultDescent = fm.descent
+        val defaultAscent = paint.ascent()
+        val defaultDescent = paint.descent()
 
         when (type) {
             Element.BlockCode.Type.START -> {
@@ -82,14 +82,14 @@ class BlockCodeSpan(
                     rect.set(
                         0f,
                         top + padding,
-                        canvas.width.toFloat(),
+                        x + canvas.width.toFloat(),
                         bottom.toFloat()
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
                         (bottom + padding + top) / 2f,
-                        canvas.width.toFloat(),
+                        x + canvas.width.toFloat(),
                         bottom.toFloat()
                     )
                     canvas.drawRect(rect, paint)
@@ -98,14 +98,14 @@ class BlockCodeSpan(
                     rect.set(
                         0f,
                         top.toFloat(),
-                        canvas.width.toFloat(),
+                        x + canvas.width.toFloat(),
                         bottom.toFloat() - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
                         top.toFloat(),
-                        canvas.width.toFloat(),
+                        x + canvas.width.toFloat(),
                         (bottom - padding + top) / 2f
                     )
                     canvas.drawRect(rect, paint)
@@ -118,7 +118,7 @@ class BlockCodeSpan(
                     rect.set(
                         0f,
                         top.toFloat() + padding,
-                        canvas.width.toFloat(),
+                        x + canvas.width.toFloat(),
                         bottom.toFloat() - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
