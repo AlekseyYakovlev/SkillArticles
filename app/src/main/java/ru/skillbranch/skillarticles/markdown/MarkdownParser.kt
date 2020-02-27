@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 object MarkdownParser {
 
-    private val LINE_SEPARATOR = "\n"
+    private const val LINE_SEPARATOR = "\n"
 
     //group regex
     private const val UNORDERED_LIST_ITEM_GROUP = "(^[*+-] .+$)"
@@ -41,17 +41,17 @@ object MarkdownParser {
     }
 
     /**
-     * clear markdown text to string without markdown characters
+     * clear markdown text to string from markdown symbols
      */
     fun clear(string: String?): String? {
-        if (string == null) return null
+        string ?: return null
+
         val elements = findElements(string)
 
         return if (elements.size == 1 && elements[0] is Element.Text) {
             elements[0].text.toString()
         } else {
-            var resString = ""
-            elements.forEach { resString = resString.plus(it.text) }
+            val resString = elements.fold("") { result, el -> result.plus(el.text) }
             clear(resString)
         }
     }
@@ -193,19 +193,19 @@ object MarkdownParser {
                     lines.forEachIndexed { index, line ->
                         val elementType = when {
                             size == 1 -> {
-                                text=line
+                                text = line
                                 Element.BlockCode.Type.SINGLE
                             }
                             index == 0 -> {
-                                text="$line$LINE_SEPARATOR"
+                                text = "$line$LINE_SEPARATOR"
                                 Element.BlockCode.Type.START
                             }
                             index == size.dec() -> {
-                                text=line
+                                text = line
                                 Element.BlockCode.Type.END
                             }
                             index in 1..size.minus(2) -> {
-                                text="$line$LINE_SEPARATOR"
+                                text = "$line$LINE_SEPARATOR"
                                 Element.BlockCode.Type.MIDDLE
                             }
                             else -> error("Out of index exception")
@@ -220,7 +220,7 @@ object MarkdownParser {
                 //11 -> NUMERIC LIST
                 11 -> {
                     val textWithOrder = string.subSequence(startIndex, endIndex)
-                    val order= orderedListRegex.find(textWithOrder)!!.value
+                    val order = orderedListRegex.find(textWithOrder)!!.value
                     text = textWithOrder.removeRange(0..order.length)
                     val subs = findElements(text)
                     val element = Element.OrderedListItem(order, text, subs)
