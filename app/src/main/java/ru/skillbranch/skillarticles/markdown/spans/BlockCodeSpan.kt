@@ -2,11 +2,7 @@ package ru.skillbranch.skillarticles.markdown.spans
 
 
 import android.graphics.*
-import android.text.Layout
-import android.text.Spanned
-import android.text.style.LeadingMarginSpan
 import android.text.style.ReplacementSpan
-import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
@@ -29,8 +25,12 @@ class BlockCodeSpan(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     var path = Path()
 
-    private val codeMagnifier = 0.85f
-    private val codeMagnifier1 = 0.85f
+    companion object{
+        private const val FONT_SCALE = 0.85f
+    }
+
+
+    //private val codeMagnifier1 = 0.85f
 
     override fun getSize(
         paint: Paint,
@@ -46,20 +46,20 @@ class BlockCodeSpan(
 
         when (type) {
             Element.BlockCode.Type.START -> {
-                fm.ascent = (defaultAscent * codeMagnifier1 - 2 * padding).toInt()
-                fm.descent = (defaultDescent * codeMagnifier1).toInt()
+                fm.ascent = (defaultAscent  - 2 * padding).toInt()
+                fm.descent = (defaultDescent ).toInt()
             }
             Element.BlockCode.Type.END -> {
-                fm.ascent = (defaultAscent * codeMagnifier1).toInt()
-                fm.descent = (defaultDescent * codeMagnifier1 + 2 * padding).toInt()
+                fm.ascent = (defaultAscent ).toInt()
+                fm.descent = (defaultDescent  + 2 * padding).toInt()
             }
             Element.BlockCode.Type.MIDDLE -> {
-                fm.ascent = (defaultAscent * codeMagnifier1).toInt()
-                fm.descent = (defaultDescent * codeMagnifier1).toInt()
+                fm.ascent = (defaultAscent ).toInt()
+                fm.descent = (defaultDescent ).toInt()
             }
             Element.BlockCode.Type.SINGLE -> {
-                fm.ascent = (defaultAscent * codeMagnifier1 - 2 * padding).toInt()
-                fm.descent = (defaultDescent * codeMagnifier1 + 2 * padding).toInt()
+                fm.ascent = (defaultAscent  - 2 * padding).toInt()
+                fm.descent = (defaultDescent  + 2 * padding).toInt()
             }
         }
         return 0
@@ -88,7 +88,7 @@ class BlockCodeSpan(
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
-                        (bottom + padding + top) / 2f,
+                        top + padding + cornerRadius,
                         x + canvas.width.toFloat(),
                         bottom.toFloat()
                     )
@@ -99,14 +99,14 @@ class BlockCodeSpan(
                         0f,
                         top.toFloat(),
                         x + canvas.width.toFloat(),
-                        bottom.toFloat() - padding
+                        bottom - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                     rect.set(
                         0f,
                         top.toFloat(),
                         x + canvas.width.toFloat(),
-                        (bottom - padding + top) / 2f
+                        bottom - padding - cornerRadius
                     )
                     canvas.drawRect(rect, paint)
                 }
@@ -117,9 +117,9 @@ class BlockCodeSpan(
                 Element.BlockCode.Type.SINGLE -> {
                     rect.set(
                         0f,
-                        top.toFloat() + padding,
+                        top + padding,
                         x + canvas.width.toFloat(),
-                        bottom.toFloat() - padding
+                        bottom - padding
                     )
                     canvas.drawRoundRect(rect, cornerRadius, cornerRadius, paint)
                 }
@@ -141,7 +141,7 @@ class BlockCodeSpan(
 
         color = textColor
         typeface = Typeface.create(Typeface.MONOSPACE, oldStyle)
-        textSize *= codeMagnifier
+        textSize *= FONT_SCALE
 
         block()
 
