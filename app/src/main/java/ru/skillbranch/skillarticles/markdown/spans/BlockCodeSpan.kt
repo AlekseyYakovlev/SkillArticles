@@ -101,6 +101,7 @@ class BlockCodeSpan(
                     canvas.drawPath(path, paint)
                 }
                 Element.BlockCode.Type.END -> {
+                    path.reset()
                     rect.set(
                         0f,
                         top.toFloat(),
