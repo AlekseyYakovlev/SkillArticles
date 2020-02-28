@@ -108,7 +108,7 @@ class BlockCodeSpan(
                         x + canvas.width,
                         bottom - padding
                     )
-                    path.addRoundRect(rect, endBlockRadius, Path.Direction.CCW)
+                    path.addRoundRect(rect, endBlockRadius, Path.Direction.CW)
                     canvas.drawPath(path, paint)
                 }
                 Element.BlockCode.Type.MIDDLE -> {
