@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.ui.custom
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.text.TextPaint
 import android.text.style.BackgroundColorSpan
