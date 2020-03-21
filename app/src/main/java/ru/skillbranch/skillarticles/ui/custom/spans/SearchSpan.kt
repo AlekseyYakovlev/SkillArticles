@@ -1,16 +1,6 @@
 package ru.skillbranch.skillarticles.ui.custom.spans
 
-import android.text.TextPaint
-import android.text.style.BackgroundColorSpan
-import androidx.core.graphics.ColorUtils
+import android.graphics.Color
+import android.text.style.ForegroundColorSpan
 
-open class SearchSpan(bgColor: Int, private val fgColor: Int) : BackgroundColorSpan(bgColor) {
-    private val alphaColor by lazy {
-        ColorUtils.setAlphaComponent(backgroundColor, 160)
-    }
-
-    override fun updateDrawState(textPaint: TextPaint) {
-        textPaint.bgColor = alphaColor
-        textPaint.color = fgColor
-    }
-}
+open class SearchSpan : ForegroundColorSpan(Color.WHITE)

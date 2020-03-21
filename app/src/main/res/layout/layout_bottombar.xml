@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="ru.skillbranch.skillarticles.ui.custom.Bottombar">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
 
     <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
@@ -19,7 +19,7 @@
     <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
         android:id="@+id/btn_bookmark"
         style="@style/BottombarIcon"
-        android:src="@drawable/ic_bookmark_black_24dp"
+        android:src="@drawable/bookmark_states"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_share"
         app:layout_constraintHorizontal_bias="0.5"
@@ -29,6 +29,8 @@
     <ImageView
         android:id="@+id/btn_share"
         style="@style/BottombarIcon"
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/ic_share_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_bookmark"
@@ -46,8 +48,8 @@
         android:id="@+id/group_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="btn_like,btn_bookmark,btn_settings,btn_share"
-        tools:visibility="gone" />
+        app:constraint_referenced_ids="btn_bookmark,btn_settings,btn_like,btn_share"        
+		tools:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/reveal"
@@ -65,9 +67,8 @@
 
         <ImageView
             android:id="@+id/btn_search_close"
-            style="@style/BottombarIcon"
+            style="@style/BottombarSearchIcon"
             android:src="@drawable/ic_close_black_24dp"
-            android:tint="?attr/colorPrimary"
             tools:tint="@android:color/white" />
 
         <TextView
@@ -87,19 +88,15 @@
 
         <ImageView
             android:id="@+id/btn_result_down"
-            style="@style/BottombarIcon"
+            style="@style/BottombarSearchIcon"
             android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-            android:tint="?attr/colorPrimary"
             tools:tint="@android:color/white" />
 
         <ImageView
             android:id="@+id/btn_result_up"
-            style="@style/BottombarIcon"
+            style="@style/BottombarSearchIcon"
             android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
-            android:tint="?attr/colorPrimary"
             tools:tint="@android:color/white" />
 
     </LinearLayout>
-
-
 </merge>

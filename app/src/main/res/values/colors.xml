@@ -8,6 +8,7 @@
     <color name="color_gray_light">#EEEEEE</color>
     <color name="color_surface">#F6F6F6</color>
     <color name="color_on_surface">#202020</color>
+    <color name="opacity_color_surface">#08000000</color>
 
     <color name="color_article_bar">#FFFFFF</color>
     <color name="color_on_article_bar">#1C0E42</color>
