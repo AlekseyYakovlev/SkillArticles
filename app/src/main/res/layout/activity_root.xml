@@ -23,43 +23,36 @@
             app:logo="@drawable/logo_placeholder"
             app:subtitle="loading..."
             app:title="@string/app_name" />
-
     </com.google.android.material.appbar.AppBarLayout>
-
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <TextView
+        <ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownContentView
             android:id="@+id/tv_text_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:clipToPadding="false"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:saveEnabled="false"
-            android:text="@string/loading" />
-
+            android:padding="16dp" />
     </androidx.core.widget.NestedScrollView>
-
 
     <ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
         android:id="@+id/submenu"
         android:layout_width="200dp"
         android:layout_height="96dp"
-        android:layout_gravity="end|bottom"
-        android:layout_marginEnd="8dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="8dp"
         android:theme="@style/ArticleBarsTheme"
         android:visibility="gone"
         app:layout_dodgeInsetEdges="bottom"
         tools:visibility="visible" />
-<!--    app:layout_behavior=".ui.custom.behaviors.SubmenuBehavior"-->
-
+    <!--    app:layout_behavior=".ui.custom.behaviors.SubmenuBehavior"-->
 
     <ru.skillbranch.skillarticles.ui.custom.Bottombar
         android:id="@+id/bottombar"
@@ -72,8 +65,4 @@
     <!--    app:layout_behavior=".ui.custom.behaviors.BottombarBehavior"-->
     <!--    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"-->
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-

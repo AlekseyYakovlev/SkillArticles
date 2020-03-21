@@ -8,6 +8,7 @@
     <color name="color_on_surface">#FFFFFF</color>
     <color name="color_gray">#949494</color>
     <color name="color_gray_light">#272727</color>
+    <color name="opacity_color_surface">#1AFFFFFF</color>
 
     <color name="color_article_bar">#121212</color>
     <color name="color_on_article_bar">#FFFFFF</color>

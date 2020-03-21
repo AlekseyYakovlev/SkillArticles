@@ -1,7 +1,9 @@
 package ru.skillbranch.skillarticles.extensions
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
@@ -27,4 +29,12 @@ fun View.setPaddingOptionally(
     bottom: Int = paddingBottom
 ) {
     setPadding(left, top, right, bottom)
+}
+
+fun View.hideKeyboard() {
+    if (isFocused) {
+        val inputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
 }
