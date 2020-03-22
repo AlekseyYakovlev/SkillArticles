@@ -12,6 +12,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.annotation.VisibleForTesting
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.bumptech.glide.Glide
@@ -35,7 +36,7 @@ class MarkdownImageView private constructor(
 
     override var fontSize: Float = fontSize
         set(value) {
-            tv_title.textSize = value * 0.75f
+            tv_title.textSize = value * 0.85f
             tv_alt?.textSize = value
             field = value
         }
@@ -98,10 +99,9 @@ class MarkdownImageView private constructor(
             }
             clipToOutline = true
         }
-
         addView(iv_image)
 
-        tv_title = MarkdownTextView(context, fontSize * 0.75f).apply {
+        tv_title = MarkdownTextView(context, fontSize * 0.85f).apply {
             setTextColor(colorOnBackground)
             gravity = Gravity.CENTER
             typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
@@ -133,9 +133,10 @@ class MarkdownImageView private constructor(
             tv_alt = TextView(context).apply {
                 text = it
                 setTextColor(colorOnSurface)
+                setBackgroundColor(ColorUtils.setAlphaComponent(colorOnSurface, 160))
                 gravity = Gravity.CENTER
                 textSize = fontSize
-                setPadding(titlePadding)
+                setPadding(titleTopMargin)
                 isVisible = false
             }
             addView(tv_alt)
