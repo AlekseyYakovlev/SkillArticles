@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.text.Spannable
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,9 +33,13 @@ class MarkdownImageView private constructor(
     fontSize: Float
 ) : ViewGroup(context, null, 0), IMarkdownView {
 
+    companion object {
+        const val TITLE_FONT_SIZE_RATIO = 0.75f
+    }
+
     override var fontSize: Float = fontSize
         set(value) {
-            tv_title.textSize = value * 0.85f
+            tv_title.textSize = value * TITLE_FONT_SIZE_RATIO
             tv_alt?.textSize = value
             field = value
         }
@@ -101,12 +104,13 @@ class MarkdownImageView private constructor(
         }
         addView(iv_image)
 
-        tv_title = MarkdownTextView(context, fontSize * 0.85f).apply {
-            setTextColor(colorOnBackground)
-            gravity = Gravity.CENTER
-            typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
-            setPaddingOptionally(left = titlePadding, right = titlePadding)
-        }
+        tv_title = MarkdownTextView(context, fontSize * TITLE_FONT_SIZE_RATIO)
+            .apply {
+                setTextColor(colorOnBackground)
+                gravity = Gravity.CENTER
+                typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
+                setPaddingOptionally(left = titlePadding, right = titlePadding)
+            }
         addView(tv_title)
     }
 
