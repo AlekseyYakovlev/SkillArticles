@@ -69,26 +69,26 @@ object MarkdownParser {
         }
     }
 
-    /**
-     * clear markdown text to string from markdown symbols
-     */
-    fun clear(string: String?): String? {
-        string ?: return null
-
-        val elements =
-            findElements(
-                string
-            )
-
-        return if (elements.size == 1 && elements[0] is Element.Text) {
-            elements[0].text.toString()
-        } else {
-            val resString = elements.fold("") { result, el -> result.plus(el.text) }
-            clear(
-                resString
-            )
-        }
-    }
+//    /**
+//     * clear markdown text to string from markdown symbols
+//     */
+//    fun clear(string: String?): String? {
+//        string ?: return null
+//
+//        val elements =
+//            findElements(
+//                string
+//            )
+//
+//        return if (elements.size == 1 && elements[0] is Element.Text) {
+//            elements[0].text.toString()
+//        } else {
+//            val resString = elements.fold("") { result, el -> result.plus(el.text) }
+//            clear(
+//                resString
+//            )
+//        }
+//    }
 
 
     /**
@@ -425,6 +425,7 @@ sealed class Element() {
 private fun Element.spread(): List<Element> {
     val elements = mutableListOf<Element>()
     if (this.elements.isNotEmpty()) elements.addAll(this.elements.spread())
+    else elements.add(this)
     return elements
 }
 
