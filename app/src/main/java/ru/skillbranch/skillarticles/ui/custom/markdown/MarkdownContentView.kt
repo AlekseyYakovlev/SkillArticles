@@ -20,6 +20,7 @@ class MarkdownContentView @JvmOverloads constructor(
 
     //for restore
     private var ids = arrayListOf<Int>()
+    private var currentId = 1000
 
     var textSize by Delegates.observable(14f) { _, old, value ->
         if (value == old) return@observable
@@ -98,7 +99,9 @@ class MarkdownContentView @JvmOverloads constructor(
                         it.image.text,
                         it.image.alt
                     )
+                    iv.id = currentId++
                     addView(iv)
+                    ids.add(iv.id)
                 }
 
                 is MarkdownElement.Scroll -> {
@@ -107,7 +110,9 @@ class MarkdownContentView @JvmOverloads constructor(
                         textSize,
                         it.blockCode.text
                     )
+                    sv.id = currentId++
                     addView(sv)
+                    ids.add(sv.id)
                 }
             }
         }
