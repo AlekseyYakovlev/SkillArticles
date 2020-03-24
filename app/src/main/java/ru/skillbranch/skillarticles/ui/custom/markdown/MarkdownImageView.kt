@@ -3,6 +3,8 @@ package ru.skillbranch.skillarticles.ui.custom.markdown
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.Spannable
 import android.view.*
 import android.widget.ImageView
@@ -90,16 +92,18 @@ class MarkdownImageView private constructor(
     }
 
     init {
+        isSaveEnabled = true
+
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        iv_image = ImageView(context).apply {
-            outlineProvider = object : ViewOutlineProvider() {
-                override fun getOutline(view: View, outline: Outline) {
-                    outline.setRoundRect(
-                        Rect(0, 0, view.measuredWidth, view.measuredHeight),
-                        cornerRadius
-                    )
-                }
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(
+                    Rect(0, 0, view.measuredWidth, view.measuredHeight),
+                    cornerRadius
+                )
             }
+        }
+        iv_image = ImageView(context).apply {
             clipToOutline = true
         }
         addView(iv_image)
@@ -130,7 +134,6 @@ class MarkdownImageView private constructor(
             .with(context)
             .load(url)
             .transform(AspectRatioResizeTransform())
-//            .placeholder(R.drawable.ic_keyboard_arrow_up_black_24dp)
             .into(iv_image)
 
         alt?.let {
@@ -225,6 +228,17 @@ class MarkdownImageView private constructor(
         )
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.isAltVisible = tv_alt?.isVisible == true
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) tv_alt?.isVisible = state.isAltVisible
+    }
+
     private fun animateShowAlt() {
         tv_alt?.isVisible = true
         val endRadius = hypot(tv_alt?.width?.toFloat() ?: 0f, tv_alt?.height?.toFloat() ?: 0f)
@@ -249,6 +263,29 @@ class MarkdownImageView private constructor(
         )
         va.doOnEnd { tv_alt?.isVisible = false }
         va.start()
+    }
+
+    private class SavedState : BaseSavedState, Parcelable {
+        var isAltVisible = false
+
+        constructor(superState: Parcelable?) : super(superState)
+
+        constructor(src: Parcel) : super(src) {
+            isAltVisible = src.readInt() == 1
+        }
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            super.writeToParcel(dest, flags)
+            dest.writeInt(if (isAltVisible) 1 else 0)
+        }
+
+        override fun describeContents(): Int = 0
+
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel)
+
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
+        }
     }
 }
 
