@@ -1,7 +1,9 @@
 package ru.skillbranch.skillarticles.ui.custom.markdown
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.SparseArray
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
@@ -20,7 +22,7 @@ class MarkdownContentView @JvmOverloads constructor(
 
     //for restore
     private var ids = arrayListOf<Int>()
-    private var currentId = 1000
+    //private var currentId = 1000
 
     var textSize by Delegates.observable(14f) { _, old, value ->
         if (value == old) return@observable
@@ -75,6 +77,7 @@ class MarkdownContentView @JvmOverloads constructor(
 
     fun setContent(content: List<MarkdownElement>) {
         elements = content
+        var index =0
         content.forEach {
             when (it) {
                 is MarkdownElement.Text -> {
@@ -99,7 +102,7 @@ class MarkdownContentView @JvmOverloads constructor(
                         it.image.text,
                         it.image.alt
                     )
-                    iv.id = currentId++
+                    iv.id = index++
                     addView(iv)
                     ids.add(iv.id)
                 }
@@ -110,7 +113,7 @@ class MarkdownContentView @JvmOverloads constructor(
                         textSize,
                         it.blockCode.text
                     )
-                    sv.id = currentId++
+                    sv.id = index++
                     addView(sv)
                     ids.add(sv.id)
                 }
@@ -165,4 +168,8 @@ class MarkdownContentView @JvmOverloads constructor(
         children.filterIsInstance<MarkdownCodeView>()
             .forEach { it.copyListener = listener }
     }
+
+//    override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>?) {
+//        children.filter { it !is MarkdownTextView }.forEach { it.saveHierarchyState() }
+//    }
 }
