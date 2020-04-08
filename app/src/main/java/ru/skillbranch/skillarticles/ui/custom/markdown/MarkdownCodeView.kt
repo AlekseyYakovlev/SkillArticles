@@ -28,9 +28,13 @@ class MarkdownCodeView private constructor(
     context: Context,
     fontSize: Float
 ) : ViewGroup(context, null, 0), IMarkdownView {
+    companion object {
+        const val FONT_SIZE_RATIO = 0.85f
+    }
+
     override var fontSize: Float = fontSize
         set(value) {
-            tv_codeView.textSize = value * 0.85f
+            tv_codeView.textSize = value * FONT_SIZE_RATIO
             field = value
         }
 
@@ -44,24 +48,19 @@ class MarkdownCodeView private constructor(
     //views
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val iv_copy: ImageView
-
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val iv_switch: ImageView
     private val tv_codeView: MarkdownTextView
-
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val sv_scroll: HorizontalScrollView
 
     //colors
     @ColorInt
-    private val darkSurface: Int = context.attrValue(R.attr.darkSurfaceColor) //darkSurfaceColor
-
+    private val darkSurface: Int = context.attrValue(R.attr.darkSurfaceColor)
     @ColorInt
     private val darkOnSurface: Int = context.attrValue(R.attr.darkOnSurfaceColor)
-
     @ColorInt
     private val lightSurface: Int = context.attrValue(R.attr.lightSurfaceColor)
-
     @ColorInt
     private val lightOnSurface: Int = context.attrValue(R.attr.lightOnSurfaceColor)
 
@@ -94,7 +93,7 @@ class MarkdownCodeView private constructor(
     init {
         isSaveEnabled = true
 
-        tv_codeView = MarkdownTextView(context, fontSize * 0.85f).apply {
+        tv_codeView = MarkdownTextView(context, fontSize * FONT_SIZE_RATIO).apply {
             typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
             setTextColor(textColor)
             setPaddingOptionally(right = textExtraPadding)

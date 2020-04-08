@@ -64,13 +64,13 @@ class MarkdownImageView private constructor(
     var tv_alt: TextView? = null
 
     @Px
-    private val titleTopMargin: Int = context.dpToIntPx(8) //8dp
+    private val titleTopMargin: Int = context.dpToIntPx(8)
 
     @Px
-    private val titlePadding: Int = context.dpToIntPx(56) //56dp
+    private val titlePadding: Int = context.dpToIntPx(56)
 
     @Px
-    private val cornerRadius: Float = context.dpToPx(4) //4dp
+    private val cornerRadius: Float = context.dpToPx(4)
 
     @ColorInt
     private val colorSurface: Int = context.attrValue(R.attr.colorSurface)
@@ -91,19 +91,22 @@ class MarkdownImageView private constructor(
         strokeWidth = 0f
     }
 
+    //private var isAltTextOpen = false
+    private var aspectRatio = 0f
+
     init {
         isSaveEnabled = true
 
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-        outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(
-                    Rect(0, 0, view.measuredWidth, view.measuredHeight),
-                    cornerRadius
-                )
-            }
-        }
         iv_image = ImageView(context).apply {
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    outline.setRoundRect(
+                        Rect(0, 0, view.measuredWidth, view.measuredHeight),
+                        cornerRadius
+                    )
+                }
+            }
             clipToOutline = true
         }
         addView(iv_image)
@@ -130,12 +133,6 @@ class MarkdownImageView private constructor(
 
         tv_title.setText(title, TextView.BufferType.SPANNABLE)
 
-        Glide
-            .with(context)
-            .load(url)
-            .transform(AspectRatioResizeTransform())
-            .into(iv_image)
-
         alt?.let {
             tv_alt = TextView(context).apply {
                 text = it
@@ -151,8 +148,18 @@ class MarkdownImageView private constructor(
             iv_image.setOnClickListener {
                 if (tv_alt?.isVisible == true) animateHideAlt()
                 else animateShowAlt()
+                //isAltTextOpen = !isAltTextOpen
             }
         }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        Glide
+            .with(context)
+            .load(imageUrl)
+            .transform(AspectRatioResizeTransform())
+            .into(iv_image)
     }
 
 
@@ -163,11 +170,17 @@ class MarkdownImageView private constructor(
 
         //create measureSpec for children EXACTLY
         //all children width == parent width (constraint parent width)
-        val ms = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
+        val wms = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
 
-        iv_image.measure(ms, heightMeasureSpec)
-        tv_title.measure(ms, heightMeasureSpec)
-        tv_alt?.measure(ms, heightMeasureSpec)
+        if (aspectRatio != 0f) {
+            //restore width/height by aspectRatio
+            val hms =
+                MeasureSpec.makeMeasureSpec((width / aspectRatio).toInt(), MeasureSpec.EXACTLY)
+            iv_image.measure(wms, hms)
+        } else iv_image.measure(wms, heightMeasureSpec)
+
+        tv_title.measure(wms, heightMeasureSpec)
+        tv_alt?.measure(wms, heightMeasureSpec)
 
         usedHeight += iv_image.measuredHeight
         usedHeight += titleTopMargin
@@ -230,13 +243,17 @@ class MarkdownImageView private constructor(
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
-        savedState.isAltVisible = tv_alt?.isVisible == true
+        savedState.isAltTextOpen = tv_alt?.isVisible == true
+        savedState.aspectRatio = (iv_image.width.toFloat() / iv_image.height)
         return savedState
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         super.onRestoreInstanceState(state)
-        if (state is SavedState) tv_alt?.isVisible = state.isAltVisible
+        if (state is SavedState) {
+            aspectRatio = state.aspectRatio
+            tv_alt?.isVisible = state.isAltTextOpen
+        }
     }
 
     private fun animateShowAlt() {
@@ -266,17 +283,20 @@ class MarkdownImageView private constructor(
     }
 
     private class SavedState : BaseSavedState, Parcelable {
-        var isAltVisible = false
+        var isAltTextOpen = false
+        var aspectRatio = 0f
 
         constructor(superState: Parcelable?) : super(superState)
 
         constructor(src: Parcel) : super(src) {
-            isAltVisible = src.readInt() == 1
+            isAltTextOpen = src.readInt() == 1
+            aspectRatio=src.readFloat()
         }
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             super.writeToParcel(dest, flags)
-            dest.writeInt(if (isAltVisible) 1 else 0)
+            dest.writeInt(if (isAltTextOpen) 1 else 0)
+            dest.writeFloat(aspectRatio)
         }
 
         override fun describeContents(): Int = 0
