@@ -91,7 +91,7 @@ class MarkdownCodeView private constructor(
         }
 
     init {
-        isSaveEnabled = true
+//        isSaveEnabled = true
 
         tv_codeView = MarkdownTextView(context, fontSize * FONT_SIZE_RATIO).apply {
             typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL)
