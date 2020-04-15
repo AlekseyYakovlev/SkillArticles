@@ -8,6 +8,8 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
+import androidx.navigation.NavDestination
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun View.setMarginOptionally(
     left: Int = marginLeft,
@@ -37,4 +39,9 @@ fun View.hideKeyboard() {
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
+}
+
+private fun View.selectDestination(destination: NavDestination) {
+    if(this is BottomNavigationView){}
+
 }
