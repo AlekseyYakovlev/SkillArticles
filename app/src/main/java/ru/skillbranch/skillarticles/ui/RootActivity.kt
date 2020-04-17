@@ -42,7 +42,10 @@ class RootActivity : BaseActivity<RootViewModel>() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-
+            if (viewModel.currentState.isAuth && destination.id == R.id.nav_auth) {
+                controller.popBackStack()
+                viewModel.navigate(NavigationCommand.To(R.id.nav_profile, arguments))
+            }
             nav_view.selectDestination(destination)
         }
     }
@@ -73,12 +76,15 @@ class RootActivity : BaseActivity<RootViewModel>() {
     }
 
     override fun subscribeOnState(state: IViewModelState) {
-        // TODO("Not yet implemented")
+       // viewModel.
     }
 
 
 }
 
+//fun BottomNavigationView.selectDestination(destination: NavDestination) {
+//    menu.findItem(destination.id)?.isChecked = true
+//}
 
 private fun BottomNavigationView.selectDestination(destination: NavDestination) {
     val menu: Menu = this.menu
