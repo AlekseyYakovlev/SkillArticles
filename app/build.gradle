@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner "ru.skillbranch.skillarticles.CustomTestRunner"
+        //testInstrumentationRunner "ru.skillbranch.skillarticles.CustomTestRunner"
     }
     buildTypes {
         release {
@@ -85,4 +85,5 @@ dependencies {
     androidTestImplementation 'com.jraska.livedata:testing-ktx:1.1.1'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+
 }
