@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.ui
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.activity.viewModels
 import androidx.navigation.NavDestination
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,9 +8,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
-import kotlinx.android.synthetic.main.layout_bottombar.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
+import ru.skillbranch.skillarticles.ui.custom.Bottombar
 import ru.skillbranch.skillarticles.viewmodels.RootViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
@@ -42,11 +41,16 @@ class RootActivity : BaseActivity<RootViewModel>() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            nav_view.selectDestination(destination)
+
+            //if (destination.id == R.id.nav_auth) nav_view.selectItem(arguments?.get("private_destination") as Int?)
+
             if (viewModel.currentState.isAuth && destination.id == R.id.nav_auth) {
                 controller.popBackStack()
-                viewModel.navigate(NavigationCommand.To(R.id.nav_profile, arguments))
+                val privateDestination = arguments?.get("private_destination") as Int?
+                privateDestination?.let { controller.navigate(it) }
             }
-            nav_view.selectDestination(destination)
+
         }
     }
 
@@ -76,7 +80,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
     }
 
     override fun subscribeOnState(state: IViewModelState) {
-       // viewModel.
+        // viewModel.
     }
 
 
@@ -102,21 +106,4 @@ fun BottomNavigationView.selectDestination(destination: NavDestination) {
 //        h++
 //    }
 //}
-
-private fun BottomNavigationView.selectDestination(destination: NavDestination) {
-    val menu: Menu = this.menu
-    var h = 0
-    val size = menu.size()
-    while (h < size) {
-        val item = menu.getItem(h)
-        var currentDestination: NavDestination? = destination
-        while (currentDestination!!.id != item.itemId && currentDestination.parent != null) {
-            currentDestination = currentDestination.parent
-        }
-        if (currentDestination.id == item.itemId) {
-            item.isChecked = true
-        }
-        h++
-    }
-}
 
