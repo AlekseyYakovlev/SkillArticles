@@ -95,7 +95,7 @@ class MarkdownImageView private constructor(
     private var aspectRatio = 0f
 
     init {
-//        isSaveEnabled = true
+        isSaveEnabled = true
 
         layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         iv_image = ImageView(context).apply {

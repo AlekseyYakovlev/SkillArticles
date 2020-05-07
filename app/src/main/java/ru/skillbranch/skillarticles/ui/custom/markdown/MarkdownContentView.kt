@@ -25,7 +25,7 @@ class MarkdownContentView @JvmOverloads constructor(
     private lateinit var elements: List<MarkdownElement>
 
     //for restore
-    private var layoutManager: LayoutManager = LayoutManager()
+//    private var layoutManager: LayoutManager = LayoutManager()
 
     var textSize by Delegates.observable(14f) { _, old, value ->
         if (value == old) return@observable
@@ -79,7 +79,7 @@ class MarkdownContentView @JvmOverloads constructor(
 
     fun setContent(content: List<MarkdownElement>) {
         elements = content
-//        var index =0
+        var index =0
         content.forEach {
             when (it) {
                 is MarkdownElement.Text -> {
@@ -104,7 +104,7 @@ class MarkdownContentView @JvmOverloads constructor(
                         it.image.text,
                         it.image.alt
                     )
-//                    iv.id = index++
+                    iv.id = index++
                     addView(iv)
 //                    ids.add(iv.id)
                 }
@@ -115,7 +115,7 @@ class MarkdownContentView @JvmOverloads constructor(
                         textSize,
                         it.blockCode.text
                     )
-//                    sv.id = index++
+                    sv.id = index++
                     addView(sv)
 //                    ids.add(sv.id)
                 }
@@ -170,7 +170,7 @@ class MarkdownContentView @JvmOverloads constructor(
         children.filterIsInstance<MarkdownCodeView>()
             .forEach { it.copyListener = listener }
     }
-
+/*
     override fun onSaveInstanceState(): Parcelable? {
         val savedState =
             SavedState(super.onSaveInstanceState())
@@ -265,5 +265,5 @@ class MarkdownContentView @JvmOverloads constructor(
 
             override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
-    }
+    }*/
 }
