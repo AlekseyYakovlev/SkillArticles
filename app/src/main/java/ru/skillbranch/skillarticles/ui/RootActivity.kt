@@ -56,10 +56,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
     override fun renderNotification(notify: Notify) {
         val snackbar = Snackbar.make(container, notify.message, Snackbar.LENGTH_LONG)
-
-
-        if (bottombar != null) snackbar.anchorView = bottombar
-        else snackbar.anchorView = nav_view
+        snackbar.anchorView = findViewById<Bottombar>(R.id.bottombar) ?: nav_view
 
         when (notify) {
             is Notify.ActionMessage -> {
