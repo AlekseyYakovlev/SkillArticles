@@ -82,8 +82,25 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
 }
 
-//fun BottomNavigationView.selectDestination(destination: NavDestination) {
-//    menu.findItem(destination.id)?.isChecked = true
+fun BottomNavigationView.selectDestination(destination: NavDestination) {
+    menu.findItem(destination.id)?.isChecked = true
+}
+
+//private fun BottomNavigationView.selectDestination(destination: NavDestination) {
+//    val menu: Menu = this.menu
+//    var h = 0
+//    val size = menu.size()
+//    while (h < size) {
+//        val item = menu.getItem(h)
+//        var currentDestination: NavDestination? = destination
+//        while (currentDestination!!.id != item.itemId && currentDestination.parent != null) {
+//            currentDestination = currentDestination.parent
+//        }
+//        if (currentDestination.id == item.itemId) {
+//            item.isChecked = true
+//        }
+//        h++
+//    }
 //}
 
 private fun BottomNavigationView.selectDestination(destination: NavDestination) {
