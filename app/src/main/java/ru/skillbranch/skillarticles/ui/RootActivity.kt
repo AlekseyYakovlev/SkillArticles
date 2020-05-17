@@ -43,8 +43,6 @@ class RootActivity : BaseActivity<RootViewModel>() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             nav_view.selectDestination(destination)
 
-            //if (destination.id == R.id.nav_auth) nav_view.selectItem(arguments?.get("private_destination") as Int?)
-
             if (viewModel.currentState.isAuth && destination.id == R.id.nav_auth) {
                 controller.popBackStack()
                 val privateDestination = arguments?.get("private_destination") as Int?
@@ -77,30 +75,10 @@ class RootActivity : BaseActivity<RootViewModel>() {
     }
 
     override fun subscribeOnState(state: IViewModelState) {
-        // viewModel.
+        // do nothing
     }
-
-
 }
 
 fun BottomNavigationView.selectDestination(destination: NavDestination) {
     menu.findItem(destination.id)?.isChecked = true
 }
-
-//private fun BottomNavigationView.selectDestination(destination: NavDestination) {
-//    val menu: Menu = this.menu
-//    var h = 0
-//    val size = menu.size()
-//    while (h < size) {
-//        val item = menu.getItem(h)
-//        var currentDestination: NavDestination? = destination
-//        while (currentDestination!!.id != item.itemId && currentDestination.parent != null) {
-//            currentDestination = currentDestination.parent
-//        }
-//        if (currentDestination.id == item.itemId) {
-//            item.isChecked = true
-//        }
-//        h++
-//    }
-//}
-
