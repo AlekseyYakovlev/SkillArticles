@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--region ArticleItemView-->
+    <item type="id" name="tv_date"/>
     <item type="id" name="tv_author"/>
     <item type="id" name="tv_title"/>
     <item type="id" name="iv_poster"/>
+    <item type="id" name="iv_category"/>
     <item type="id" name="tv_description"/>
+    <item type="id" name="iv_likes"/>
+    <item type="id" name="tv_comments_count"/>
     <item type="id" name="tv_read_duration"/>
+    <item type="id" name="iv_bookmark"/>
+    <!--endregion-->
+
+    <!--region CommentItemView-->
+    <item type="id" name="tv_comment_body"/>
+    <!--endregion-->
 </resources>
