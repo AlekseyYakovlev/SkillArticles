@@ -41,6 +41,14 @@ fun View.hideKeyboard() {
     }
 }
 
+fun View.showKeyboard() {
+    if (isFocused) {
+        val inputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, 0)
+    }
+}
+
 private fun View.selectDestination(destination: NavDestination) {
     if(this is BottomNavigationView){}
 

@@ -34,6 +34,11 @@ fun Context.hideKeyboard(view: View){
     imm.hideSoftInputFromWindow(view.windowToken,0)
 }
 
+fun Context.showKeyboard(view: View){
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view,0)
+}
+
 
 //val Context.isNetworkAvailable: Boolean
 //    get() {
