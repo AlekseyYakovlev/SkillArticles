@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Checkable
-import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 
 class CheckableImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ImageView(context, attrs, defStyleAttr), Checkable, View.OnClickListener {
+) : AppCompatImageView(context, attrs, defStyleAttr), Checkable, View.OnClickListener {
 
     private var checked = false
 

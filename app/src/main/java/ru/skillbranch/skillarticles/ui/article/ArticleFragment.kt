@@ -112,7 +112,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         tv_date.text = args.date.format()
 
         et_comment.setOnEditorActionListener { view, _, _ ->
-            root.hideKeyboard(view)
+            view.hideKeyboard()
             viewModel.handleSendComment(view.text.toString())
             view.text = null
             view.clearFocus() //TODO clear text + hint via VM
