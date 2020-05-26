@@ -59,6 +59,17 @@ object ArticlesRepository {
         local.localArticleItems.addAll(articles)
             .apply { sleep(100) }
     }
+
+    fun updateBookmark(articleId: String, bookmark: Boolean) {
+        local.localArticleItems
+            .indexOfFirst { it.id == articleId }
+            .takeUnless { it == -1 }
+            ?.let { index ->
+                local.localArticleItems[index] =
+                    local.localArticleItems[index].copy(isBookmark = bookmark)
+            }
+        Log.d(" ArticlesRepository updateBookmark", "articleId $articleId bookmark $bookmark")
+    }
 }
 
 class ArticlesDataFactory(val strategy: ArticleStrategy) :

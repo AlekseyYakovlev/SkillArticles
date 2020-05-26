@@ -16,7 +16,8 @@ import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
 import java.util.concurrent.Executors
 
-class ArticlesViewModel(handle: SavedStateHandle) : BaseViewModel<ArticlesState>(handle, ArticlesState()) {
+class ArticlesViewModel(handle: SavedStateHandle) :
+    BaseViewModel<ArticlesState>(handle, ArticlesState()) {
     private val repository = ArticlesRepository
     private val listConfig by lazy {
         PagedList.Config.Builder()
@@ -46,7 +47,7 @@ class ArticlesViewModel(handle: SavedStateHandle) : BaseViewModel<ArticlesState>
     private fun buildPagedList(
         dataFactory: ArticlesDataFactory
     ): LiveData<PagedList<ArticleItemData>> {
-        val builder = LivePagedListBuilder<Int, ArticleItemData> (
+        val builder = LivePagedListBuilder<Int, ArticleItemData>(
             dataFactory,
             listConfig
         )
@@ -115,8 +116,10 @@ class ArticlesViewModel(handle: SavedStateHandle) : BaseViewModel<ArticlesState>
         updateState { it.copy(isSearch = isSearch) }
     }
 
-    fun handleToggleBookmark(articleId: String, bookmark: Boolean): Unit {
-        TODO("Not yet implemented")
+    fun handleToggleBookmark(articleId: String, hasBookmark: Boolean): Unit {
+        updateState { it.copy(isLoading = true) }
+        repository.updateBookmark(articleId, !hasBookmark)
+        updateState { it.copy(isLoading = false) }
     }
 }
 
