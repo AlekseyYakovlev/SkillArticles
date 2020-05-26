@@ -29,12 +29,13 @@ object ArticlesRepository {
         .drop(start)
         .take(size)
 
-    private fun findArticlesByTitle(start: Int, size: Int, queryTitle: String) = local.localArticleItems
-        .asSequence()
-        .filter { it.title.contains(queryTitle, true) }
-        .drop(start)
-        .take(size)
-        .toList()
+    private fun findArticlesByTitle(start: Int, size: Int, queryTitle: String) =
+        local.localArticleItems
+            .asSequence()
+            .filter { it.title.contains(queryTitle, true) }
+            .drop(start)
+            .take(size)
+            .toList()
 
     private fun findArticlesBookmark(start: Int, size: Int) = local.localArticleItems
         .asSequence()
@@ -43,17 +44,19 @@ object ArticlesRepository {
         .take(size)
         .toList()
 
-    private fun findBookmarkArticlesByTitle(start: Int, size: Int, queryTitle: String) = local.localArticleItems
-        .asSequence()
-        .filter { it.isBookmark && it.title.contains(queryTitle, true) }
-        .drop(start)
-        .take(size)
-        .toList()
+    private fun findBookmarkArticlesByTitle(start: Int, size: Int, queryTitle: String) =
+        local.localArticleItems
+            .asSequence()
+            .filter { it.isBookmark && it.title.contains(queryTitle, true) }
+            .drop(start)
+            .take(size)
+            .toList()
 
-    fun loadArticlesFromNetwork(start: Int, size: Int): List<ArticleItemData> = network.networkArticleItems
-        .drop(start)
-        .take(size)
-        .apply { sleep(500) }
+    fun loadArticlesFromNetwork(start: Int, size: Int): List<ArticleItemData> =
+        network.networkArticleItems
+            .drop(start)
+            .take(size)
+            .apply { sleep(500) }
 
     fun insertArticlesToDb(articles: List<ArticleItemData>) {
         local.localArticleItems.addAll(articles)
@@ -77,7 +80,8 @@ class ArticlesDataFactory(val strategy: ArticleStrategy) :
     override fun create(): DataSource<Int, ArticleItemData> = ArticleDataSource(strategy)
 }
 
-class ArticleDataSource(private val strategy: ArticleStrategy) : PositionalDataSource<ArticleItemData>() {
+class ArticleDataSource(private val strategy: ArticleStrategy) :
+    PositionalDataSource<ArticleItemData>() {
     override fun loadInitial(
         params: LoadInitialParams,
         callback: LoadInitialCallback<ArticleItemData>
