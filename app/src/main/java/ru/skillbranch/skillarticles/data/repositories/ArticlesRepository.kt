@@ -16,14 +16,16 @@ object ArticlesRepository {
     fun allArticles(): ArticlesDataFactory =
         ArticlesDataFactory(ArticleStrategy.AllArticles(::findArticlesByRange))
 
-    fun searchArticles(searchQuery: String) =
+    fun searchArticles(searchQuery: String): ArticlesDataFactory =
         ArticlesDataFactory(ArticleStrategy.SearchArticle(::findArticlesByTitle, searchQuery))
 
-//    fun allBookmark() =
-//        ArticlesDataFactory(ArticleStrategy.BookmarkArticles(::findArticlesBookmark))
-//
-//    fun searchBookmark(searchQuery: String) =
-//        ArticlesDataFactory(ArticleStrategy.SearchBookmark(::findBookmarkArticlesByTitle, searchQuery))
+    fun allBookmark(): ArticlesDataFactory =
+        ArticlesDataFactory(ArticleStrategy.BookmarkArticles(::findArticlesBookmark))
+
+    fun searchBookmark(searchQuery: String): ArticlesDataFactory =
+        ArticlesDataFactory(
+            ArticleStrategy.SearchBookmark(::findBookmarkArticlesByTitle, searchQuery)
+        )
 
     private fun findArticlesByRange(start: Int, size: Int) = local.localArticleItems
         .drop(start)
@@ -122,5 +124,18 @@ sealed class ArticleStrategy() {
             itemProvider(start, size, query)
     }
 
-    //TODO bookmarks Strategy
+    class BookmarkArticles(
+        private val itemProvider: (Int, Int) -> List<ArticleItemData>
+    ) : ArticleStrategy() {
+        override fun getItems(start: Int, size: Int): List<ArticleItemData> =
+            itemProvider(start, size)
+    }
+
+    class SearchBookmark(
+        private val itemProvider: (Int, Int, String) -> List<ArticleItemData>,
+        private val query: String
+    ) : ArticleStrategy() {
+        override fun getItems(start: Int, size: Int): List<ArticleItemData> =
+            itemProvider(start, size, query)
+    }
 }
