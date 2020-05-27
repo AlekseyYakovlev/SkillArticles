@@ -192,7 +192,7 @@ class ArticleViewModel(
             viewModelScope.launch {
                 repository.sendComment(articleId, comment, currentState.answerToSlug)
                 withContext(Dispatchers.Main) {
-                    updateState { it.copy(answerTo = null, answerToSlug = null) }
+                    updateState { it.copy(answerTo = null, answerToSlug = null, comment = null) }
                 }
             }
         }
@@ -222,12 +222,13 @@ class ArticleViewModel(
     }
 
     fun handleClearComment() {
-        updateState { it.copy(answerTo = null, answerToSlug = null) }
+        updateState { it.copy(answerTo = null, answerToSlug = null, comment = null) }
     }
 
     fun handleReplyTo(slug: String, name: String) {
         updateState { it.copy(answerToSlug = slug, answerTo = "Reply to $name") }
     }
+
 }
 
 data class ArticleState(
@@ -251,6 +252,7 @@ data class ArticleState(
     val author: Any? = null,
     val poster: String? = null,
     val content: List<MarkdownElement> = emptyList(),
+    val comment: String? = null,
     val commentsCount: Int = 0,
     val answerTo: String? = null,
     val answerToSlug: String? = null,
@@ -262,7 +264,9 @@ data class ArticleState(
         outState.set("searchQuery", searchQuery)
         outState.set("searchResults", searchResults)
         outState.set("searchPosition", searchPosition)
-
+        outState.set("comment", comment)
+        outState.set("answerTo", answerTo)
+        outState.set("answerToSlug", answerToSlug)
     }
 
     override fun restore(savedState: SavedStateHandle): ArticleState {
@@ -271,7 +275,10 @@ data class ArticleState(
             isSearch = savedState["isSearch"] ?: false,
             searchQuery = savedState["searchQuery"],
             searchResults = savedState["searchResults"] ?: emptyList(),
-            searchPosition = savedState["searchPosition"] ?: 0
+            searchPosition = savedState["searchPosition"] ?: 0,
+            comment = savedState["comment"],
+            answerTo = savedState["answerTo"],
+            answerToSlug = savedState["answerToSlug"]
         )
     }
 }
