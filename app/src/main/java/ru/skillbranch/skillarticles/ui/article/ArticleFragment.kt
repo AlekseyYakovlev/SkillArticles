@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -111,10 +112,12 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         tv_author.text = args.author
         tv_date.text = args.date.format()
 
+        et_comment.text = SpannableStringBuilder(viewModel.currentState.comment?: "")
+
         et_comment.setOnEditorActionListener { view, _, _ ->
             view.hideKeyboard()
             viewModel.handleSendComment(view.text.toString())
-            view.text = null
+            //view.text = null
             view.clearFocus() //TODO clear text + hint via VM
             true
         }
@@ -207,13 +210,13 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
         bottombar.btn_result_up.setOnClickListener {
             if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
-            root.hideKeyboard(it)
+            it.hideKeyboard()
             viewModel.handleUpResult()
         }
 
         bottombar.btn_result_down.setOnClickListener {
             if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
-            root.hideKeyboard(it)
+            it.hideKeyboard()
             viewModel.handleDownResult()
         }
 
