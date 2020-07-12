@@ -33,7 +33,7 @@
 
     </style>
 
-    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="colorPrimary">@color/color_article_bar</item>
         <item name="colorOnPrimary">@color/color_on_article_bar</item>
         <item name="colorSurface">@color/color_article_bar</item>
@@ -64,7 +64,7 @@
     <style name="CustomSnackbar" parent="Widget.MaterialComponents.Snackbar">
         <item name="layout_insetEdge">bottom</item>
     </style>
-
+    
     <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
         <item name="colorControlNormal">@color/color_gray</item>
         <item name="colorControlActivated">@color/color_accent</item>

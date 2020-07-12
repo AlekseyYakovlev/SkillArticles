@@ -39,7 +39,7 @@ abstract class BaseViewModel<T : IViewModelState>(
      * модифицированное состояние, которое присваивается текущему состоянию
      */
     @UiThread
-    protected inline fun updateState(update: (currentState: T) -> T) {
+    inline fun updateState(update: (currentState: T) -> T) {
         val updatedState: T = update(currentState)
         state.value = updatedState
     }
@@ -54,10 +54,9 @@ abstract class BaseViewModel<T : IViewModelState>(
         notifications.value = Event(content)
     }
 
-    open fun navigate(command: NavigationCommand){
-        navigation.value=Event(command)
+    open fun navigate(command: NavigationCommand) {
+        navigation.value = Event(command)
     }
-
 
     /***
      * более компактная форма записи observe() метода LiveData принимает последним аргумент лямбда
@@ -65,6 +64,7 @@ abstract class BaseViewModel<T : IViewModelState>(
      */
     fun observeState(owner: LifecycleOwner, onChanged: (newState: T) -> Unit) {
         state.observe(owner, Observer { onChanged(it!!) })
+
     }
 
     /***
@@ -96,14 +96,15 @@ abstract class BaseViewModel<T : IViewModelState>(
         }
     }
 
-
-    fun saveState(){
+    open fun saveState() {
         currentState.save(handleState)
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun restoreState(){
-        state.value=currentState.restore(handleState) as T
+    fun restoreState() {
+        val restoredState = currentState.restore(handleState) as T
+        if(currentState == restoredState) return
+        state.value = currentState.restore(handleState) as T
     }
 
 }
@@ -156,8 +157,6 @@ sealed class Notify() {
         val errLabel: String?,
         val errHandler: (() -> Unit)?
     ) : Notify()
-
-
 }
 
 sealed class NavigationCommand() {

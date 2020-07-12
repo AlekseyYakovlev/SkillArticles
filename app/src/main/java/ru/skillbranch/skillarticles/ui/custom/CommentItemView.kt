@@ -34,11 +34,20 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
     private val grayColor = context.getColor(R.color.color_gray)
     private val primaryColor = context.attrValue(R.attr.colorPrimary)
     private val dividerColor = context.getColor(R.color.color_divider)
+    private val baseColor = context.getColor(R.color.color_gray_light)
     private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = dividerColor
         strokeWidth = lineSize
         style = Paint.Style.STROKE
     }
+
+    private val shimmerDrawable by lazy(LazyThreadSafetyMode.NONE) {
+        ShimmerDrawable.fromView(this).apply {
+            setBaseColor(baseColor)
+            setHighlightColor(dividerColor)
+        }
+    }
+
 
     init {
         setPadding(defaultHSpace, defaultVSpace, defaultHSpace, defaultVSpace)
@@ -59,7 +68,7 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
         addView(tv_author)
 
         tv_body = TextView(context).apply {
-            id=R.id.tv_comment_body
+            id = R.id.tv_comment_body
             setTextColor(grayColor)
             textSize = 14f
         }
@@ -177,10 +186,17 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
 
     fun bind(item: CommentItemData?) {
         if (item == null) {
-            //TODO show shimmer
+            foreground = shimmerDrawable
+            shimmerDrawable.start()
         } else {
             val level = min(item.slug.split("/").size.dec(), 5)
             setPaddingOptionally(left = level * defaultHSpace)
+
+            if (foreground != null) {
+                shimmerDrawable.stop()
+                foreground = null
+            }
+
 
             Glide.with(context)
                 .load(item.user.avatar)
@@ -196,5 +212,4 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
             iv_answer_icon.isVisible = item.answerTo != null
         }
     }
-
 }

@@ -103,11 +103,11 @@ class Bottombar @JvmOverloads constructor(
     }
 
     fun show(){
-        ObjectAnimator.ofFloat(this,"translationY",0f).start()
+        ObjectAnimator.ofFloat(this, "translationY", 0f).start()
     }
 
     fun hide(){
-        ObjectAnimator.ofFloat(this,"translationY",height.toFloat()).start()
+        ObjectAnimator.ofFloat(this, "translationY", height.toFloat()).start()
     }
 
     private class SavedState : BaseSavedState, Parcelable {

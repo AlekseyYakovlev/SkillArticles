@@ -100,5 +100,5 @@ interface IArticleViewModel {
     /**
      * обрабока отправки комментария, если пользователь не авторизован отобразить экран авторизации
      **/
-    fun handleSendComment(comment: String)
+    fun handleSendComment(comment: String?)
 }

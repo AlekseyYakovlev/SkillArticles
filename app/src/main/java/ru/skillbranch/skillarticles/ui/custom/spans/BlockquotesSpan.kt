@@ -23,20 +23,21 @@ class BlockquotesSpan(
     ) {
         paint.withCustomColor {
             canvas.drawLine(
-                quoteWidth / 2f,
+                quoteWidth/2f,
                 lineTop.toFloat(),
-                quoteWidth / 2f,
+                quoteWidth/2f,
                 lineBottom.toFloat(),
                 paint
             )
         }
     }
 
-    override fun getLeadingMargin(first: Boolean): Int = (quoteWidth + gapWidth).toInt()
-
+    override fun getLeadingMargin(first: Boolean): Int {
+        return (quoteWidth + gapWidth).toInt()
+    }
 
     private inline fun Paint.withCustomColor(block: () -> Unit) {
-        val oldColor  = color
+        val oldColor = color
         val oldStyle = style
         val oldWidth = strokeWidth
 
