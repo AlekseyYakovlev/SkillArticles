@@ -31,7 +31,7 @@ class AuthFragment : BaseFragment<AuthViewModel>() {
         }
 
         val color = root.attrValue(R.attr.colorPrimary)
-        (tv_access_code.text as? Spannable)?.let { it[0..it.length] = UnderlineSpan(color) }
-        (tv_privacy.text as? Spannable)?.let { it[0..it.length] = UnderlineSpan(color) }
+        (tv_access_code.text as Spannable).let { it[0..it.length] = UnderlineSpan(color) }
+        (tv_privacy.text as Spannable).let { it[0..it.length] = UnderlineSpan(color) }
     }
 }

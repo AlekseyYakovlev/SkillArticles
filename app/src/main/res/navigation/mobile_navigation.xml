@@ -41,8 +41,12 @@
         android:label="@string/title_articles"
         tools:layout="@layout/fragment_articles">
         <action
-            android:id="@+id/action_nav_articles_to_page_article"
+            android:id="@+id/action_to_page_article"
             app:destination="@id/page_article" />
+        <argument
+            android:name="isBookmarks"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
@@ -51,11 +55,15 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/nav_bookmarks"
-        android:name="ru.skillbranch.skillarticles.ui.bookmarks.BookmarksFragment"
+        android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
         android:label="@string/title_bookmarks"
-        tools:layout="@layout/fragment_bookmarks" >
+        tools:layout="@layout/fragment_articles">
+        <argument
+            android:name="isBookmarks"
+            android:defaultValue="true"
+            app:argType="boolean" />
         <action
-            android:id="@+id/action_nav_bookmarks_to_page_article"
+            android:id="@+id/action_to_page_article"
             app:destination="@id/page_article" />
     </fragment>
     <fragment
@@ -66,7 +74,6 @@
     <navigation
         android:id="@+id/auth"
         android:label="@string/title_authorization"
-        app:launchSingleTop="true"
         app:startDestination="@id/nav_auth">
         <fragment
             android:id="@+id/nav_auth"
@@ -90,8 +97,7 @@
     <!--global actions -->
     <action
         android:id="@+id/start_login"
-        app:destination="@id/auth"
-        app:launchSingleTop="true" />
+        app:destination="@id/auth" />
     <action
         android:id="@+id/finish_login"
         app:popUpTo="@id/auth"

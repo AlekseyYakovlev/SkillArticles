@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
 import ru.skillbranch.skillarticles.data.models.CommentItemData
 import ru.skillbranch.skillarticles.ui.custom.CommentItemView
 
@@ -19,9 +18,8 @@ class CommentsAdapter(private val listener: (CommentItemData) -> Unit) :
     }
 }
 
-class CommentVH(override val containerView: View, val listener: (CommentItemData) -> Unit) :
-    RecyclerView.ViewHolder(containerView), LayoutContainer {
-
+class CommentVH(private val containerView: View, val listener: (CommentItemData) -> Unit) :
+    RecyclerView.ViewHolder(containerView) {
     fun bind(item: CommentItemData?) {
         (containerView as CommentItemView).bind(item)
         if (item != null) itemView.setOnClickListener { listener(item) }

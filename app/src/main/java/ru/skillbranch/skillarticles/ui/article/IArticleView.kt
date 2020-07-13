@@ -1,6 +1,13 @@
 package ru.skillbranch.skillarticles.ui.article
 
 interface IArticleView {
-    fun hideSearchBar()
+    /**
+     * показать search bar
+     */
     fun showSearchBar()
+
+    /**
+     * скрыть searchbar
+     */
+    fun hideSearchBar()
 }

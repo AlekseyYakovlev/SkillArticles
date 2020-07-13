@@ -49,7 +49,6 @@ class MarkdownImageView private constructor(
     override val spannableContent: Spannable
         get() = tv_title.text as Spannable
 
-
     //views
     private lateinit var imageUrl: String
     private lateinit var imageTitle: CharSequence
@@ -241,21 +240,6 @@ class MarkdownImageView private constructor(
         )
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
-        val savedState = SavedState(super.onSaveInstanceState())
-        savedState.isAltTextOpen = tv_alt?.isVisible == true
-        savedState.aspectRatio = (iv_image.width.toFloat() / iv_image.height)
-        return savedState
-    }
-
-    override fun onRestoreInstanceState(state: Parcelable?) {
-        super.onRestoreInstanceState(state)
-        if (state is SavedState) {
-            aspectRatio = state.aspectRatio
-            tv_alt?.isVisible = state.isAltTextOpen
-        }
-    }
-
     private fun animateShowAlt() {
         tv_alt?.isVisible = true
         val endRadius = hypot(tv_alt?.width?.toFloat() ?: 0f, tv_alt?.height?.toFloat() ?: 0f)
@@ -282,6 +266,21 @@ class MarkdownImageView private constructor(
         va.start()
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.isAltTextOpen = tv_alt?.isVisible == true
+        savedState.aspectRatio = (iv_image.width.toFloat() / iv_image.height)
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        super.onRestoreInstanceState(state)
+        if (state is SavedState) {
+            aspectRatio = state.aspectRatio
+            tv_alt?.isVisible = state.isAltTextOpen
+        }
+    }
+
     private class SavedState : BaseSavedState, Parcelable {
         var isAltTextOpen = false
         var aspectRatio = 0f
@@ -290,7 +289,7 @@ class MarkdownImageView private constructor(
 
         constructor(src: Parcel) : super(src) {
             isAltTextOpen = src.readInt() == 1
-            aspectRatio=src.readFloat()
+            aspectRatio = src.readFloat()
         }
 
         override fun writeToParcel(dest: Parcel, flags: Int) {

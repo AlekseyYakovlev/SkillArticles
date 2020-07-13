@@ -36,7 +36,7 @@ class BlockquotesSpan(
 
 
     private inline fun Paint.withCustomColor(block: () -> Unit) {
-        val oldColor  = color
+        val oldColor = color
         val oldStyle = style
         val oldWidth = strokeWidth
 

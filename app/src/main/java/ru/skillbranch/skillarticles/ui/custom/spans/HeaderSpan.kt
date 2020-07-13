@@ -32,6 +32,7 @@ class HeaderSpan constructor(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val linePadding = 0.4f
     private var originAscent = 0
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val sizes = mapOf(
         1 to 2f,
@@ -118,7 +119,7 @@ class HeaderSpan constructor(
                 )
             }
         }
-       //canvas.drawFontLines(lineTop,lineBottom,lineBaseline,paint)
+        //canvas.drawFontLines(lineTop,lineBottom,lineBaseline,paint)
     }
 
     override fun getLeadingMargin(first: Boolean): Int {
@@ -126,7 +127,7 @@ class HeaderSpan constructor(
     }
 
     private inline fun Paint.forLine(block: () -> Unit) {
-        val oldColor  = color
+        val oldColor = color
         val oldStyle = style
         val oldWidth = strokeWidth
 
@@ -143,9 +144,9 @@ class HeaderSpan constructor(
 }
 
 private fun Canvas.drawFontLines(top: Int, bottom: Int, baseline: Int, paint: Paint) {
-    drawLine(0f, top+0f,width+0f,top+0f,Paint().apply { Color.BLUE })
-    drawLine(0f, bottom+0f,width+0f,bottom+0f,Paint().apply { Color.GREEN })
-    drawLine(0f, baseline+0f,width+0f,baseline+0f,Paint().apply { Color.RED })
+    drawLine(0f, top + 0f, width + 0f, top + 0f, Paint().apply { Color.BLUE })
+    drawLine(0f, bottom + 0f, width + 0f, bottom + 0f, Paint().apply { Color.GREEN })
+    drawLine(0f, baseline + 0f, width + 0f, baseline + 0f, Paint().apply { Color.RED })
 //    drawLine(0f, top+0f,width+0f,top+0f,Paint().apply { Color.BLUE })
 //    drawLine(0f, top+0f,width+0f,top+0f,Paint().apply { Color.BLUE })
 }

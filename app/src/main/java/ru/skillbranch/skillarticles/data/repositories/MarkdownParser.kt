@@ -1,16 +1,12 @@
 package ru.skillbranch.skillarticles.data.repositories
 
-import androidx.annotation.VisibleForTesting
 import java.util.regex.Pattern
 
 object MarkdownParser {
-
-    private const val LINE_SEPARATOR = "\n"
-
     //group regex
     private const val UNORDERED_LIST_ITEM_GROUP = "(^[*+-] .+$)"
     private const val HEADER_GROUP = "(^#{1,6} .+?$)"
-    private const val QUOTE_GROUP = "(^> .+$)"
+    private const val QUOTE_GROUP = "(^> .+?$)"
     private const val ITALIC_GROUP = "((?<!\\*)\\*[^*].*?[^*]?\\*(?!\\*)|(?<!_)_[^_].*?[^_]?_(?!_))"
     private const val BOLD_GROUP =
         "((?<!\\*)\\*{2}[^*].*?[^*]?\\*{2}(?!\\*)|(?<!_)_{2}[^_].*?[^_]?_{2}(?!_))"
@@ -69,28 +65,6 @@ object MarkdownParser {
         }
     }
 
-//    /**
-//     * clear markdown text to string from markdown symbols
-//     */
-//    fun clear(string: String?): String? {
-//        string ?: return null
-//
-//        val elements =
-//            findElements(
-//                string
-//            )
-//
-//        return if (elements.size == 1 && elements[0] is Element.Text) {
-//            elements[0].text.toString()
-//        } else {
-//            val resString = elements.fold("") { result, el -> result.plus(el.text) }
-//            clear(
-//                resString
-//            )
-//        }
-//    }
-
-
     /**
      * find markdown elements in markdown text
      */
@@ -115,7 +89,7 @@ object MarkdownParser {
             //found text
             var text: CharSequence
 
-            //groups range for iterate by groups (1..9) or (1..11) optionally
+            //groups range for iterate by groups
             val groups = 1..12
             var group = -1
             for (gr in groups) {
@@ -145,6 +119,8 @@ object MarkdownParser {
                             subs
                         )
                     parents.add(element)
+
+                    //next find start from position "endIndex" (last regex character)
                     lastStartIndex = endIndex
                 }
 
@@ -268,7 +244,7 @@ object MarkdownParser {
                     lastStartIndex = endIndex
                 }
 
-                //10 -> BLOCK CODE - optionally
+                //10 -> BLOCK CODE
                 10 -> {
                     //text without "```{}```"
                     text = string.subSequence(startIndex.plus(3), endIndex.minus(3))
@@ -313,8 +289,6 @@ object MarkdownParser {
         return parents
     }
 }
-
-//data class MarkdownText(val elements: List<Element>)
 
 sealed class MarkdownElement() {
     abstract val offset: Int
@@ -388,18 +362,18 @@ sealed class Element() {
     ) : Element()
 
     data class Rule(
-        override val text: CharSequence = " ", //for insert span
+        override val text: CharSequence = " ",
         override val elements: List<Element> = emptyList()
     ) : Element()
 
     data class InlineCode(
-        override val text: CharSequence, //for insert span
+        override val text: CharSequence,
         override val elements: List<Element> = emptyList()
     ) : Element()
 
     data class Link(
         val link: String,
-        override val text: CharSequence, //for insert span
+        override val text: CharSequence,
         override val elements: List<Element> = emptyList()
     ) : Element()
 
@@ -435,15 +409,13 @@ private fun List<Element>.spread(): List<Element> {
     return elements
 }
 
-@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-fun Element.clearContent(): String =
+private fun Element.clearContent(): String =
     StringBuilder().apply {
         val element = this@clearContent
         if (element.elements.isEmpty()) append(element.text)
         else element.elements.forEach { append(it.clearContent()) }
     }.toString()
 
-@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 fun List<MarkdownElement>.clearContent(): String =
     StringBuilder().apply {
         this@clearContent.forEach {
