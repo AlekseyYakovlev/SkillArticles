@@ -154,7 +154,7 @@ class MarkdownCodeView private constructor(
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var usedHeight = 0
-        val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
+        val width = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
         measureChild(sv_scroll, widthMeasureSpec, heightMeasureSpec)
         measureChild(iv_copy, widthMeasureSpec, heightMeasureSpec)
 
@@ -216,6 +216,19 @@ class MarkdownCodeView private constructor(
         Selection.setSelection(spannableContent, searchPosition.first.minus(offset))
     }
 
+    private fun toggleColors() {
+        isManual = true
+        isDark = !isDark
+        applyColors()
+    }
+
+    private fun applyColors() {
+        iv_switch.imageTintList = ColorStateList.valueOf(textColor)
+        iv_copy.imageTintList = ColorStateList.valueOf(textColor)
+        (background as GradientDrawable).color = ColorStateList.valueOf(bgColor)
+        tv_codeView.setTextColor(textColor)
+    }
+
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.isManual = isManual
@@ -232,19 +245,6 @@ class MarkdownCodeView private constructor(
                 applyColors()
             }
         }
-    }
-
-    private fun toggleColors() {
-        isManual = true
-        isDark = !isDark
-        applyColors()
-    }
-
-    private fun applyColors() {
-        iv_switch.imageTintList = ColorStateList.valueOf(textColor)
-        iv_copy.imageTintList = ColorStateList.valueOf(textColor)
-        (background as GradientDrawable).color = ColorStateList.valueOf(bgColor)
-        tv_codeView.setTextColor(textColor)
     }
 
     private class SavedState : BaseSavedState, Parcelable {

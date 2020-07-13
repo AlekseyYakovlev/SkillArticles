@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package ru.skillbranch.skillarticles.viewmodels.base
 
 import android.os.Bundle

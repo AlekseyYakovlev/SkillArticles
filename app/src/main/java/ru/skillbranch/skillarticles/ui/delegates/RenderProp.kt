@@ -4,7 +4,7 @@ import ru.skillbranch.skillarticles.ui.base.Binding
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class RenderProp<T:Any>(
+class RenderProp<T : Any>(
     var value: T,
     private val needInit: Boolean = true,
     private val onChange: ((T) -> Unit)? = null
@@ -19,7 +19,7 @@ class RenderProp<T:Any>(
         thisRef: Binding,
         property: KProperty<*>
     ): ReadWriteProperty<Binding, T> {
-        val delegate = RenderProp(value, false, onChange)
+        val delegate = RenderProp(value, needInit, onChange)
         registerDelegate(thisRef, property.name, delegate)
         return delegate
     }

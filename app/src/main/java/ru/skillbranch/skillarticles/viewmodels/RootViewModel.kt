@@ -21,7 +21,7 @@ class RootViewModel(handle: SavedStateHandle) : BaseViewModel<RootState>(handle,
         when (command) {
             is NavigationCommand.To -> {
                 if (privateRoutes.contains(command.destination) && !currentState.isAuth) {
-                    // set requested destination as login
+                    // set requested destination as arg
                     super.navigate(NavigationCommand.StartLogin(command.destination))
                 } else super.navigate(command)
             }

@@ -21,7 +21,7 @@ class MarkdownBuilder(context: Context) {
     private val colorPrimary = context.attrValue(R.attr.colorPrimary)
     private val colorDivider = context.getColor(R.color.color_divider)
     private val colorOnSurface = context.attrValue(R.attr.colorOnSurface)
-    private val colorSurface = context.attrValue(R.attr.colorSurface)
+    private val opacityColorSurface = context.getColor(R.color.opacity_color_surface)
     private val gap: Float = context.dpToPx(8)
     private val bulletRadius = context.dpToPx(4)
     private val strikeWidth = context.dpToPx(4)
@@ -50,6 +50,7 @@ class MarkdownBuilder(context: Context) {
                         }
                     }
                 }
+
                 is Element.Quote -> {
                     inSpans(
                         BlockquotesSpan(gap, strikeWidth, colorSecondary),
@@ -60,6 +61,7 @@ class MarkdownBuilder(context: Context) {
                         }
                     }
                 }
+
                 is Element.Header -> {
                     inSpans(
                         HeaderSpan(
@@ -73,6 +75,7 @@ class MarkdownBuilder(context: Context) {
                         append(element.text)
                     }
                 }
+
                 is Element.Italic -> {
                     inSpans(StyleSpan(Typeface.ITALIC)) {
                         for (child in element.elements) {
@@ -80,6 +83,7 @@ class MarkdownBuilder(context: Context) {
                         }
                     }
                 }
+
                 is Element.Bold -> {
                     inSpans(StyleSpan(Typeface.BOLD)) {
                         for (child in element.elements) {
@@ -87,6 +91,7 @@ class MarkdownBuilder(context: Context) {
                         }
                     }
                 }
+
                 is Element.Strike -> {
                     inSpans(StrikethroughSpan()) {
                         for (child in element.elements) {
@@ -94,16 +99,19 @@ class MarkdownBuilder(context: Context) {
                         }
                     }
                 }
+
                 is Element.Rule -> {
                     inSpans(HorizontalRuleSpan(ruleWidth, colorDivider)) {
                         append(element.text)
                     }
                 }
+
                 is Element.InlineCode -> {
-                    inSpans(InlineCodeSpan(colorOnSurface, colorSurface, cornerRadius, gap)) {
+                    inSpans(InlineCodeSpan(colorOnSurface, opacityColorSurface, cornerRadius, gap)) {
                         append(element.text)
                     }
                 }
+
                 is Element.Link -> {
                     inSpans(
                         IconLinkSpan(linkIcon, colorSecondary, gap, colorPrimary, strikeWidth),
@@ -112,6 +120,7 @@ class MarkdownBuilder(context: Context) {
                         append(element.text)
                     }
                 }
+
                 is Element.OrderedListItem -> {
                     inSpans(OrderedListSpan(gap, element.order, colorPrimary)) {
                         for (child in element.elements) {

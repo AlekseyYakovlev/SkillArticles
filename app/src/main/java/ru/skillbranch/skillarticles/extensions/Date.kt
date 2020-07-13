@@ -10,8 +10,18 @@ const val DAY = 24 * HOUR
 
 
 fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy"): String {
-    val dateFormat = SimpleDateFormat(pattern, Locale("ru"))
+    val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
     return dateFormat.format(this)
+}
+
+fun Date.add(value: Int, unit: TimeUnits = TimeUnits.SECOND): Date {
+    time += when (unit) {
+        TimeUnits.SECOND -> value * SECOND
+        TimeUnits.MINUTE -> value * MINUTE
+        TimeUnits.HOUR -> value * HOUR
+        TimeUnits.DAY -> value * DAY
+    }
+    return this
 }
 
 fun Date.shortFormat(): String? {
@@ -25,18 +35,17 @@ fun Date.isSameDay(date: Date): Boolean {
     return day1 == day2
 }
 
-fun Date.add(value: Int, unit: TimeUnits): Date {
-    time += when (unit) {
-        TimeUnits.SECOND -> value * SECOND
-        TimeUnits.MINUTE -> value * MINUTE
-        TimeUnits.HOUR -> value * HOUR
-        TimeUnits.DAY -> value * DAY
+fun Date.humanizeDiff(date: Date = Date()): String {
+    val diff = date.time - this.time
+
+    return when (Locale.getDefault()) {
+        Locale("ru") -> humanizeDiffRu(diff)
+        else -> humanizeDiffEng(diff)
     }
-    return this
 }
 
-fun Date.humanizeDiff(): String {
-    var diff = Date().time - this.time
+private fun humanizeDiffRu(timeDiff: Long): String {
+    var diff = timeDiff
     var isInFuture = false
     val pattern =
         if (diff > 0) "%s назад"
@@ -54,20 +63,48 @@ fun Date.humanizeDiff(): String {
         in (45 * SECOND..75 * SECOND) ->
             pattern.format("минуту")
         in (75 * SECOND..45 * MINUTE) ->
-            pattern.format(TimeUnits.MINUTE.plural((diff / MINUTE).toInt()))
+            pattern.format(TimeUnits.MINUTE.pluralRu((diff / MINUTE).toInt()))
         in (45 * MINUTE..75 * MINUTE) ->
             pattern.format("час")
         in (75 * MINUTE..22 * HOUR) ->
-            pattern.format(TimeUnits.HOUR.plural((diff / HOUR).toInt()))
+            pattern.format(TimeUnits.HOUR.pluralRu((diff / HOUR).toInt()))
         in (22 * HOUR..26 * HOUR) ->
             pattern.format("день")
         in (26 * HOUR..360 * DAY) ->
-            pattern.format(TimeUnits.DAY.plural((diff / DAY).toInt()))
+            pattern.format(TimeUnits.DAY.pluralRu((diff / DAY).toInt()))
         in (360 * DAY..Long.MAX_VALUE) ->
             if (isInFuture) pattern.format("более чем год")
             else pattern.format("более года")
-
         else -> "Ошибка!"
+    }
+}
+
+private fun humanizeDiffEng(timeDiff: Long): String {
+    var diff = timeDiff
+    val seconds = (diff / 1000)
+    val minutes = (seconds / 60)
+    val hours = (minutes / 60)
+    val days = (hours / 24)
+
+    var isInFuture = false
+    val pattern =
+        if (diff > 0) "%s ago"
+        else {
+            isInFuture = true
+            diff = -diff
+            "in %s"
+        }
+
+    return when (diff) {
+        in 0L..1 * SECOND -> "just now"
+        in 1 * SECOND..45 * SECOND -> pattern.format("a few seconds")
+        in 45 * SECOND..75 * SECOND -> pattern.format("a minute")
+        in 75 * SECOND..45 * MINUTE -> pattern.format("$minutes minutes")
+        in 45 * MINUTE..75 * MINUTE -> pattern.format("an hour")
+        in 75 * MINUTE..22 * HOUR -> pattern.format("$hours hour")
+        in 22 * HOUR..26 * HOUR -> pattern.format("one day")
+        in 26 * HOUR..360 * DAY -> pattern.format("$days days")
+        else -> pattern.format("more than a year")
     }
 }
 
@@ -78,7 +115,7 @@ enum class TimeUnits {
     HOUR,
     DAY;
 
-    fun plural(value: Int): String {
+    fun pluralRu(value: Int): String {
 
         val rangeType = when {
             value in (5..20) || value % 10 in (5..10) -> 3

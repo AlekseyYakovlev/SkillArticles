@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.base.BaseActivity">
+    tools:context=".ui.RootActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"

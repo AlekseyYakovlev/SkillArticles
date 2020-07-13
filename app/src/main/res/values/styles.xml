@@ -33,7 +33,7 @@
 
     </style>
 
-    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="colorPrimary">@color/color_article_bar</item>
         <item name="colorOnPrimary">@color/color_on_article_bar</item>
         <item name="colorSurface">@color/color_article_bar</item>
