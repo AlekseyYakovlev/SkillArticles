@@ -96,7 +96,7 @@ data class ArticleFull(
     @ColumnInfo(name = "is_like")
     val isLike: Boolean = false,
     val date: Date,
-    val content: List<MarkdownElement>? = null,
-    val source: String? = null, //TODO Implement me
-    val tags: List<String>
+    val content: List<MarkdownElement>? = null
+//    val source: String? = null, //TODO Implement me
+//    val tags: List<String>
 )

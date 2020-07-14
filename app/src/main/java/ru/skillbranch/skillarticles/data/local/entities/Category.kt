@@ -20,7 +20,7 @@ data class CategoryData(
     val categoryId: String,
     val icon: String,
     val title: String,
-    @ColumnInfo(name = "article_count")
+    @ColumnInfo(name = "articles_count")
     val articleCount: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

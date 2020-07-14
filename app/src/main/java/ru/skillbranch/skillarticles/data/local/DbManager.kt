@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.data.local
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ru.skillbranch.skillarticles.App
 import ru.skillbranch.skillarticles.BuildConfig
 import ru.skillbranch.skillarticles.data.local.dao.*
@@ -26,8 +27,10 @@ object DbManager {
         ArticleContent::class
     ],
     version = AppDb.DATABASE_VERSION,
-    exportSchema = false
+    exportSchema = true,
+    views = [ArticleItem::class, ArticleFull::class]
 )
+@TypeConverters(DateConverter::class)
 abstract class AppDb : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = BuildConfig.APPLICATION_ID + ".db"
