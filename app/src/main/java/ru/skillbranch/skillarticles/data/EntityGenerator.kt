@@ -1,149 +1,73 @@
 package ru.skillbranch.skillarticles.data
 
-import ru.skillbranch.skillarticles.data.models.ArticleData
-import ru.skillbranch.skillarticles.data.models.ArticleItemData
+import ru.skillbranch.skillarticles.data.local.entities.Author
+import ru.skillbranch.skillarticles.data.local.entities.Category
 import ru.skillbranch.skillarticles.data.models.CommentItemData
 import ru.skillbranch.skillarticles.data.models.User
+import ru.skillbranch.skillarticles.data.remote.res.ArticleCountsRes
+import ru.skillbranch.skillarticles.data.remote.res.ArticleDataRes
+import ru.skillbranch.skillarticles.data.remote.res.ArticleRes
 import ru.skillbranch.skillarticles.extensions.TimeUnits
 import ru.skillbranch.skillarticles.extensions.add
 import java.util.*
 import kotlin.random.Random.Default.nextBoolean
 
 object EntityGenerator {
-    fun generateArticle(article: ArticleItemData): ArticleData = ArticleData(
-        id = article.id,
-        title = article.title,
-        category = article.category,
-        categoryIcon = article.categoryIcon,
-        poster = article.poster,
-        author = User(
-            "${article.id.toInt() % 6}",
-            article.author,
-            article.authorAvatar,
-            lastVisit = Date().add(-1 * (1..7).random(), TimeUnits.DAY),
-            respect = (100..300).random(),
-            rating = (100..200).random()
-        ),
-        commentCount = article.commentCount,
-        likeCount = article.likeCount,
-        readDuration = article.readDuration,
-        date = article.date
-    )
-
-    fun generateArticleItems(count: Int): List<ArticleItemData> =
-        Array(count) { articleItems[it % 6] }
+    fun generateArticleRes(count: Int): List<ArticleRes> =
+        Array(count) { articleItems[it % 10] }
             .toList()
             .mapIndexed { index, article ->
-                article.copy(
-                    id = "$index",
-                    commentCount = (10..50).random(),
-                    readDuration = (2..10).random(),
-                    likeCount = (15..100).random(),
-                    date = Date().add(-index, TimeUnits.DAY)
+                ArticleRes(
+                    ArticleDataRes(
+                        id = "$index",
+                        date = Date().add(-index, TimeUnits.DAY),
+                        title = article.title,
+                        poster = article.poster,
+                        category = Category(
+                            categoryId = article.categoryId,
+                            icon = article.categoryIcon,
+                            title = article.categoryTitle
+                        ),
+                        author = Author(
+                            userId = article.authorId,
+                            avatar = article.authorAvatar,
+                            name = article.authorName
+                        ),
+                        tags = article.tags,
+                        description = article.description
+                    ),
+                    ArticleCountsRes(
+                        articleId = "$index",
+                        comments = 40,
+                        likes = (15..100).random(),
+                        readDuration = (3..10).random(),
+                        updatedAt = Date().time
+                    )
                 )
             }
 
-    fun generateComments(articleId: String, count: Int): List<CommentItemData> = Array(count) {
-        CommentItemData(
-            id = "$it",
-            articleId = articleId,
-            user = users[users.indices.random()],
-            body = commentsContent[commentsContent.indices.random()],
-            date = Date().add(-it, TimeUnits.DAY),
-            slug = "$it/"
-        )
-    }
-        .toList()
-        .fold(mutableListOf()) { acc, comment ->
-            val hasAnswer = nextBoolean()
-            if (hasAnswer && acc.isNotEmpty()) {
-                acc.add(
-                    comment.copy(
-                        answerTo = acc.last().user.name,
-                        slug = "${acc.last().slug}${comment.slug}"
-                    )
-                )
-            } else acc.add(comment)
-            acc
-        }
-
-    fun createArticleItem(articleId: String): ArticleItemData {
-        return articleItems[articleId.toInt() % 6].copy(id = articleId,
-            commentCount = (10..50).random(),
-            readDuration = (2..10).random(),
-            likeCount = (15..100).random())
-    }
-
+    fun generateComments(articleId: String, count: Int): List<CommentItemData> =
+        comments.take(count)
+            .map { it.copy(articleId = articleId) }
 }
 
-private val articleItems = Array(6) {
-    when (it) {
-        1 -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            title = "Architecture Components pitfalls",
-            description = "LiveData and the Fragment lifecycle",
-            author = "Christophe Beyls",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/0*zhOjC9mtKiAzmBQo.png",
-            poster = "https://miro.medium.com/max/800/1*Cd_1M-LJ46t6xo79LfMGVw.jpeg"
-        )
 
-        2 -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            title = "Using Safe args plugin — current state of affairs",
-            description = "Article describing usage of Safe args Gradle plugin with the Navigation Architecture Component and current support for argument types",
-            author = "Veronika Petruskova",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*VSq5CqY3y1Bb4CLK83ZIuw.png",
-            poster = "https://miro.medium.com/max/1920/1*u4uWVOpqFCR1gGpJTewhhA.jpeg"
-            )
-
-        3 -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            title = "Observe LiveData from ViewModel in Fragment",
-            description = "Google introduced Android architecture components which are basically a collection of libraries that facilitate robust design, testable",
-            author = "Sagar Begale",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*0yEmon3hJKcxVIXjSJeR3Q.jpeg",
-            poster = "https://miro.medium.com/max/1600/0*BDD1KysQZFMeH3pc.png"
-            )
-
-        4 -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            title = "The New Android In-App Navigation",
-            description = "How to integrate Navigation Architecture Component in your app in different use cases",
-            author = "Veronika Petruskova",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*VSq5CqY3y1Bb4CLK83ZIuw.png",
-            poster = "https://miro.medium.com/max/6000/0*QocVcbGZ4MeJbTCZ"
-        )
-
-        5 -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            title = "Optimizing Android ViewModel with Lifecycle 2.2.0",
-            description = "Initialization, passing arguments, and saved state",
-            author = "Adam Hurwitz",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*0yEmon3hJKcxVIXjSJeR3Q.jpeg",
-            poster = "https://miro.medium.com/max/4011/1*voHEHCw6ZWrWGMmZ_xtpBQ.png"
-        )
-        else -> ArticleItemData(
-            id = "0",
-            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-category.png",
-            category = "Android",
-            author = "Florina Muntenescu",
-            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*z2H2HkOuv5bAOuIvUUN-5w.jpeg",
-            title = "Drawing a rounded corner background on text",
-            description = "Let’s say that we need to draw a **rounded** corner background on text, supporting the following cases",
-            poster = "https://miro.medium.com/max/4209/1*GHjquSrfS6bNSjr_rsDSJw.png"
-            )
-    }
-}.toList()
+data class ArticleData(
+    val id: String = "0",
+    val authorId: String,
+    val authorName: String,
+    val authorAvatar: String?,
+    val title: String,
+    val description: String,
+    val content: String,
+    val poster: String,
+    val categoryId: String,
+    val categoryTitle: String,
+    val categoryIcon: String,
+    val source: String,
+    val shareLink: String,
+    val tags: List<String>
+)
 
 private val users = Array(5) {
     when (it) {
@@ -205,7 +129,31 @@ private val commentsContent = listOf(
     "Thank you for the explanation!\n\nthis seems like something that the compiler should optimize automatically."
 )
 
-val articleContent1: String = """
+private val comments: List<CommentItemData> = Array(40) {
+    CommentItemData(
+        id = "$it",
+        articleId = "0",
+        user = users[users.indices.random()],
+        body = commentsContent[commentsContent.indices.random()],
+        date = Date().add(-it, TimeUnits.DAY),
+        slug = "$it/"
+    )
+}
+    .toList()
+    .fold(mutableListOf()) { acc, comment ->
+        val hasAnswer = nextBoolean()
+        if (hasAnswer && acc.isNotEmpty()) {
+            acc.add(
+                comment.copy(
+                    answerTo = acc.last().user.name,
+                    slug = "${acc.last().slug}${comment.slug}"
+                )
+            )
+        } else acc.add(comment)
+        acc
+    }
+
+val articleContent0: String = """
 Let’s say that we need to draw a **rounded** corner background on text, supporting the following cases:
 
 * Set the background on one line text
@@ -304,7 +252,7 @@ The Android text APIs allow you a great deal of freedom to perform styling. Simp
 What kind of text styling did you have to do that required custom `TextView` implementations? What kind of issues did you encounter? Tell us in the comments!
 """.trimIndent()
 
-val articleContent2: String = """
+val articleContent1: String = """
 The new Android [Architecure Components](https://developer.android.com/topic/libraries/architecture/) are soon to be announced as stable after a few months of public testing.
 
 A lot has already been written about the basics (starting with the very good documentation) so I won’t cover them here. Instead I would like to focus on important pitfalls that are mostly undocumented and rarely discussed and may cause issues in your applications if you miss them. In this first article, I’ll talk about our beloved Fragments.
@@ -587,7 +535,7 @@ Now you are aware of this behavior and have at least a few options to work aroun
 Don’t hesitate to discuss this in the comments section and please share if you like.
 """.trimIndent()
 
-val articleContent3: String = """
+val articleContent2: String = """
 Couple of days ago I started working with the new Navigation Component that was presented at this years Google I/O and is part of Android Jetpack. While reading about it in official documentation, I stumbled upon a section about passing data between destinations using safe args Gradle plugin. As documentation states, safe args plugin
 
 > generates simple object and builder classes for type-safe access to arguments specified for destinations and actions. Safe args is built on top of the Bundle.
@@ -716,7 +664,7 @@ That’s all for now. I hope you find information in this post useful. If you ha
 Also this is my first post so every single clap will be really appreciated. 👏❤️
 """.trimIndent()
 
-val articleContent4: String = """
+val articleContent3: String = """
 Google introduced Android architecture components which are basically a collection of libraries that facilitate robust design, testable, and maintainable apps. It includes convenient and less error-prone handling of LifeCycle and prevents memory leaks.
 
 Although these components are easy to use with exhaustive documentation, using them inappropriately leads to several issues which could be difficult to debug.
@@ -809,7 +757,7 @@ Based on the [documentation](https://developer.android.com/topic/libraries/archi
 If we observe in `onCreate` and Fragment's view is recreated (visible → backstack → comes back), we have to update the values from `ViewModel` manually. This is because `LiveData` will not call the observer since it had already delivered the last result to that observer.
 """.trimIndent()
 
-val articleContent5: String = """
+val articleContent4: String = """
 During the past few weeks I had time to dive into the Navigation Architecture Component that Google presented at this years Google I/O. It is a part of Android [Jetpack](https://developer.android.com/jetpack/) and its main goal is to ease in-app navigation on Android.
 
 I’m going to show you how navigation component can simplify your everyday Android stuff like navigating when clicking on adapter item or through navigation drawer.
@@ -1004,7 +952,7 @@ There are still some topics that I haven’t covered in this article. **Deep lin
 If you have any suggestions or questions, feel free to leave a comment below. Don’t forget to leave 👏 if you liked the post. It will be appreciated. ❤️
 """.trimIndent()
 
-val articleContent6: String = """
+val articleContent5: String = """
 The Lifecycle 2.2.0 update including simplified initialization with `by viewModels()` and `by activityViewModels()` syntax for the ViewModel (VM) component is great for quickly creating VMs. What about re-using the VM instance throughout the Fragment, passing arguments/parameters into the VM while also enabling saved state? With a bit of customization, the above can be achieved as I recently shipped in the latest version of the [Coinverse app](https://play.google.com/store/apps/details?id=app.coinverse).
 ### Setup
 To take advantage of the latest VM component, declare the most recent [Lifecycle dependencies](https://developer.android.com/jetpack/androidx/releases/lifecycle#declaring_dependencies) in the *build.gradle (Module: app)* file for `lifecycle-viewmodel-ktx` and `lifecycle-livedata-ktx`. The `jvmTarget` also needs to be defined in order to implement the `by viewModels` syntax we’ll use below.
@@ -1137,11 +1085,483 @@ class Fragment: Fragment() {
 }```
 """.trimIndent()
 
-val articlesContent = listOf(
-    articleContent1,
-    articleContent2,
-    articleContent3,
-    articleContent4,
-    articleContent5,
-    articleContent6
-)
+val articleContent6: String = """
+Are your queries taking too long to run? In this episode of the series, I will explain how indexes work in SQLite, and how to design indexes that can take your most important queries to the next level of performance.
+### Primary Keys, Query Planning, and Binary Search
+When you define a table in SQLite, you have the option of denoting an `INTEGER` column as the `AUTO_INCREMENT PRIMARY KEY`, or in lieu of that: using the default `rowid` primary key column that is supplied for you. When you add new records to that table, they are assigned an automatically incremented, unique value for the primary key column and are stored in increasing order of that primary key in the database file.
+The benefit of storing the records in an order sorted by the primary key is that when you want to locate one of the records with its id, SQLite can perform a binary search in O(log n) time, as opposed to a full O(n) scan of the table.
+![](https://miro.medium.com/max/560/1*ht6vRHZnDqlOFOWmenEhbA.png "Comparison of Binary Search: O(log n) to Full Scan: O(n)")
+Imagine we’ve got a table that contains information about tags, defined with the following `CREATE TABLE` statement:
+```CREATE TABLE tags (
+    title TEXT,
+    description TEXT,
+    created TEXT
+);```
+![](https://miro.medium.com/max/700/1*5wzoyIgWMmqCn054K1z1TA.png "Table doesn’t explicitly specify a PRIMARY KEY")
+This table doesn’t explicitly specify a `PRIMARY KEY` column, so `rowid` is used instead.
+When we run `SELECT title FROM tags WHERE rowid = 6` SQLite does a binary search, first looking at the middle record with `rowid = 9/2 = 4`, realizes that’s too low, and tries `rowid = (9-4)/2 + 4 = 2 + 4 =6` and bingo! That took 2 steps, and is a lot faster than iterating through each record until it finds the 6th record (which clearly would’ve taken 6 steps).
+But wait, why couldn’t SQLite just immediately jump to the 6th record? Well, even though the `rowid` is auto-incrementing and unique, we could’ve deleted rows in the table and thereby created gaps where the 6th record might not be the record with `rowid = 6`.
+The algorithms SQLite uses to determine how to execute a query are grouped up into a module called the “Query Planner”, and performing that determination is called “query planning”.
+### Indexes
+So far, we’ve only been talking about primary keys. What if we don’t necessarily know the `rowid` for the tag we need, but instead wanted to search for the “Kotlin” tag:
+```SELECT * FROM tags WHERE title = "Kotlin";```
+As of the current state of our schema, SQLite will need to iterate one-by-one through the whole table until it finds the record where `title = "Kotlin"` holds true: an O(n) operation.
+If you prefix the query from above with `EXPLAIN QUERY PLAN` you can verify that SQLite will need to perform a full scan of the table just to find the “Kotlin” tag:
+```EXPLAIN QUERY PLAN SELECT * FROM tags WHERE title = "Kotlin";```
+![](https://miro.medium.com/max/700/1*mdyo0U_TqUuwTj9hdDlofg.png "EXPLAIN QUERY PLAN result")
+An “index” on a table, in SQL parlance, is an ordered data structure which can be used to find a record or its primary key in O(log n) time. When you create an index for a column or a set of columns, SQLite maintains an ordered list of the data within the index’s columns as well as their records’ primary key values.
+Let’s add an index of the title column to the tags table:
+```CREATE INDEX tag_titles ON tags (title);```
+![](https://miro.medium.com/max/700/1*ba3EXoQnmOviaLe_8LTHpg.png "Representation of the tag_titles index")
+Now, when we run `SELECT * FROM tags WHERE title = "Kotlin"`, SQLite can use the `tag_titles` index to perform a binary search on the `title` values to determine that the record we’re looking for has `rowid = 5` and can then use that value in a second binary search against the actual `tags` table to return the full record.
+![](https://miro.medium.com/max/1000/1*AIotEUXh87wi61HWL1f0sQ.png "One binary search to find the rowid for “Kotlin”, another to find the data.")
+In short: using the ```tag_titles``` index brings the query’s performance from O(n) to O(log n + log n) = O(log n) which is similar to if we were to query on the primary key.
+You can prefix the query with `EXPLAIN QUERY PLAN` to verify that the index is used.
+```EXPLAIN QUERY PLAN SELECT * FROM tags WHERE title = "Kotlin";```
+![](https://miro.medium.com/max/700/1*eoZd_J6bXOy5Jhn35bvqsQ.png "EXPLAIN QUERY PLAN result")
+### “Covering Indexes”
+In situations where you tend to do a lot of querying for subsets of your table’s data, you can utilize what are called “Covering Indexes” to eliminate that second binary search from the query planning operation.
+Say our application needs to be able to display the description as well as the `title` of a particular tag when you search for it.
+```SELECT title, description FROM tags WHERE title = "Kotlin";```
+We saw that with the index described in the last section: one binary search is done to find the `rowid` of the record where the title is “Kotlin”, and a second is done to find the remainder of the data that was required. Let’s create a new index which includes the `description` as well as the `title`:
+```CREATE INDEX tag_title_desc ON tags (title, description);```
+![](https://miro.medium.com/max/700/1*az-qVD6R1FHiQ7mKjHyLFA.png "Table with index")
+Now when you run the query, SQLite’s query planner is smart enough to recognize that we only need data which is contained within the index and can return that data immediately after the index search without resorting to looking at the actual records in the `tags` table.
+```EXPLAIN QUERY PLAN 
+SELECT title, description FROM tags WHERE title = "Kotlin";```
+![](https://miro.medium.com/max/700/1*XY4g5qb2cauqf4LmTNcZXQ.png "EXPLAIN QUERY PLAN result")
+The `tag_title_desc` is considered a “covering index” because it covers all the fields needed to satisfy the query.
+> *One O(log n) operation is better than two, especially when the data set is huge.
+> - some smart person*
+Side Note: Although the `tag_title_desc` defines `description` as a field on the index, it won’t help you if you’re trying to query the `tags` table by description. This is because the index is sorted by `title` first, and `description` second, and there’s no good way to binary-search the descriptions using an index like that. If we need that functionality, we should consider adding a new index on the `description` field.
+### Using Indexes with ORDER BY
+When you use `ORDER BY` without an index on the column to be sorted, SQLite needs to build up a temporary data structure that contains the sorted results each time the query is executed. That data structure will use up space in memory (or on disk, depending on the circumstances) and will be torn down after the query is executed. This can be a lot of extra work that might noticeably degrade performance.
+However, in addition to helping with quickly finding records: indexes are used by the SQLite query planner to speed up sorting when the `ORDER BY` clause references indexed columns. For example:
+```SELECT * FROM tags ORDER BY title ASC;```
+Here, SQLite doesn’t need to build up the temporary data structure and can simply iterate through the `tag_titles` index. When fetching the data for the result set it will perform binary searches to retrieve each `tags` record.
+Both sorting with a non-covering index and without are O(n log n) operations, but eliminating the need to generate the temporary data structure cuts out a lot of work.
+When a covering index can be used, the sort is even faster because SQLite can omit those binary searches all-together and the query becomes O(n) because it only needs to iterate through the index and return the covered columns from the index.
+### When should I consider creating a new index?
+Because indexes are sorted data structures and their benefit comes from how binary search works, it’s important to ensure that your indexed columns have what is called “high cardinality”. All this means is that the indexed data has a lot of uniqueness.
+Why is this important? Well, without a lot of uniqueness to your data, the binary search can end up becoming an O(n) linear scan anyway.
+#### The Costs
+Additionally, it’s important to remember two important costs to creating and maintaining indexes on your tables:
+* __Size.__ Indexes need to be stored in the database file, and their structure is similar to tables. You should remember that adding an index on a column or a set of columns effectively doubles the storage used to keep the data those columns represent.
+* ___Insert/Update/Delete Performance.__ When you insert, update, or delete records in your indexed tables, it’s important that the indexes are kept up to date as well as in the correct order. Each of these operations will take slightly longer when there are indexes on the table than when there are no indexes. If you’re going to be doing a lot of updates, consider dropping your indexes before the operation and re-creating them afterwards.
+### Conclusion
+Indexes are a powerful tool at your disposal to boost performance of your application’s data retrieval. They help with querying and sorting the data, and when covering indexes are used correctly can make lookups incredibly fast. Covering indexes take the whole idea to the next level.
+Indexes also come with some overhead: they will use additional space, and can increase the time it takes to insert or update records because SQLite needs to keep the indexes up to date. It’s important to weigh the pros and cons before you add an index to your table.
+This post touches on the basics of indexes in SQLite, but you can read a whole lot more about how SQLite’s query planner works and its use of indexes in the [official documentation](https://sqlite.org/queryplanner.html). Additionally, for the sake of making this post more approachable, I purposefully glossed over how the indexes are built and maintained. You can read more about how SQLite (and other databases) maintain indexes by learning about [B-trees](https://en.wikipedia.org/wiki/B-tree).
+Finally, a lot of what we discussed in this post can be applied to how indexes work in other database systems.
+If you enjoyed this post, please tap that heart button to recommend it to your followers. Also, you should check out the other posts in my series: “Squeezing Performance from SQLite”:
+""".trimIndent()
+
+val articleContent7: String = """
+You don’t need to tell me how many times you have written something like this:
+```let values = [0.5, 0.23, 1]
+
+values.forEach { (value) in
+    let amount = "${'$'}\(value)"
+    print(amount)
+}```
+Using string interpolation is fine, but how do we make the previous operation more succinct?
+Welcome the `NumberFormatter` class
+
+### Using NumberFormatter
+Let’s instantiate a `NumberFormatter` and set its `numberStyle` property:
+```let numberFormatter = NumberFormatter()
+numberFormatter.numberStyle = .currency```
+As we can see, we specified that we want a currency representation of our values.
+Let’s quickly test some values:
+```let numbers = [0.5, 0.23, 1]
+
+```numbers.forEach { (number) in
+    let number = NSNumber(value: number)
+    if let numberString = numberFormatter.string(from: number) {
+        print(numberString)
+    }
+}```
+We see the following printed in the console:
+![](https://miro.medium.com/max/1400/1*2Zm4otOSkWjJOm62-l5W_w.png "Console result")
+We can easily change the currency symbol to euro:
+```let numberFormatter = NumberFormatter()
+
+numberFormatter.numberStyle = .currency
+numberFormatter.currencySymbol = "€"
+       
+let numbers = [0.5, 0.23, 1]
+
+numbers.forEach { (number) in
+   let number = NSNumber(value: number)
+   if let numberString = numberFormatter.string(from: number) {
+       print(numberString)
+   }
+}```
+As a result we have euro values printed out:
+![](https://miro.medium.com/max/1400/1*Lk0n5bi4odpMBObsu8J-pQ.png "Console result")
+***
+What is great about the `NumberFormatter` class is that it provides many options for setting our target representation type:
+![](https://miro.medium.com/max/1400/1*7WYi7pa3U7QeG2Yk6hvQYw.png "Complete example")
+Let’s change the `numberStyle` to `.spellOut`:
+```let numberFormatter = NumberFormatter()
+
+numberFormatter.numberStyle = .spellOut
+    
+let numbers = [0.5, 0.23, 1]
+
+numbers.forEach { (number) in
+    let number = NSNumber(value: number)
+    if let numberString = numberFormatter.string(from: number) {
+        print(numberString)
+    }
+}```
+So we have our numbers spelled out in the console:
+![](https://miro.medium.com/max/1400/1*CTLO1B5s3qF7eclLB0RBIA.png "Console result")
+***
+### Wrapping Up
+To learn more about NumberFormatter, visit the [official Apple documentation](https://developer.apple.com/documentation/foundation/numberformatter)
+""".trimIndent()
+
+val articleContent8: String = """
+As per the Apple Documentation: “An enumeration defines a common type for a group of related values and enables you to work with those values in a **type-safe way within your code”.**
+We can define a **common set of related cases as part of one enumeration,** each of which has a different set of values of appropriate types associated with it.
+In other words, Enumerations are **lists of things.** Enumerations in Swift are first-class types in their own right. Swift enum also allows us to define our own data types as well as handle various types of values
+#### Enumeration Functionality
+* It is declared in a class and its values are accessed through the instance of that class.
+* Initial member value is defined using enum initializers.
+* Its functionality is also extended by ensuring standard protocol functionality.
+#### Enum Syntax
+You introduce enumerations with the `enum` keyword and place their entire definition within a pair of braces:
+![](https://miro.medium.com/max/1400/1*pITscHZFp0vrncuvSyeUWg.png "Enum Syntax")
+#### Defining an enum type:
+We can add different values inside the enum as shown below
+
+The values defined in an enumeration (such as `monday`, `tuesday`, `wednesday`, and `thursday`) are its enumeration cases. We can use the `case` keyword to introduce new enumeration cases.
+Instead of defining every enumeration case separately, we can do it in a simple way.
+
+An enum value is specified to a variable in the following way
+#### Enums in a Switch Statement
+Switch’s statement also **follows the multi-way selection.** Only one variable is accessed at a particular time based on the specified condition. The default case in a switch statement is used to **trap unspecified cases.**
+
+> default case in switch is not required since we’ve covered all the enum cases in the above code.
+
+In most cases, enum will not have all the values in the Switch statement, so it is necessary to give the default case in the switch statement. Let us see the example…
+#### Iterating over Enumeration Cases
+In the example above, we can write `Bikes.allCases` to access a collection that contains all of the cases of the `Bikes` enumeration. We can use `allCases` like any other collection—the collection’s elements are instances of the enumeration type, so in this case, they’re `Bikes` values.
+
+> The syntax used in the example above marks the enumeration as conforming to the CaseIterable protocol.
+
+The example above counts how many cases there are, and the **example below uses a for loop to iterate over all the cases.**
+#### Enums in Method
+We can define a function inside enum in swift programming. Following is a function defined that sets the default Enum value as one of the cases:
+#### Enums are value type and not a reference type
+Enums values are passed by values. The following code demonstrates an example:
+#### Enum with Associated Values
+Associated Values allow each case to have one or more types (e.g. Int, String, Double) that the enumeration cases can use.
+#### Enum with Raw Values
+Raw values can be **strings, characters, or any of the integer or floating-point number types.** Each **raw value must be unique** within its enumeration declaration.
+When integers are used for raw values, they auto-increment if no value is specified for some of the enumeration members
+#### Recursive Enums
+Let’s create an enum called, `ArithmeticExpression`. It contains three cases with associated types. Two of the cases contain its own enum type, `ArithmeticExpression`. The `indirect` keyword tells the compiler to handle this enum case indirectly.
+
+> Enums and cases can be marked indirect, which causes the associated value for the enum to be stored indirectly, allowing for recursive data structures to be defined.
+
+#### Properties in Enums
+We can’t add actually **stored properties to an enum, but we can create computed properties.** The value of computed properties can be based on the enum value or enum associated value.
+Let’s create an enum called `Device`. It contains a computed property called `year`, which returns the first appearance of that device.
+""".trimIndent()
+
+val articleContent9: String = """
+Today some of the most popular solutions to build mobile apps are native or cross-platform approaches using React Native or Flutter. While native development is positioned as AAA technical solution, it has some disadvantages that create market space for cross-platform apps to come in. In general, native development requires more effort from the development team to accomplish the project but it gives full control over tricky technical stuff under the hood. On the other hand, if you choose cross-platform, it can significantly speed up the development process due to a common code base, make project support easier and reduce expenses for development.
+One more advantage of native over cross-platform development is performance. In the technical world, you can encounter “cross-platform apps are slow” stereotypes. We decided to test if it’s true and to what extend cross-platform apps are slower than native.
+***
+### There are different types of performance, some of them are:
+* Interacting with phone API (accessing photos, file system, getting GPS location and so on).
+* Rendering speed (animation smoothness, frames per second while UI is changed or some UI effects that take place in time).
+* Business logic (the speed of mathematical calculations and memory manipulations. This type of performance is most important for the apps with complex business logic).
+In this article, we share the results of performance tests showing mathematical calculations of number Pi implemented in native and cross-platform approaches.
+***
+### CPU-intensive test (Gauss–Legendre algorithm) for iOS
+![Memory-intensive test (Gauss–Legendre algorithm) for iOS](https://miro.medium.com/max/1400/1*Ey1f_IcZiwM75XGKY83nVw.jpeg "Memory-intensive test (Gauss–Legendre algorithm) for iOS")
+#### iOS
+* Objective-C is the best programming language for iOS development. Swift is 1.7 times slower compared to Objective C.
+* Surprise: Flutter is a bit faster than Swift (on 15%).
+* React Native is 20 times slower than Objective C.
+### CPU-intensive test (Borwein algorithm) for iOS
+![CPU-intensive test (Borwein algorithm) for iOS](https://miro.medium.com/max/1400/1*wHGAVXahLFWFPRrzmYN6fw.jpeg "CPU-intensive test (Borwein algorithm) for iOS")
+#### iOS
+* Objective C is the best option for iOS app development. Swift is 1.9 times slower compared to Objective-C.
+* Flutter is 5 times slower than Swift.
+* React Native version is more than 15 times slower than the Swift version.
+### CPU-intensive test (Gauss–Legendre algorithm) for Android
+![Memory-intensive test (Gauss–Legendre algorithm) for Android](https://miro.medium.com/max/1400/1*C5bM9KdtdjHpftFxgBn-UA.jpeg "Memory-intensive test (Gauss–Legendre algorithm) for Android")
+#### Android
+* Java and Kotlin have similar performance indications and are the best options for Android development.
+* Flutter is approximately 20% slower than native.
+* React Native is around 15 times slower than native.
+### CPU-intensive test (Borwein algorithm) for Android
+![CPU-intensive test (Borwein algorithm) for Android](https://miro.medium.com/max/1400/1*zf1pnAPXytzFvlqj_aDThA.jpeg "CPU-intensive test (Borwein algorithm) for Android")
+#### Android
+* Java and Kotlin have similar performance indications and are the best options for Android development.
+* Native is 2 times faster then Flutter.
+* React native is around 6 times slower than native.
+***
+### Technical details:
+* All tests have been done on real physical devices (iPhone 6s IOS 13.2.3 and Xiaomi Redmi Note 5 running under Android 9.0);
+* We measured performance on release builds. In some cases, debug builds can be significantly slower than the release builds.
+* All tests were run several times and the average result was calculated.
+* Gauss–Legendre & Borwein algorithms of calculating Pi numbers were used. The Pi number has been calculated 100 times with 10 million digits precision.
+* Gauss–Legendre is a more memory-intensive algorithm in comparison with Borwein, but Borwein is more CPU-intensive.
+* [Source code](https://github.com/nazarcybulskij/Mobile_Bechmarks_)
+***
+### Key takeaways
+* In summary, not all cross-platform apps are slow. What’s more than that, Flutter apps have higher performance than Swift apps.
+* Objective C and Flutter will be a wise choice if you want to develop a super-fast iOS app.
+* For the apps with high load calculations Flutter is a good option for both, Android and iOS app development.
+Please let inVerita know if you struggle with picking a mobile tool for development, always happy to help.
+""".trimIndent()
+
+
+val articleItems = Array(10) {
+    when (it) {
+        0 -> ArticleData(
+            id = "$it",
+            authorId = "0",
+            authorName = "Florina Muntenescu",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*z2H2HkOuv5bAOuIvUUN-5w.jpeg",
+            title = "Drawing a rounded corner background on text",
+            description = "Let’s say that we need to draw a rounded corner background on text, supporting the following cases",
+            poster = "https://miro.medium.com/max/4209/1*GHjquSrfS6bNSjr_rsDSJw.png",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            source = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            tags = listOf(
+                "#Android",
+                "#Android App Development",
+                "#Kotlin"
+            ),
+            content = articleContent0
+        )
+        1 -> ArticleData(
+            id = "$it",
+            authorId = "1",
+            authorName = "Christophe Beyls",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/0*zhOjC9mtKiAzmBQo.png",
+            title = "Architecture Components pitfalls",
+            description = "LiveData and the Fragment lifecycle",
+            poster = "https://miro.medium.com/max/800/1*Cd_1M-LJ46t6xo79LfMGVw.jpeg",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://medium.com/@BladeCoder/architecture-components-pitfalls-part-1-9300dd969808",
+            source = "https://medium.com/@BladeCoder/architecture-components-pitfalls-part-1-9300dd969808",
+            tags = listOf(
+                "#Android",
+                "#Architecture Components",
+                "#Android Data Binding",
+                "#Kotlin",
+                "#Android App Development"
+            ),
+            content = articleContent1
+        )
+
+        2 -> ArticleData(
+            id = "$it",
+            authorId = "2",
+            authorName = "Veronika Petruskova",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*VSq5CqY3y1Bb4CLK83ZIuw.png",
+            title = "Using Safe args plugin — current state of affairs",
+            description = "Article describing usage of Safe args Gradle plugin with the Navigation Architecture Component and current support for argument types",
+            poster = "https://miro.medium.com/max/1920/1*u4uWVOpqFCR1gGpJTewhhA.jpeg",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://medium.com/@vepetruskova/using-safe-args-plugin-current-state-of-affairs-41b1f01e7de8",
+            source = "https://medium.com/@vepetruskova/using-safe-args-plugin-current-state-of-affairs-41b1f01e7de8",
+            tags = listOf(
+                "#Android",
+                "#Architecture Components",
+                "#Android App Development",
+                "#Gradle"
+            ),
+            content = articleContent2
+        )
+
+        3 -> ArticleData(
+            id = "$it",
+            authorId = "3",
+            authorName = "Sagar Begale",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*0yEmon3hJKcxVIXjSJeR3Q.jpeg",
+            title = "Observe LiveData from ViewModel in Fragment",
+            description = "Google introduced Android architecture components which are basically a collection of libraries that facilitate robust design, testable",
+            poster = "https://miro.medium.com/max/1600/0*BDD1KysQZFMeH3pc.png",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb",
+            source = "https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb",
+            tags = listOf(
+                "#Android",
+                "#Android App Development",
+                "#Fragments",
+                "#Livedata",
+                "#Viewmodel"
+            ),
+            content = articleContent3
+        )
+
+        4 -> ArticleData(
+            id = "$it",
+            authorId = "2",
+            authorName = "Veronika Petruskova",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*VSq5CqY3y1Bb4CLK83ZIuw.png",
+            title = "The New Android In-App Navigation",
+            description = "How to integrate Navigation Architecture Component in your app in different use cases",
+            poster = "https://miro.medium.com/max/6000/0*QocVcbGZ4MeJbTCZ",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://medium.com/@vepetruskova/the-new-android-in-app-navigation-f7bfbe925b9",
+            source = "https://blog.usejournal.com/observe-livedata-from-viewmodel-in-fragment-fd7d14f9f5fb",
+            tags = listOf(
+                "#Android",
+                "#Android App Development",
+                "#Navigation Drawer",
+                "#Architecture Components"
+            ),
+            content = articleContent4
+        )
+
+        5 -> ArticleData(
+            id = "$it",
+            authorId = "4",
+            authorName = "Adam Hurwitz",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*0yEmon3hJKcxVIXjSJeR3Q.jpeg",
+            title = "Optimizing Android ViewModel with Lifecycle 2.2.0",
+            description = "Initialization, passing arguments, and saved state",
+            poster = "https://miro.medium.com/max/4011/1*voHEHCw6ZWrWGMmZ_xtpBQ.png",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            source = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            tags = listOf(
+                "#Android",
+                "#Android App Development",
+                "#Kotlin",
+                "#Programming"
+            ),
+            content = articleContent5
+        )
+        6 -> ArticleData(
+            id = "$it",
+            authorId = "5",
+            authorName = "Jason Feinstein",
+            authorAvatar = "https://miro.medium.com/fit/c/48/48/1*WJz_cRRC5ck0JkG9VvlqAQ.jpeg",
+            title = "Squeezing Performance from SQLite: Indexes? Indexes!",
+            description = "Are your queries taking too long to run? In this episode of the series, I will explain how indexes work in SQLite, and how to design indexes that can take your most important queries to the next level of performance.",
+            poster = "https://miro.medium.com/max/2160/1*FE-9ZWR12tdAs2M2TVLsdQ.jpeg",
+            categoryId = "1",
+            categoryTitle = "Databases",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/db-icon.png",
+            shareLink = "https://medium.com/@JasonWyatt/squeezing-performance-from-sqlite-indexes-indexes-c4e175f3c346",
+            source = "https://medium.com/@JasonWyatt/squeezing-performance-from-sqlite-indexes-indexes-c4e175f3c346",
+            tags = listOf(
+                "#Database",
+                "#Sqlite",
+                "#iOS App Development",
+                "#Sql",
+                "#Android App Development"
+            ),
+            content = articleContent6
+        )
+        7 -> ArticleData(
+            id = "$it",
+            authorId = "6",
+            authorName = "Zafar Ivaev",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*DBp49NznjtATlDUu88TANQ.png",
+            title = "How to Use NumberFormatter in Swift?",
+            description = "Represent numerical values the way you want",
+            poster = "https://miro.medium.com/max/1400/0*w3vX-8aor1AQmd7n",
+            categoryId = "2",
+            categoryTitle = "iOS",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/ios-icon.png",
+            shareLink = "https://medium.com/cleansoftware/how-to-use-numberformatter-in-swift-2a448d520266",
+            source = "https://medium.com/cleansoftware/how-to-use-numberformatter-in-swift-2a448d520266",
+            tags = listOf(
+                "#Swift",
+                "#iOS",
+                "#Mobile",
+                "#Programming"
+            ),
+            content = articleContent7
+        )
+        8 -> ArticleData(
+            id = "$it",
+            authorId = "7",
+            authorName = "Sunitha Balasubramanian",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*FWVYiIti311X3IES3TTzgA.jpeg",
+            title = "Enums in Swift",
+            description = "Create your Own Types",
+            poster = "https://miro.medium.com/max/1400/0*gnqSTcmtBDaaUVnk",
+            categoryId = "2",
+            categoryTitle = "iOS",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/ios-icon.png",
+            shareLink = "https://medium.com/swlh/enums-in-swift-fc43ac2ef9f",
+            source = "https://medium.com/swlh/enums-in-swift-fc43ac2ef9f",
+            tags = listOf(
+                "#iOS",
+                "#Swift",
+                "#Enumeration",
+                "#App Development",
+                "#Swift Programming"
+            ),
+            content = articleContent8
+        )
+        9 -> ArticleData(
+            id = "$it",
+            authorId = "8",
+            authorName = "inVerta",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/2*_ufZYLoBvvfqNk_m9CuLnw.png",
+            title = "Flutter vs Native vs React-Native: Examining performance",
+            description = "Today some of the most popular solutions to build mobile apps are native or cross-platform approaches using React Native or Flutter",
+            poster = "https://miro.medium.com/max/1400/1*_5uHflEhilD6S0cvr6wzPw.jpeg",
+            categoryId = "3",
+            categoryTitle = "Flutter",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/flutter-icon.png",
+            shareLink = "https://medium.com/swlh/flutter-vs-native-vs-react-native-examining-performance-31338f081980",
+            source = "https://medium.com/swlh/flutter-vs-native-vs-react-native-examining-performance-31338f081980",
+            tags = listOf(
+                "#Programming",
+                "#Development",
+                "#iOS",
+                "#Android",
+                "#Flutter",
+                "Native App"
+            ),
+            content = articleContent9
+        )
+        else -> ArticleData(
+            id = "$it",
+            authorId = "0",
+            authorName = "Florina Muntenescu",
+            authorAvatar = "https://miro.medium.com/fit/c/96/96/1*z2H2HkOuv5bAOuIvUUN-5w.jpeg",
+            title = "Drawing a rounded corner background on text",
+            description = "Let’s say that we need to draw a rounded corner background on text, supporting the following cases",
+            poster = "https://miro.medium.com/max/4209/1*GHjquSrfS6bNSjr_rsDSJw.png",
+            categoryId = "0",
+            categoryTitle = "Android",
+            categoryIcon = "https://skill-branch.ru/img/mail/bot/android-icon.png",
+            shareLink = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            source = "https://proandroiddev.com/optimizing-viewmodel-with-lifecycle-2-2-0-a2895b5c01fd",
+            tags = listOf(
+                "#Android",
+                "#Android App Development",
+                "#Kotlin"
+            ),
+            content = articleContent0
+        )
+    }
+}.toList()

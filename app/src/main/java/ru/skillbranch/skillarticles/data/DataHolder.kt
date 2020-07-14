@@ -1,79 +1,39 @@
 package ru.skillbranch.skillarticles.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import ru.skillbranch.skillarticles.data.EntityGenerator.generateArticleItems
+import ru.skillbranch.skillarticles.data.EntityGenerator.generateArticleRes
 import ru.skillbranch.skillarticles.data.EntityGenerator.generateComments
-import ru.skillbranch.skillarticles.data.models.*
+import ru.skillbranch.skillarticles.data.models.CommentItemData
+import ru.skillbranch.skillarticles.data.models.User
+import ru.skillbranch.skillarticles.data.remote.res.ArticleContentRes
+import ru.skillbranch.skillarticles.data.remote.res.ArticleRes
+import ru.skillbranch.skillarticles.extensions.data.toArticleContentRes
+import java.lang.Thread.sleep
 import java.util.*
-
-object LocalDataHolder {
-    private val articleInfo = MutableLiveData<ArticlePersonalInfo?>(null)
-    private val settings = MutableLiveData(AppSettings())
-    private val isAuth = MutableLiveData(false)
-    val localArticleItems: MutableList<ArticleItemData> = mutableListOf()
-    val localArticles: MutableMap<String, MutableLiveData<ArticleData>> = mutableMapOf()
-
-    fun findArticle(articleId: String): LiveData<ArticleData?> {
-        if (localArticles[articleId] == null) {
-            val article = localArticleItems.find { it.id == articleId }
-            localArticles[articleId] = MutableLiveData(EntityGenerator.generateArticle(article ?: EntityGenerator.createArticleItem(articleId)))
-        }
-        return localArticles[articleId]!!
-    }
-
-    fun findArticlePersonalInfo(articleId: String): LiveData<ArticlePersonalInfo?> {
-        GlobalScope.launch {
-            delay(500)
-            articleInfo.postValue(ArticlePersonalInfo(isBookmark = true))
-        }
-        return articleInfo
-    }
-
-    fun getAppSettings() = settings
-    fun updateAppSettings(appSettings: AppSettings) {
-        settings.value = appSettings
-    }
-
-    fun updateArticlePersonalInfo(info: ArticlePersonalInfo) {
-        articleInfo.value = info
-    }
-
-    fun isAuth(): MutableLiveData<Boolean> = isAuth
-
-    fun setAuth(auth: Boolean) {
-        isAuth.value = auth
-    }
-
-    fun incrementCommentsCount(articleId: String) {
-        val old =
-            localArticles[articleId]?.value ?: error("Local article with id: $articleId not found")
-        localArticles[articleId]!!.postValue(old.copy(commentCount = old.commentCount.inc()))
-    }
-}
+import kotlin.math.abs
 
 object NetworkDataHolder {
 
-    val networkArticleItems: List<ArticleItemData> = generateArticleItems(200)
+    private val networkArticleItems: List<ArticleRes> = generateArticleRes(200)
 
     val commentsData: Map<String, MutableList<CommentItemData>> by lazy {
         networkArticleItems.associate { article ->
-            article.id to generateComments(article.id, article.commentCount) as MutableList
+            article.data.id to generateComments(
+                article.data.id,
+                article.counts.comments
+            ) as MutableList
         }
     }
 
-    fun loadArticleContent(articleId: String): LiveData<String?> {
-        val content = MutableLiveData<String?>(null)
-        GlobalScope.launch {
-            delay(1500)
-            val s = articlesContent[articleId.toInt() % 6]
-            content.postValue(s)
-        }
-        return content
+    fun findArticlesItem(start: Int = 0, size: Int): List<ArticleRes> {
+        return networkArticleItems.drop(start)
+            .take(size)
+            .apply {
+                sleep(100)
+            }
     }
+
+    fun loadArticleContent(articleId: String): ArticleContentRes =
+        articleItems[articleId.toInt() % 10].copy(id = articleId ).toArticleContentRes()
 
     fun sendMessage(articleId: String, text: String, answerToSlug: String?, user: User) {
         val mutableList =
@@ -95,4 +55,30 @@ object NetworkDataHolder {
             )
         )
     }
+
+    fun loadComments(slug: String?, size: Int, articleId: String): List<CommentItemData> {
+        val commentsData = commentsData
+            .getOrElse(articleId) { mutableListOf() }
+
+        val list = when {
+            slug == null -> commentsData.take(size)
+
+            size > 0 -> commentsData.dropWhile { it.slug != slug }
+                .drop(1)
+                .take(size)
+
+            size < 0 -> commentsData
+                .dropLastWhile { it.slug != slug }
+                .dropLast(1)
+                .takeLast(abs(size))
+
+            else -> emptyList()
+        }
+        return list
+    }
 }
+
+
+
+
+
