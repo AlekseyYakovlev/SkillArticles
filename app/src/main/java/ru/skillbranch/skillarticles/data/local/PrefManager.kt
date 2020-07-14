@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.data.local
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +8,11 @@ import ru.skillbranch.skillarticles.App
 import ru.skillbranch.skillarticles.data.models.AppSettings
 
 
-class PrefManager(context: Context) {
+object PrefManager {
+    private const val IS_AUTH = "is_auth"
+    private const val IS_DARK_MODE = "is_dark_mode"
+    private const val IS_BIG_TEXT = "is_big_text"
+
     internal val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(App.instance.applicationContext)
     }
@@ -32,18 +35,20 @@ class PrefManager(context: Context) {
         preferences.edit().clear().apply()
     }
 
-    fun getAppSettings(): LiveData<AppSettings> =_appSettings
+    fun getAppSettings(): LiveData<AppSettings> = _appSettings
+
+    fun setAppSettings(appSettings: AppSettings): Unit {
+        _appSettings.postValue(appSettings)
+        preferences.edit()
+            .putBoolean(IS_DARK_MODE, appSettings.isDarkMode)
+            .putBoolean(IS_BIG_TEXT, appSettings.isBigText)
+            .apply()
+    }
 
     fun isAuth(): LiveData<Boolean> = _isAuth
 
     fun setAuth(isAuth: Boolean): Unit {
         _isAuth.postValue(isAuth)
         preferences.edit().putBoolean(IS_AUTH, isAuth).apply()
-    }
-
-    companion object {
-        const val IS_AUTH = "is_auth"
-        const val IS_DARK_MODE = "is_dark_mode"
-        const val IS_BIG_TEXT = "is_big_text"
     }
 }
