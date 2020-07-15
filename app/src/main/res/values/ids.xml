@@ -14,4 +14,5 @@
     <item type="id" name="tv_comments_count"/>
     <item type="id" name="tv_read_duration"/>
     <item type="id" name="tv_comment_body"/>
+    <item type="id" name="action_filter" />
 </resources>
