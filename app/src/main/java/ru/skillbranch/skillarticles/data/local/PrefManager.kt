@@ -14,7 +14,7 @@ object PrefManager {
     private const val IS_BIG_TEXT = "is_big_text"
 
     internal val preferences: SharedPreferences by lazy {
-        PreferenceManager.getDefaultSharedPreferences(App.instance.applicationContext)
+        PreferenceManager.getDefaultSharedPreferences(App.applicationContext())
     }
 
     private val _isAuth = MutableLiveData(false)

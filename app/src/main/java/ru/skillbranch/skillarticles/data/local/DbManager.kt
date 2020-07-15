@@ -11,7 +11,7 @@ import ru.skillbranch.skillarticles.data.local.entities.*
 
 object DbManager {
     val db = Room.databaseBuilder(
-        App.instance.applicationContext,
+        App.applicationContext(),
         AppDb::class.java,
         AppDb.DATABASE_NAME
     ).build()

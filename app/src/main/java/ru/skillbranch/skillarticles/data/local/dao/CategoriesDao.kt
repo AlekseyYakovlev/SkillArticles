@@ -3,11 +3,11 @@ package ru.skillbranch.skillarticles.data.local.dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import ru.skillbranch.skillarticles.data.local.entities.Article
+import ru.skillbranch.skillarticles.data.local.entities.Category
 import ru.skillbranch.skillarticles.data.local.entities.CategoryData
 
 @Dao
-interface CategoriesDao : BaseDao<Article> {
+interface CategoriesDao : BaseDao<Category> {
     @Query(
         """
             SELECT c.title AS title, c.icon, c.category_id AS category_id, 

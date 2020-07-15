@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data.repositories
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -53,9 +54,11 @@ object ArticlesRepository : IArticlesRepository {
         network.findArticlesItem(start, size)
 
     override fun insertArticlesToDb(articles: List<ArticleRes>) {
+        Log.d("1234567","_1")
         articlesDao.upsert(articles.map { it.data.toArticle() })
+        Log.d("1234567","_2")
         articlesCountsDao.upsert(articles.map { it.counts.toArticleCounts() })
-
+        Log.d("1234567","_3")
         val refs = articles.map { it.data }
             .fold(mutableListOf<Pair<String, String>>()) { acc, res ->
                 acc.also { list -> list.addAll(res.tags.map { res.id to it }) }
@@ -101,10 +104,10 @@ class ArticleFilter(
 
         qb.table("ArticleItem")
 
-        if (search != null && !isHashTag) qb.appendWere("title LIKE '%$search%")
+        if (search != null && !isHashTag) qb.appendWere("title LIKE '$search'")
         if (search != null && isHashTag) {
             qb.innerJoin("article_tag_x_ref AS refs", "refs.")
-            qb.appendWere("refs.t_id = '$search'")
+            qb.appendWere("refs.t_id = '$search' ")
         }
         if (isBookmark) qb.appendWere("is_bookmark = 1")
         if (categories.isNotEmpty())
@@ -133,7 +136,7 @@ class QueryBuilder() {
 
     fun appendWere(condition: String, logic: String = "AND"): QueryBuilder {
         if (whereConditions.isNullOrEmpty()) whereConditions = "WHERE $condition "
-        else whereConditions += "$logic $condition"
+        else whereConditions += "$logic $condition "
         return this
     }
 
