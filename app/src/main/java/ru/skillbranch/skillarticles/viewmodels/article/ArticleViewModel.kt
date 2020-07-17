@@ -13,7 +13,6 @@ import ru.skillbranch.skillarticles.data.repositories.CommentsDataFactory
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.data.repositories.clearContent
 import ru.skillbranch.skillarticles.extensions.data.toAppSettings
-import ru.skillbranch.skillarticles.extensions.data.toArticlePersonalInfo
 import ru.skillbranch.skillarticles.extensions.indexesOf
 import ru.skillbranch.skillarticles.extensions.shortFormat
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
@@ -112,13 +111,13 @@ class ArticleViewModel(
                 Notify.ActionMessage(
                     "Don`t like it anymore", //FIXME change to "Don't like it anymore?"
                     "No, still like it"
-                ){handleLike()}
+                ) { handleLike() }
             }
         viewModelScope.launch(Dispatchers.IO) {
             repository.toggleLike(articleId)
             if (isLike) repository.decrementLike(articleId)
             else repository.incrementLike(articleId)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 notify(msg)
             }
         }
@@ -169,7 +168,7 @@ class ArticleViewModel(
             updateState { it.copy(commentText = comment) }
             navigate(NavigationCommand.StartLogin())
         } else {
-            viewModelScope.launch (Dispatchers.IO){
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.sendMessage(articleId, comment, currentState.answerToSlug)
                 withContext(Dispatchers.Main) {
                     updateState {
