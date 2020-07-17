@@ -42,7 +42,7 @@ interface ArticlesDao : BaseDao<Article> {
             LIMIT 1
         """
     )
-    fun findArticlesById(id: String): LiveData<Article>
+    fun findArticleById(id: String): LiveData<Article>
 
     @Query(
         """

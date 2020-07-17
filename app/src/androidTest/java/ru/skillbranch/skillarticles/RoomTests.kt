@@ -54,7 +54,7 @@ class RoomTests {
         )
 
         testDb.articlesDao().insert(expectedArticle)
-        val actualArticle = testDb.articlesDao().findArticlesById(expectedArticle.id)
+        val actualArticle = testDb.articlesDao().findArticleById(expectedArticle.id)
         TestObserver.test(actualArticle)
             .assertHasValue()
             .assertValue(expectedArticle)
