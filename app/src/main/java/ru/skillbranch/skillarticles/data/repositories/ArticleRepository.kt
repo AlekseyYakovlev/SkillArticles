@@ -21,18 +21,81 @@ import kotlin.math.abs
 
 
 interface IArticleRepository {
+    /**
+     * получение настроек приложения из SharedPreferences
+     */
     fun getAppSettings(): LiveData<AppSettings>
+
+    /**
+     * обновление настроек приложения
+     *
+     * @param appSettings новые настройки
+     */
     fun updateSettings(appSettings: AppSettings)
+
+    /**
+     * получение информации о состоянии авторизации пользователя
+     */
     fun isAuth(): LiveData<Boolean>
+
+    /**
+     * получение полной информации по статье по идентификатору статьи
+     *
+     * @param articleId идентификатор статьи
+     */
     fun findArticle(articleId: String): LiveData<ArticleFull>
+
+    /**
+     * получение ArticleContent из сети и сохранение в БД
+     *
+     * @param articleId идентификатор статьи
+     */
     fun fetchArticleContent(articleId: String)
+
+    /**
+     * получение количества комментариев к статье по ее идентификатору
+     *
+     * @param articleId идентификатор статьи
+     */
     fun findArticleCommentCount(articleId: String): LiveData<Int>
+
+    /**
+     * отправка сообщения и увеличение счетчика сообщений статьи
+     *
+     * @param articleId идентификатор статьи
+     * @param comment текст комментария
+     * @param answerToSlug идентификатор статьи
+     */
     fun sendMessage(articleId: String, comment: String, answerToSlug: String?)
+
+    /**
+     *
+     */
     fun loadAllComments(articleId: String, total: Int): CommentsDataFactory
+
+    /**
+     *
+     */
     fun loadCommentsByRange(slug: String?, size: Int, articleId: String): List<CommentItemData>
+
+    /**
+     * инвертирование свойства isLike сущности ArticlePersonalInfo
+     */
     fun toggleLike(articleId: String)
+
+    /**
+     * инвертирование свойства isBookmark сущности ArticlePersonalInfo
+     */
     fun toggleBookmark(articleId: String)
+
+    /**
+     * уменьшение свойства likes сущности ArticleCounts на один
+     */
     fun decrementLike(articleId: String)
+
+    /**
+     * увеличение свойства likes сущности ArticleCounts на один
+     */
     fun incrementLike(articleId: String)
 }
 
@@ -46,12 +109,12 @@ object ArticleRepository : IArticleRepository {
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun setupTestDao(
-        articleDao: ArticlesDao,
+        articlesDao: ArticlesDao,
         articlePersonalDao: ArticlePersonalInfosDao,
         articleCountsDao: ArticleCountsDao,
         articleContentDao: ArticleContentsDao
     ) {
-        this.articleDao = articleDao
+        this.articleDao = articlesDao
         this.articlePersonalDao = articlePersonalDao
         this.articleCountsDao = articleCountsDao
         this.articleContentDao = articleContentDao

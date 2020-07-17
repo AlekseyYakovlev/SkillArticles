@@ -148,7 +148,7 @@ private fun ArticlesState.toArticleFilter(): ArticleFilter = ArticleFilter(
     search = searchQuery,
     isBookmark = isBookmark,
     categories = selectedCategories,
-    isHashTag = isHashTagSearch
+    isHashtag = isHashTagSearch
 )
 
 data class ArticlesState(

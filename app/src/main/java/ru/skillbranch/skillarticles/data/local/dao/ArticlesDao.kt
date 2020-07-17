@@ -38,17 +38,18 @@ interface ArticlesDao : BaseDao<Article> {
     @Query(
         """
             SELECT * FROM articles
-            WHERE id = :id
+            WHERE id = :id            
+            LIMIT 1
         """
     )
-    fun findArticlesById(id: String): Article
+    fun findArticlesById(id: String): LiveData<Article>
 
     @Query(
         """
             SELECT * FROM ArticleItem
         """
     )
-    fun findArticlesItems(): List<ArticleItem>
+    fun findArticlesItems():  LiveData<List<ArticleItem>>
 
     @Query(
         """
@@ -56,7 +57,7 @@ interface ArticlesDao : BaseDao<Article> {
             WHERE category_id IN (:categoryIds)
         """
     )
-    fun findArticleItemsByCategoryIds(categoryIds: String): List<ArticleItem>
+    fun findArticleItemsByCategoryIds(categoryIds: List<String>):  LiveData<List<ArticleItem>>
 
     @Query(
         """
@@ -65,7 +66,7 @@ interface ArticlesDao : BaseDao<Article> {
             WHERE refs.t_id = :tag
         """
     )
-    fun findArticlesByTagId(tag: String): List<ArticleItem>
+    fun findArticlesByTagId(tag: String):  LiveData<List<ArticleItem>>
 
     @RawQuery(observedEntities = [ArticleItem::class])
     fun findArticlesByRaw(simpleSQLiteQuery: SimpleSQLiteQuery): DataSource.Factory<Int, ArticleItem>
@@ -73,7 +74,8 @@ interface ArticlesDao : BaseDao<Article> {
     @Query(
         """
             SELECT * FROM ArticleFull
-            WHERE id = :articleId
+            WHERE id = :articleId            
+            LIMIT 1
         """
     )
     fun findFullArticles(articleId: String): LiveData<ArticleFull>

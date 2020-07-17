@@ -1,9 +1,6 @@
 package ru.skillbranch.skillarticles.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface BaseDao<T : Any> {
@@ -18,4 +15,7 @@ interface BaseDao<T : Any> {
 
     @Update
     fun update(obj: T)
+
+    @Delete
+    fun delete(obj: T)
 }

@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.data.repositories
 
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -38,27 +37,24 @@ object ArticlesRepository : IArticlesRepository {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun setupTestDao(
         articlesDao: ArticlesDao,
-        articlesCountsDao: ArticleCountsDao,
+        articleCountsDao: ArticleCountsDao,
         categoriesDao: CategoriesDao,
         tagsDao: TagsDao,
-        articlesPersonalDao: ArticlePersonalInfosDao
+        articlePersonalDao: ArticlePersonalInfosDao
     ) {
         this.articlesDao = articlesDao
-        this.articlesCountsDao = articlesCountsDao
+        this.articlesCountsDao = articleCountsDao
         this.categoriesDao = categoriesDao
         this.tagsDao = tagsDao
-        this.articlesPersonalDao = articlesPersonalDao
+        this.articlesPersonalDao = articlePersonalDao
     }
 
     override fun loadArticlesFromNetwork(start: Int, size: Int): List<ArticleRes> =
         network.findArticlesItem(start, size)
 
     override fun insertArticlesToDb(articles: List<ArticleRes>) {
-        Log.d("1234567","_1")
         articlesDao.upsert(articles.map { it.data.toArticle() })
-        Log.d("1234567","_2")
         articlesCountsDao.upsert(articles.map { it.counts.toArticleCounts() })
-        Log.d("1234567","_3")
         val refs = articles.map { it.data }
             .fold(mutableListOf<Pair<String, String>>()) { acc, res ->
                 acc.also { list -> list.addAll(res.tags.map { res.id to it }) }
@@ -97,21 +93,21 @@ class ArticleFilter(
     val search: String? = null,
     val isBookmark: Boolean = false,
     val categories: List<String> = listOf(),
-    val isHashTag: Boolean = false
+    val isHashtag: Boolean = false
 ) {
     fun toQuery(): String {
         val qb = QueryBuilder()
-
         qb.table("ArticleItem")
 
-        if (search != null && !isHashTag) qb.appendWere("title LIKE '$search'")
-        if (search != null && isHashTag) {
-            qb.innerJoin("article_tag_x_ref AS refs", "refs.")
-            qb.appendWere("refs.t_id = '$search' ")
+        if (search != null && !isHashtag) qb.appendWhere("title LIKE '%$search%'")
+        if (search != null && isHashtag) {
+            qb.innerJoin("article_tag_x_ref AS refs", "refs.a_id=id")
+            qb.appendWhere("refs.t_id LIKE'$search%'")
         }
-        if (isBookmark) qb.appendWere("is_bookmark = 1")
-        if (categories.isNotEmpty())
-            qb.appendWere("category_id IN (${categories.joinToString(",")})")
+
+        if (isBookmark) qb.appendWhere("is_bookmark = 1")
+        if (categories.isNotEmpty()) qb.appendWhere("category_id IN (${categories.joinToString(",")})")
+
         qb.orderBy("date")
         return qb.build()
     }
@@ -134,7 +130,7 @@ class QueryBuilder() {
         return this
     }
 
-    fun appendWere(condition: String, logic: String = "AND"): QueryBuilder {
+    fun appendWhere(condition: String, logic: String = "AND"): QueryBuilder {
         if (whereConditions.isNullOrEmpty()) whereConditions = "WHERE $condition "
         else whereConditions += "$logic $condition "
         return this
