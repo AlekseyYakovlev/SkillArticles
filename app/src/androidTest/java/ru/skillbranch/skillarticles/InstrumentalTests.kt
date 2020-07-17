@@ -65,7 +65,7 @@ class InstrumentalTest1 {
         )
 
 
-        val actualArticle = testDb.articlesDao().findArticlesById(expectedArticle.id)
+        val actualArticle = testDb.articlesDao().findArticleById(expectedArticle.id)
         val testItems = TestObserver.test(actualArticle)
         testItems
             .assertValue(null)
