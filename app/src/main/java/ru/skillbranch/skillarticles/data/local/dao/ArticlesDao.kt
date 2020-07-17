@@ -49,7 +49,7 @@ interface ArticlesDao : BaseDao<Article> {
             SELECT * FROM ArticleItem
         """
     )
-    fun findArticlesItems():  LiveData<List<ArticleItem>>
+    fun findArticleItems():  LiveData<List<ArticleItem>>
 
     @Query(
         """
