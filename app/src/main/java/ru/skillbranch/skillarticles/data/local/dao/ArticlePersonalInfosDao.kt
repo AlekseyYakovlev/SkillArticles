@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data.local.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -25,7 +26,7 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
     @Query(
         """
             UPDATE article_personal_infos 
-            SET is_bookmark = NOT is_bookmark, updated_at = CURRENT_TIMESTAMP
+            SET is_like = NOT is_like, updated_at = CURRENT_TIMESTAMP
             WHERE article_id = :articleId
         """
     )
@@ -34,7 +35,7 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
     @Query(
         """
             UPDATE article_personal_infos 
-            SET is_like = NOT is_like, updated_at = CURRENT_TIMESTAMP
+            SET is_bookmark = NOT is_bookmark, updated_at = CURRENT_TIMESTAMP
             WHERE article_id = :articleId
         """
     )
@@ -59,4 +60,18 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
             )
         )
     }
+
+    @Query("""
+        SELECT *
+        FROM article_personal_infos
+    """)
+    fun findPersonalInfos(): LiveData<List<ArticlePersonalInfo>>
+
+    @Query("""
+        SELECT *
+        FROM article_personal_infos
+        WHERE article_id = :articleId
+        LIMIT 1
+    """)
+    fun findPersonalInfos(articleId: String): LiveData<ArticlePersonalInfo>
 }

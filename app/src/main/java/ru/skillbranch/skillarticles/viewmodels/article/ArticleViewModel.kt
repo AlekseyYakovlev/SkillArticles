@@ -169,7 +169,7 @@ class ArticleViewModel(
             updateState { it.copy(commentText = comment) }
             navigate(NavigationCommand.StartLogin())
         } else {
-            viewModelScope.launch {
+            viewModelScope.launch (Dispatchers.IO){
                 repository.sendMessage(articleId, comment, currentState.answerToSlug)
                 withContext(Dispatchers.Main) {
                     updateState {
@@ -241,7 +241,9 @@ data class ArticleState(
     val answerTo: String? = null,
     val answerToSlug: String? = null,
     val showBottomBar: Boolean = true,
-    val commentText: String? = null
+    val commentText: String? = null,
+    val source: String? = null,
+    val tags: List<String> = emptyList()
 
 ) : IViewModelState {
     override fun save(outState: SavedStateHandle) {

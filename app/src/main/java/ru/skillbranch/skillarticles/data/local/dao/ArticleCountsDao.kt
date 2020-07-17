@@ -28,7 +28,17 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
             SELECT * FROM article_counts            
         """
     )
-    fun findArticleCounts(): List<ArticleCounts>
+    fun findArticleCounts(): LiveData<List<ArticleCounts>>
+
+    @Query(
+        """
+            SELECT * 
+            FROM article_counts 
+            WHERE article_id = :articleId
+            LIMIT 1
+    """
+    )
+    fun findArticleCounts(articleId: String): LiveData<ArticleCounts>
 
     @Query(
         """
@@ -61,7 +71,8 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
         """
             SELECT comments 
             FROM article_counts
-            WHERE article_id = :articleId
+            WHERE article_id = :articleId            
+            LIMIT 1
         """
     )
     fun getCommentsCount(articleId: String): LiveData<Int>

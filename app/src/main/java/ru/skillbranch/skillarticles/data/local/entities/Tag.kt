@@ -20,10 +20,9 @@ data class Tag(
         ForeignKey(
             entity = Article::class,
             parentColumns = ["id"],
-            childColumns = ["t_id"],
+            childColumns = ["a_id"],
             onDelete = ForeignKey.CASCADE
-        )
-    ]
+        )]
 )
 data class ArticleTagXRef(
     @ColumnInfo(name = "a_id")

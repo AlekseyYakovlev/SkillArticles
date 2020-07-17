@@ -45,21 +45,11 @@
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/nav_articles" />
-        <argument
-            android:name="selected_categories"
-            app:argType="string[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="categories"
-            app:argType="ru.skillbranch.skillarticles.data.local.entities.CategoryData[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:destination="@id/choseCategoryDialog" />
         <argument
             android:name="is_bookmarks"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/nav_profile"
@@ -76,21 +66,11 @@
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/nav_bookmarks" />
-        <argument
-            android:name="selected_categories"
-            app:argType="string[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="categories"
-            app:argType="ru.skillbranch.skillarticles.data.local.entities.CategoryData[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:destination="@id/choseCategoryDialog" />
         <argument
             android:name="is_bookmarks"
-            app:argType="boolean"
-            android:defaultValue="true" />
+            android:defaultValue="true"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/nav_transcriptions"
@@ -128,5 +108,16 @@
         android:id="@+id/finish_login"
         app:popUpTo="@id/auth"
         app:popUpToInclusive="true" />
+    <dialog
+        android:id="@+id/choseCategoryDialog"
+        android:name="ru.skillbranch.skillarticles.ui.dialogs.ChoseCategoryDialog"
+        android:label="ChoseCategoryDialog">
+        <argument
+            android:name="selected_categories"
+            app:argType="string[]" />
+        <argument
+            android:name="categories"
+            app:argType="ru.skillbranch.skillarticles.data.local.entities.CategoryData[]" />
+    </dialog>
 
 </navigation>
