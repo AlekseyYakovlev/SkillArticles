@@ -14,6 +14,8 @@ class ChoseCategoryDialog : DialogFragment() {
     private val args: ChoseCategoryDialogArgs by navArgs()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+
         //TODO save checked state and implement custom items
         val categories = args.categories.toList().map { "${it.title} (${it.articlesCount})" }
             .toTypedArray() // Собственно элементы
