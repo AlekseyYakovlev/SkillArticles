@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.util.Log
@@ -96,9 +95,10 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
     override fun setupViews() {
         // window resize options
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            root.window.setDecorFitsSystemWindows(true)
-        else root.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+//            root.window.setDecorFitsSystemWindows(true)
+//        else
+        root.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         setupBottomBar()
         setupSubmenu()
