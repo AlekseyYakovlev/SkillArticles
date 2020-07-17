@@ -101,8 +101,8 @@ class ArticleFilter(
 
         if (search != null && !isHashtag) qb.appendWhere("title LIKE '%$search%'")
         if (search != null && isHashtag) {
-            qb.innerJoin("article_tag_x_ref AS refs", "refs.a_id=id")
-            qb.appendWhere("refs.t_id LIKE'$search%'")
+            qb.innerJoin("article_tag_x_ref AS refs", "refs.a_id = id")
+            qb.appendWhere("refs.t_id = '$search'")
         }
 
         if (isBookmark) qb.appendWhere("is_bookmark = 1")
