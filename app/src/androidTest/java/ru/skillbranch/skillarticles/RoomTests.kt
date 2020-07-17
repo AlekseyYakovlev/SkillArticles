@@ -138,7 +138,7 @@ class RoomTests {
             .insert(Category(categoryId = "0", title = "Android", icon = "any url"))
         testDb.articlesDao().upsert(expectedArticles)
         testDb.articleCountsDao().upsert(expectedCounts)
-        val actualArticleItems = testDb.articlesDao().findArticlesItems()
+        val actualArticleItems = testDb.articlesDao().findArticleItems()
         TestObserver.test(actualArticleItems)
             .assertHasValue()
             .assertValue(expectedArticleItems)
@@ -172,7 +172,7 @@ class RoomTests {
         testDb.categoriesDao()
             .insert(Category(categoryId = "0", title = "Android", icon = "any url"))
 
-        val actualArticleItems = testDb.articlesDao().findArticlesItems()
+        val actualArticleItems = testDb.articlesDao().findArticleItems()
         val actualArticleCounts = testDb.articleCountsDao().findArticleCounts()
 
         val testItems = TestObserver.test(actualArticleItems)
@@ -233,7 +233,7 @@ class RoomTests {
             )
         )
 
-        val actualArticleItems = testDb.articlesDao().findArticlesItems()
+        val actualArticleItems = testDb.articlesDao().findArticleItems()
         val testItems = TestObserver.test(actualArticleItems)
 
         testItems
@@ -378,7 +378,7 @@ class RoomTests {
             )
         )
 
-        val actualArticleItems = testDb.articlesDao().findArticlesItems()
+        val actualArticleItems = testDb.articlesDao().findArticleItems()
         val testItems = TestObserver.test(actualArticleItems)
 
         testItems

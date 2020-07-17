@@ -292,7 +292,7 @@ class InstrumentalTest1 {
         testDb.categoriesDao()
             .insert(Category(categoryId = "0", title = "Android", icon = "any url"))
 
-        val actualArticleItems = testDb.articlesDao().findArticlesItems()
+        val actualArticleItems = testDb.articlesDao().findArticleItems()
         val testItems = TestObserver.test(actualArticleItems)
 
         testItems
