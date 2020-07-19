@@ -25,8 +25,8 @@ class ListConverter {
     }
 
     @TypeConverter
-    fun String.toListOfStrings(): List<String> =
-        this.split(SPLITTING_SYMBOLS)
+    fun String?.toListOfStrings(): List<String> =
+        this?.split(SPLITTING_SYMBOLS)?: emptyList()
 
 
     @TypeConverter
