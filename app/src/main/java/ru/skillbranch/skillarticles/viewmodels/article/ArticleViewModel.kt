@@ -52,6 +52,8 @@ class ArticleViewModel(
                     categoryIcon = category.icon,
                     date = date.shortFormat(),
                     author = author,
+                    source = article.source,
+                    tags = article.tags,
                     isBookmark = isBookmark,
                     isLike = isLike,
                     content = content ?: emptyList(),
