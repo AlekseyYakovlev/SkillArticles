@@ -34,12 +34,15 @@ class ChoseCategoryDialog : DialogFragment() {
 
         val adapter = CategoriesListAdapter()
 
-        if (!viewModel.isInUse){
-            poulate(adapter, categories, checked)
-            viewModel.selectedCategories.addAll(articlesViewModel.currentState.selectedCategories)
-            viewModel.isInUse=true
+        if (!viewModel.isInUse) {
+            viewModel.isInUse = true
+            viewModel.selectedCategories.addAll(checked)
         }
-        poulate(adapter, categories, viewModel.selectedCategories.toList())
+
+        val categoryItems = categories.map {
+            it.toCategoryItem(isChecked = it.categoryId in viewModel.selectedCategories)
+        }
+        adapter.submitList(categoryItems)
 
 
         val rv = layoutInflater.inflate(R.layout.layout_category_dialog_list, null)
@@ -49,9 +52,8 @@ class ChoseCategoryDialog : DialogFragment() {
 
 
         val adb = AlertDialog.Builder(requireContext())
-            .setTitle("Chose category")
+            .setTitle("Choose categories")
             .setView(rv)
-
             .setPositiveButton("Apply") { _, _ ->
                 articlesViewModel.applyCategories(viewModel.selectedCategories.toList())
                 viewModel.selectedCategories.clear()
@@ -64,10 +66,10 @@ class ChoseCategoryDialog : DialogFragment() {
     }
 
 
-    private fun poulate(
+    private fun populate(
         adapter: CategoriesListAdapter,
         categories: List<CategoryData>,
-        checked: List<String>
+        checked: Set<String>
     ) {
         val categoryItems =
             categories.map { dataItem ->
@@ -120,6 +122,9 @@ class ChoseCategoryDialog : DialogFragment() {
                     if (isChecked) viewModel.selectedCategories.add(item.categoryId)
                     else viewModel.selectedCategories.remove(item.categoryId)
                 }
+                setOnClickListener {
+                    ch_select.isChecked = !ch_select.isChecked
+                }
             }
         }
     }
@@ -153,5 +158,5 @@ class ChoseCategoryDialog : DialogFragment() {
 
 class CategoryDialogViewModel : ViewModel() {
     val selectedCategories = mutableSetOf<String>()
-    var isInUse=false
+    var isInUse = false
 }
