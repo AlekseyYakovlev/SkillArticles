@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="?attr/listPreferredItemHeight"
-        android:layout_height="?attr/listPreferredItemHeight"
+        android:layout_width="?attr/listPreferredItemHeightSmall"
+        android:layout_height="?attr/listPreferredItemHeightSmall"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
