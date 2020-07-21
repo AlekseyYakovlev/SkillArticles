@@ -34,13 +34,13 @@ class ChoseCategoryDialog : DialogFragment() {
 
         val adapter = CategoriesListAdapter()
 
-        if (viewModel.selectedCategories.isEmpty()) {
+        if (!viewModel.isInUse){
             poulate(adapter, categories, checked)
             viewModel.selectedCategories.addAll(articlesViewModel.currentState.selectedCategories)
-
+            viewModel.isInUse=true
         }
-        else
-            poulate(adapter, categories, viewModel.selectedCategories.toList())
+        poulate(adapter, categories, viewModel.selectedCategories.toList())
+
 
         val rv = layoutInflater.inflate(R.layout.layout_category_dialog_list, null)
         rv as RecyclerView
@@ -153,4 +153,5 @@ class ChoseCategoryDialog : DialogFragment() {
 
 class CategoryDialogViewModel : ViewModel() {
     val selectedCategories = mutableSetOf<String>()
+    var isInUse=false
 }
