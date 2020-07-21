@@ -12,7 +12,5 @@
 /gradlew.bat
 /app/build
 /app/libs
-/app/src/test/
-/app/src/androidTest/
 .externalNativeBuild
 .cxx

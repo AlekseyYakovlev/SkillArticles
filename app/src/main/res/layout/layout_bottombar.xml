@@ -1,46 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<ru.skillbranch.skillarticles.ui.custom.Bottombar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="ru.skillbranch.skillarticles.ui.custom.Bottombar">
+    android:id="@+id/bottombar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_gravity="bottom"
+    android:elevation="4dp"
+    android:theme="@style/ArticleBarsTheme"
+    app:layout_insetEdge="bottom">
 
+    <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
+        android:id="@+id/btn_like"
+        style="@style/BottombarIcon"
+        android:src="@drawable/like_states"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_bookmark"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
-            android:id="@+id/btn_like"
-            style="@style/BottombarIcon"
-            android:src="@drawable/like_states"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_bookmark"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
+        android:id="@+id/btn_bookmark"
+        style="@style/BottombarIcon"
+        android:src="@drawable/bookmark_states"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_share"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_like"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
-            android:id="@+id/btn_bookmark"
-            style="@style/BottombarIcon"
-            android:src="@drawable/ic_bookmark_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_share"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btn_like"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/btn_share"
+        style="@style/BottombarIcon"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_share_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_bookmark"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
+        android:id="@+id/btn_settings"
+        style="@style/BottombarIcon"
+        android:src="@drawable/ic_format_size_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_bottom"
+        tools:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_bookmark,btn_settings,btn_like,btn_share" />
+
+    <LinearLayout
+        android:id="@+id/reveal"
+        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="0dp"
+        android:background="@color/color_on_article_bar"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/btn_share"
-            style="@style/BottombarIcon"
-            android:src="@drawable/ic_share_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_bookmark"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/btn_search_close"
+            style="@style/BottombarSearchIcon"
+            tools:tint="@android:color/white"
+            android:src="@drawable/ic_close_black_24dp" />
 
-        <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
-            android:id="@+id/btn_settings"
-            style="@style/BottombarIcon"
-            android:src="@drawable/ic_format_size_black_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_search_result"
+            tools:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:text="Not found"
+            android:textColor="?attr/colorPrimary" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1" />
 
-</merge>
+        <ImageView
+            android:id="@+id/btn_result_down"
+            style="@style/BottombarSearchIcon"
+            tools:tint="@android:color/white"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+        <ImageView
+            android:id="@+id/btn_result_up"
+            style="@style/BottombarSearchIcon"
+            tools:tint="@android:color/white"
+            android:src="@drawable/ic_keyboard_arrow_up_black_24dp" />
+
+    </LinearLayout>
+</ru.skillbranch.skillarticles.ui.custom.Bottombar>

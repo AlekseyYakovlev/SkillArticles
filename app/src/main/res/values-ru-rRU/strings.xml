@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Skill Articles</string>
+    <string name="search">Поиск</string>
+    <string name="loading">Загрузка…</string>
+    <string name="bb_search_not_found">Не найдено</string>
+    <string name="menu_title_search">Поиск</string>
+    <string name="article_search_placeholder">Поиск</string>
+    <string name="bb_search_position">%d из %d</string>
+
+    <string name="title_articles">Статьи</string>
+    <string name="title_bookmarks">Закладки</string>
+    <string name="title_transcriptions">Transcriptions</string>
+    <string name="title_profile">Профиль</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lorem_ipsum">orem ipsum dolor sit amet, consectetur adipiscing elit. Fusce blandit enim elit, id fringilla magna blandit vitae. Pellentesque eu purus sed enim dapibus tempus. Cras tincidunt dolor sapien, sed tempor lorem pulvinar ac. Maecenas pretium fringilla nibh posuere tincidunt. Donec facilisis elementum velit eget vulputate. Nullam efficitur bibendum dapibus. Sed vitae aliquam turpis. Vivamus porttitor porta elit et dignissim. Nunc viverra, sem eget vehicula elementum, ex nisi sollicitudin enim, id gravida ligula quam at libero. Sed id diam at ante maximus congue ac vel tellus. Donec scelerisque tincidunt nunc, pulvinar tristique diam condimentum posuere. Curabitur vehicula in sapien eget maximus. Nam ut suscipit elit. Phasellus sit amet congue odio. Donec porta augue lectus, ac molestie magna vehicula quis. Sed blandit dictum euismod. Nullam gravida est vel facilisis sollicitudin. Curabitur nec est massa. Nam sagittis quam massa, in egestas sem mollis at. Cras vestibulum arcu in dapibus hendrerit. Nam faucibus, enim vitae accumsan molestie, lacus ligula accumsan nibh, sed posuere turpis justo at nulla. Nam a varius metus, vitae vulputate leo. Fusce at ipsum faucibus, rhoncus mauris ut, rhoncus libero. Vivamus tempor dapibus nisi. Ut quis elit nisi. Quisque consequat lorem sit amet magna vehicula, in porta neque porta. In justo neque, malesuada ut elit eget, dignissim semper magna. Duis faucibus risus id tellus tempor iaculis. Quisque eget elementum tortor. Integer ac magna sed velit luctus maximus. Quisque vehicula bibendum tincidunt. Nam facilisis, diam vel elementum luctus, tellus nisl fringilla libero, vel finibus dolor velit id est. Vivamus nec ultricies ante. Etiam ornare semper ligula, sed cursus lectus feugiat ut. Mauris sit amet ante nulla. Nam porta est at nibh laoreet, ut ultrices diam placerat. Nam ac elit vel justo vulputate ornare et at turpis. Vivamus sit amet dignissim est. Aenean sit amet nisi ut nibh tempus egestas vel non mauris. Nulla blandit, justo vitae ultrices posuere, felis nulla placerat enim, quis egestas dui massa at nisi. In malesuada porttitor nunc, non malesuada purus tincidunt sit amet. Fusce in arcu nec elit posuere eleifend a vitae eros. Vivamus id efficitur metus, ac congue mi. Sed placerat justo sed risus egestas, ut varius massa tincidunt. Praesent sed mauris sit amet nibh gravida vestibulum sed ut quam. Nam feugiat felis odio, id sagittis ante viverra vel. In fermentum facilisis nibh, non mattis mauris. Nam pretium aliquet nunc, eleifend varius ante maximus vitae. Quisque ante mi, sodales quis posuere in, ornare in lectus. Curabitur rutrum malesuada metus, nec consequat dolor scelerisque at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam sem sem, rhoncus vitae porttitor et, pretium eu ipsum. Sed semper semper arcu ut efficitur. Donec luctus enim sed porttitor malesuada. Donec lectus nisl, tristique eu odio vel, facilisis consequat enim. Sed consectetur lorem suscipit dolor laoreet lobortis. Curabitur molestie velit sit amet pellentesque commodo. Vivamus rhoncus efficitur ante, ac gravida ipsum finibus ac. Quisque ipsum libero, consectetur non justo eget, venenatis congue elit. Nunc orci odio, aliquet quis odio nec, lacinia aliquam lorem. Proin dignissim sollicitudin sapien at imperdiet. Proin in mauris scelerisque, bibendum mauris ut, pharetra magna.</string>
+
+    <string name="title_authorization">Авторизация</string>
+    <string name="title_privacy_policy">Политика конфидециальности</string>
+</resources>

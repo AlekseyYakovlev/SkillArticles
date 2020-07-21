@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_articles"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_articles"/>
+    <item
+        android:id="@+id/nav_bookmarks"
+        android:icon="@drawable/bookmark_states"
+        android:title="@string/title_bookmarks"/>
+    <item
+        android:id="@+id/nav_transcriptions"
+        android:icon="@drawable/ic_translate_black_24dp"
+        android:title="@string/title_transcriptions"/>
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="@string/title_profile"/>
+</menu>

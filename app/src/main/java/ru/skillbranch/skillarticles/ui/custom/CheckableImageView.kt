@@ -4,15 +4,19 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Checkable
-import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 
 class CheckableImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ImageView(context, attrs, defStyleAttr), Checkable, View.OnClickListener {
+) : AppCompatImageView(context, attrs, defStyleAttr), Checkable, View.OnClickListener {
 
     private var checked = false
+
+    companion object {
+        private val CHECKED_STATE_SET = intArrayOf(android.R.attr.state_checked)
+    }
 
     init {
         setOnClickListener(this)
@@ -39,9 +43,4 @@ class CheckableImageView @JvmOverloads constructor(
     override fun onClick(v: View?) {
         toggle()
     }
-
-    companion object {
-        private val CHECKED_STATE_SET = intArrayOf(android.R.attr.state_checked)
-    }
-
 }
