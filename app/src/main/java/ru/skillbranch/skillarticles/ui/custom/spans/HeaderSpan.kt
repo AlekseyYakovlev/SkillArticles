@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.text.Layout
 import android.text.Spanned
@@ -119,7 +118,6 @@ class HeaderSpan constructor(
                 )
             }
         }
-        //canvas.drawFontLines(lineTop,lineBottom,lineBaseline,paint)
     }
 
     override fun getLeadingMargin(first: Boolean): Int {
@@ -141,12 +139,4 @@ class HeaderSpan constructor(
         style = oldStyle
         strokeWidth = oldWidth
     }
-}
-
-private fun Canvas.drawFontLines(top: Int, bottom: Int, baseline: Int, paint: Paint) {
-    drawLine(0f, top + 0f, width + 0f, top + 0f, Paint().apply { Color.BLUE })
-    drawLine(0f, bottom + 0f, width + 0f, bottom + 0f, Paint().apply { Color.GREEN })
-    drawLine(0f, baseline + 0f, width + 0f, baseline + 0f, Paint().apply { Color.RED })
-//    drawLine(0f, top+0f,width+0f,top+0f,Paint().apply { Color.BLUE })
-//    drawLine(0f, top+0f,width+0f,top+0f,Paint().apply { Color.BLUE })
 }
