@@ -7,6 +7,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.skillbranch.skillarticles.R
+import ru.skillbranch.skillarticles.extensions.addSystemBottomPadding
+import ru.skillbranch.skillarticles.extensions.addSystemTopPadding
 import ru.skillbranch.skillarticles.extensions.selectDestination
 import ru.skillbranch.skillarticles.extensions.selectItem
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
@@ -24,6 +26,9 @@ class RootActivity : BaseActivity<RootViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appbar.addSystemTopPadding()
+        nav_view.addSystemBottomPadding()
 
         //top level destination
         val appBarConfiguration = AppBarConfiguration(

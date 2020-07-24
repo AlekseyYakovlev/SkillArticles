@@ -4,17 +4,20 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,11 +101,25 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
     }
 
     override fun setupViews() {
-        // window resize options
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-//            root.window.setDecorFitsSystemWindows(true)
-//        else
-        root.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        //window resize options
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            //root.window.setDecorFitsSystemWindows(false)
+
+            bottombar.setOnApplyWindowInsetsListener { view, insets ->
+                val imeVisible = insets.isVisible(WindowInsets.Type.ime())
+                val bottomInsert = if (imeVisible) insets.getInsets(WindowInsets.Type.ime()).bottom
+                else insets.getInsets(WindowInsets.Type.navigationBars()).bottom
+                view.updatePadding(bottom = bottomInsert)
+                insets
+            }
+        } else {
+            bottombar.doOnApplyWindowInsets { view, insets, _ ->
+
+                view.updatePadding(bottom = insets.systemWindowInsetBottom)
+                root.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                insets
+            }
+        }
 
         setupBottomBar()
         setupSubmenu()
@@ -216,6 +233,11 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         with(rv_comments) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = commentsAdapter
+
+            doOnApplyWindowInsets { view, insets, initialPadding ->
+                view.updatePadding(bottom = (initialPadding.bottom + insets.systemWindowInsetBottom))
+                insets
+            }
         }
 
         viewModel.observeList(viewLifecycleOwner) { commentsAdapter.submitList(it) }

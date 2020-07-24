@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.updatePadding
 import androidx.cursoradapter.widget.CursorAdapter
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.activityViewModels
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_articles.*
 import kotlinx.android.synthetic.main.search_view_layout.view.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.local.entities.CategoryData
+import ru.skillbranch.skillarticles.extensions.doOnApplyWindowInsets
 import ru.skillbranch.skillarticles.ui.base.BaseFragment
 import ru.skillbranch.skillarticles.ui.base.Binding
 import ru.skillbranch.skillarticles.ui.base.MenuItemHolder
@@ -156,6 +158,11 @@ class ArticlesFragment : BaseFragment<ArticlesViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = articlesAdapter
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+            doOnApplyWindowInsets { view, insets, initialPadding ->
+                view.updatePadding(bottom = (initialPadding.bottom + insets.systemWindowInsetBottom))
+                insets
+            }
         }
 
         viewModel.observeList(viewLifecycleOwner, args.isBookmarks) {
