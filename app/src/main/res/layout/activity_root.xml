@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             style="@style/ArticleToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
             android:theme="@style/ArticleBarsTheme"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
@@ -37,7 +37,7 @@
         style="@style/NavBarStyle"
         android:theme="@style/NavBarTheme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:menu="@menu/bottom_nav_menu"/>

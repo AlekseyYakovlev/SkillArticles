@@ -12,9 +12,6 @@
         <item name="windowActionBar">false</item>
         <item name="android:statusBarColor">@color/color_primary_dark</item>
 
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-
         <item name="android:textColorSecondary">@color/color_accent</item>
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryVariant">@color/color_primary_dark</item>
