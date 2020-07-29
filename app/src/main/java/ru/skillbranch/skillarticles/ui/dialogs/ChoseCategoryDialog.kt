@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.ui.dialogs
 
-
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,64 +30,38 @@ class ChoseCategoryDialog : DialogFragment() {
         val categories = args.categories.toList()
         val checked = args.selectedCategories.toList()
 
-
-        val adapter = CategoriesListAdapter()
-
-        if (!viewModel.isInUse) {
-            viewModel.isInUse = true
-            viewModel.selectedCategories.addAll(checked)
-        }
+        viewModel.fillCategoriesFromArgsIfFirstTimeStarted(checked)
 
         val categoryItems = categories.map {
             it.toCategoryItem(isChecked = it.categoryId in viewModel.selectedCategories)
         }
-        adapter.submitList(categoryItems)
 
+        val categoriesListAdapter = CategoriesListAdapter().apply {
+            submitList(categoryItems)
+        }
 
-        val rv = layoutInflater.inflate(R.layout.layout_category_dialog_list, null)
-        rv as RecyclerView
-        rv.layoutManager = LinearLayoutManager(context)
-        rv.adapter = adapter
-
+        val rv =
+            (layoutInflater.inflate(R.layout.layout_category_dialog_list, null) as RecyclerView)
+                .apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = categoriesListAdapter
+                }
 
         val adb = AlertDialog.Builder(requireContext())
             .setTitle("Choose categories")
             .setView(rv)
             .setPositiveButton("Apply") { _, _ ->
                 articlesViewModel.applyCategories(viewModel.selectedCategories.toList())
-                viewModel.selectedCategories.clear()
+                viewModel.clear()
             }
             .setNegativeButton("Reset") { _, _ ->
                 articlesViewModel.applyCategories(emptyList())
-                viewModel.selectedCategories.clear()
+                viewModel.clear()
             }
         return adb.create()
     }
 
-
-    private fun populate(
-        adapter: CategoriesListAdapter,
-        categories: List<CategoryData>,
-        checked: Set<String>
-    ) {
-        val categoryItems =
-            categories.map { dataItem ->
-                dataItem.toCategoryItem(isChecked = dataItem.categoryId in checked)
-            }
-        adapter.submitList(categoryItems)
-    }
-
-
-//    private fun subscribeUi(adapter: CategoriesListAdapter) {
-//        articlesViewModel.observeCategories(this) { categories ->
-//            val categoryItems =
-//                categories.map { it.toCategoryItem(isChecked = it.categoryId in viewModel.selectedCategories) }
-//            adapter.submitList(categoryItems)
-//        }
-//    }
-
-
-    inner class CategoriesListAdapter() :
+    private inner class CategoriesListAdapter() :
         ListAdapter<CategoryItem, RecyclerView.ViewHolder>(CategoriesDiffUtilCallback()) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -105,11 +78,10 @@ class ChoseCategoryDialog : DialogFragment() {
 
     }
 
-    inner class CategoriesVH(val containerView: View) : RecyclerView.ViewHolder(containerView) {
-        fun bind(
-            item: CategoryItem
-//            isCheckedListener: (item: CategoryItem, isChecked: Boolean) -> Unit
-        ) {
+    private inner class CategoriesVH(val containerView: View) :
+        RecyclerView.ViewHolder(containerView) {
+
+        fun bind(item: CategoryItem) {
             with(containerView) {
                 Glide.with(containerView)
                     .load(item.icon)
@@ -129,7 +101,7 @@ class ChoseCategoryDialog : DialogFragment() {
         }
     }
 
-    class CategoriesDiffUtilCallback : DiffUtil.ItemCallback<CategoryItem>() {
+    private class CategoriesDiffUtilCallback : DiffUtil.ItemCallback<CategoryItem>() {
         override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean =
             oldItem.categoryId == newItem.categoryId
 
@@ -137,7 +109,7 @@ class ChoseCategoryDialog : DialogFragment() {
             oldItem == newItem
     }
 
-    data class CategoryItem(
+    private data class CategoryItem(
         val categoryId: String,
         val icon: String,
         val title: String,
@@ -145,18 +117,28 @@ class ChoseCategoryDialog : DialogFragment() {
         val isChecked: Boolean = false
     )
 
-    fun CategoryData.toCategoryItem(isChecked: Boolean = false) = CategoryItem(
+    private fun CategoryData.toCategoryItem(isChecked: Boolean = false) = CategoryItem(
         categoryId = categoryId,
         icon = icon,
         title = title,
         articlesCount = articlesCount,
         isChecked = isChecked
     )
-
-
 }
 
 class CategoryDialogViewModel : ViewModel() {
     val selectedCategories = mutableSetOf<String>()
     var isInUse = false
+
+    fun fillCategoriesFromArgsIfFirstTimeStarted(checkedItemsIdList: List<String>) {
+        if (!isInUse) {
+            isInUse = true
+            selectedCategories.addAll(checkedItemsIdList)
+        }
+    }
+
+    fun clear(){
+        isInUse = false
+        selectedCategories.clear()
+    }
 }
