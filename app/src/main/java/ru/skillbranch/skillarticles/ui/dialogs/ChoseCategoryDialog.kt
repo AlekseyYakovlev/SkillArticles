@@ -22,18 +22,27 @@ import ru.skillbranch.skillarticles.data.local.entities.CategoryData
 import ru.skillbranch.skillarticles.viewmodels.articles.ArticlesViewModel
 
 class ChoseCategoryDialog : DialogFragment() {
-    private val articlesViewModel: ArticlesViewModel by activityViewModels()
-    private val viewModel: CategoryDialogViewModel by viewModels()
+    private val viewModel: ArticlesViewModel by activityViewModels()
+    private val selectedCategories = mutableSetOf<String>()
+//    private val dialogViewModel: CategoryDialogViewModel by viewModels()
     private val args: ChoseCategoryDialogArgs by navArgs()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val categories = args.categories.toList()
-        val checked = args.selectedCategories.toList()
+        val checked =
+            (savedInstanceState?.getStringArray(::selectedCategories.name) ?: args.selectedCategories).toList()
 
-        viewModel.fillCategoriesFromArgsIfFirstTimeStarted(checked)
+
+//        dialogViewModel.fillCategoriesFromArgsIfFirstTimeStarted(checked)
+
+//        val categoryItems = categories.map {
+//            it.toCategoryItem(isChecked = it.categoryId in dialogViewModel.selectedCategories)
+//        }
+
+        //val checked =
 
         val categoryItems = categories.map {
-            it.toCategoryItem(isChecked = it.categoryId in viewModel.selectedCategories)
+            it.toCategoryItem(isChecked = it.categoryId in checked)
         }
 
         val categoriesListAdapter = CategoriesListAdapter().apply {
@@ -51,14 +60,19 @@ class ChoseCategoryDialog : DialogFragment() {
             .setTitle("Choose categories")
             .setView(rv)
             .setPositiveButton("Apply") { _, _ ->
-                articlesViewModel.applyCategories(viewModel.selectedCategories.toList())
-                viewModel.clear()
+                viewModel.applyCategories(selectedCategories.toList())
+                //dialogViewModel.clear()
             }
             .setNegativeButton("Reset") { _, _ ->
-                articlesViewModel.applyCategories(emptyList())
-                viewModel.clear()
+                viewModel.applyCategories(emptyList())
+                //dialogViewModel.clear()
             }
         return adb.create()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putStringArray(::selectedCategories.name, selectedCategories.toTypedArray())
     }
 
     private inner class CategoriesListAdapter() :
@@ -91,8 +105,8 @@ class ChoseCategoryDialog : DialogFragment() {
                 tv_count.text = item.articlesCount.toString()
                 ch_select.isChecked = item.isChecked
                 ch_select.setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) viewModel.selectedCategories.add(item.categoryId)
-                    else viewModel.selectedCategories.remove(item.categoryId)
+                    if (isChecked) selectedCategories.add(item.categoryId)
+                    else selectedCategories.remove(item.categoryId)
                 }
                 setOnClickListener {
                     ch_select.isChecked = !ch_select.isChecked
@@ -126,19 +140,19 @@ class ChoseCategoryDialog : DialogFragment() {
     )
 }
 
-class CategoryDialogViewModel : ViewModel() {
-    val selectedCategories = mutableSetOf<String>()
-    var isInUse = false
-
-    fun fillCategoriesFromArgsIfFirstTimeStarted(checkedItemsIdList: List<String>) {
-        if (!isInUse) {
-            isInUse = true
-            selectedCategories.addAll(checkedItemsIdList)
-        }
-    }
-
-    fun clear(){
-        isInUse = false
-        selectedCategories.clear()
-    }
-}
+//class CategoryDialogViewModel : ViewModel() {
+//    val selectedCategories = mutableSetOf<String>()
+//    var isInUse = false
+//
+//    fun fillCategoriesFromArgsIfFirstTimeStarted(checkedItemsIdList: List<String>) {
+//        if (!isInUse) {
+//            isInUse = true
+//            selectedCategories.addAll(checkedItemsIdList)
+//        }
+//    }
+//
+//    fun clear(){
+//        isInUse = false
+//        selectedCategories.clear()
+//    }
+//}
