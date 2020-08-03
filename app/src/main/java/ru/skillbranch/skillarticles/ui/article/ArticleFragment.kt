@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -62,7 +61,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             viewModel.handleReplyTo(it.slug, it.user.name)
             et_comment.requestFocus()
             scroll.smoothScrollTo(0, wrap_comments.top)
-            et_comment.showKeyboard()
+            requireContext().showKeyboard(et_comment)
         }
     }
 
@@ -198,7 +197,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         et_comment.text = SpannableStringBuilder(viewModel.currentState.commentText ?: "")
 
         et_comment.setOnEditorActionListener { view, _, _ ->
-            view.hideKeyboard()
+            requireContext().hideKeyboard(view)
             viewModel.handleSendComment(view.text.toString())
             //view.text = null
             view.clearFocus()
@@ -208,7 +207,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         et_comment.setOnFocusChangeListener { _, hasFocus -> viewModel.handleCommentFocus(hasFocus) }
 
         wrap_comments.setEndIconOnClickListener { view ->
-            view.hideKeyboard()
+            requireContext().hideKeyboard(view)
             viewModel.handleClearComment()
             et_comment.text = null
             et_comment.clearFocus()
@@ -292,13 +291,13 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
         bottombar.btn_result_up.setOnClickListener {
             if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
-            it.hideKeyboard()
+            requireContext().hideKeyboard(it)
             viewModel.handleUpResult()
         }
 
         bottombar.btn_result_down.setOnClickListener {
             if (!tv_text_content.hasFocus()) tv_text_content.requestFocus()
-            it.hideKeyboard()
+            requireContext().hideKeyboard(it)
             viewModel.handleDownResult()
         }
 
@@ -439,8 +438,6 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
         override fun bind(data: IViewModelState) {
             data as ArticleState
-            Log.d("1234567 ArticleFragment bind", "Start")
-
             isLike = data.isLike
             isBookmark = data.isBookmark
             isShowMenu = data.isShowMenu
@@ -458,10 +455,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             searchResults = data.searchResults
             answerTo = data.answerTo ?: "Comment"
             isShowBottombar = data.showBottomBar
-
-            Log.d("1234567 ArticleFragment bind", data.commentText ?: "")
             comment = data.commentText ?: ""
-
         }
 
         override fun saveUi(outState: Bundle) {

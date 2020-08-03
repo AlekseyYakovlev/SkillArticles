@@ -13,7 +13,7 @@
     android:layout_marginBottom="8dp"
     app:layout_dodgeInsetEdges="bottom"
     android:visibility="gone"
-    tools:visibility="visible"    >
+    tools:visibility="visible">
 
     <ru.skillbranch.skillarticles.ui.custom.CheckableImageView
         android:id="@+id/btn_text_down"

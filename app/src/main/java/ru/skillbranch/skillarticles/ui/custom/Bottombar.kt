@@ -96,10 +96,9 @@ class Bottombar @JvmOverloads constructor(
         }
 
         //lock button presses in min/max positions
-        when (position) {
-            0 -> btn_result_up.isEnabled = false
-            searchCount - 1 -> btn_result_down.isEnabled = false
-        }
+        if (position == 0) btn_result_up.isEnabled = false
+        if (position == (searchCount - 1)) btn_result_down.isEnabled = false
+
     }
 
     fun show() {
