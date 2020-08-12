@@ -21,6 +21,8 @@ object PrefManager {
     private val _appSettings =
         MutableLiveData(AppSettings(isDarkMode = false, isBigText = false))
 
+    val isDarkMode: Boolean? = _appSettings.value?.isDarkMode
+
     init {
         _isAuth.postValue(preferences.getBoolean(IS_AUTH, false))
         _appSettings.postValue(
