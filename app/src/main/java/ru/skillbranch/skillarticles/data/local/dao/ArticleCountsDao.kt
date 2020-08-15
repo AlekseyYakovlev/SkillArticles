@@ -14,7 +14,7 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
      * @param objList the object to be updated
      */
     @Transaction
-    fun upsert(objList: List<ArticleCounts>) {
+    suspend fun upsert(objList: List<ArticleCounts>) {
         insert(objList)
             .mapIndexed { index, l -> if (l == -1L) objList[index] else null }
             .filterNotNull()
@@ -47,7 +47,7 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
             WHERE article_id = :articleId
         """
     )
-    fun incrementLike(articleId: String): Int
+    suspend fun incrementLike(articleId: String): Int
 
     @Query(
         """
@@ -56,7 +56,7 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
             WHERE article_id = :articleId
         """
     )
-    fun decrementLike(articleId: String): Int
+    suspend fun decrementLike(articleId: String): Int
 
     @Query(
         """
@@ -65,7 +65,7 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
             WHERE article_id = :articleId
         """
     )
-    fun incrementCommentsCount(articleId: String): Int
+    suspend fun incrementCommentsCount(articleId: String): Int
 
     @Query(
         """
@@ -76,4 +76,15 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
         """
     )
     fun getCommentsCount(articleId: String): LiveData<Int>
+
+    @Query(
+        """
+            UPDATE article_counts 
+            SET comments = :comments
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun updateCommentsCount(articleId: String, comments: Int) {
+
+    }
 }

@@ -19,7 +19,7 @@ interface ArticlesDao : BaseDao<Article> {
      * @param objList the object to be updated
      */
     @Transaction
-    fun upsert(objList: List<Article>) {
+    suspend fun upsert(objList: List<Article>) {
         insert(objList)
             .mapIndexed { index, l -> if (l == -1L) objList[index] else null }
             .filterNotNull()
@@ -49,7 +49,7 @@ interface ArticlesDao : BaseDao<Article> {
             SELECT * FROM ArticleItem
         """
     )
-    fun findArticleItems():  LiveData<List<ArticleItem>>
+    fun findArticleItems(): LiveData<List<ArticleItem>>
 
     @Query(
         """
@@ -57,7 +57,7 @@ interface ArticlesDao : BaseDao<Article> {
             WHERE category_id IN (:categoryIds)
         """
     )
-    fun findArticleItemsByCategoryIds(categoryIds: List<String>):  LiveData<List<ArticleItem>>
+    fun findArticleItemsByCategoryIds(categoryIds: List<String>): LiveData<List<ArticleItem>>
 
     @Query(
         """
@@ -66,7 +66,7 @@ interface ArticlesDao : BaseDao<Article> {
             WHERE refs.t_id = :tag
         """
     )
-    fun findArticlesByTagId(tag: String):  LiveData<List<ArticleItem>>
+    fun findArticlesByTagId(tag: String): LiveData<List<ArticleItem>>
 
     @RawQuery(observedEntities = [ArticleItem::class])
     fun findArticlesByRaw(simpleSQLiteQuery: SimpleSQLiteQuery): DataSource.Factory<Int, ArticleItem>
@@ -79,4 +79,13 @@ interface ArticlesDao : BaseDao<Article> {
         """
     )
     fun findFullArticles(articleId: String): LiveData<ArticleFull>
+
+    @Query(
+        """
+            SELECT id FROM articles
+            ORDER BY date DESC           
+            LIMIT 1
+        """
+    )
+    fun findLastArticleId(): String?
 }
