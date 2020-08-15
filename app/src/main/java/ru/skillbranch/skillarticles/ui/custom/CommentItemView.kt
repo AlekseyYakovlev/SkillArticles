@@ -13,7 +13,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.data.models.CommentItemData
+import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.extensions.*
 import kotlin.math.min
 
@@ -183,7 +183,7 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
         }
     }
 
-    fun bind(item: CommentItemData?) {
+    fun bind(item: CommentRes?) {
         if (item == null) {
             foreground = shimmerDrawable
             shimmerDrawable.start()

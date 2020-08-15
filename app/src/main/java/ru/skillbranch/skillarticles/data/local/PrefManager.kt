@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.data.local
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.preference.PreferenceManager
 import ru.skillbranch.skillarticles.App
 import ru.skillbranch.skillarticles.data.models.AppSettings
@@ -37,9 +38,9 @@ object PrefManager {
         preferences.edit().clear().apply()
     }
 
-    fun getAppSettings(): LiveData<AppSettings> = _appSettings
+    fun getAppSettings(): LiveData<AppSettings> = _appSettings.distinctUntilChanged()
 
-    fun setAppSettings(appSettings: AppSettings): Unit {
+    fun setAppSettings(appSettings: AppSettings) {
         _appSettings.postValue(appSettings)
         preferences.edit()
             .putBoolean(IS_DARK_MODE, appSettings.isDarkMode)
@@ -49,7 +50,7 @@ object PrefManager {
 
     fun isAuth(): LiveData<Boolean> = _isAuth
 
-    fun setAuth(isAuth: Boolean): Unit {
+    fun setAuth(isAuth: Boolean) {
         _isAuth.postValue(isAuth)
         preferences.edit().putBoolean(IS_AUTH, isAuth).apply()
     }

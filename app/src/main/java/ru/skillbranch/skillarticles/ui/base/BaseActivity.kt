@@ -1,6 +1,7 @@
 package ru.skillbranch.skillarticles.ui.base
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -23,10 +24,7 @@ import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.activity_root.view.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
-import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
-import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
-import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
-import ru.skillbranch.skillarticles.viewmodels.base.Notify
+import ru.skillbranch.skillarticles.viewmodels.base.*
 
 abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatActivity() {
     protected abstract val viewModel: T
@@ -35,6 +33,8 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
 
     val toolbarBuilder = ToolbarBuilder()
     val bottombarBuilder = BottombarBuilder()
+
+    var isUiBlocked = false
 
     //set listeners, tuning views
     abstract fun subscribeOnState(state: IViewModelState)
@@ -48,6 +48,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
         viewModel.observeState(this) { subscribeOnState(it) }
         viewModel.observeNotifications(this) { renderNotification(it) }
         viewModel.observeNavigation(this) { subscribeOnNavigation(it) }
+        viewModel.observeLoading(this) { renderLoading(it) }
 
         navController = findNavController(R.id.nav_host_fragment)
     }
@@ -65,6 +66,11 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean =
+        if (isUiBlocked) true
+        else super.onKeyDown(keyCode, event)
+
 
     private fun subscribeOnNavigation(command: NavigationCommand) {
         when (command) {
@@ -87,6 +93,20 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
                     R.id.start_login,
                     bundleOf("private_destination" to (command.privateDestination ?: -1))
                 )
+            }
+        }
+    }
+
+    open fun renderLoading(loadingState: Loading) {
+        when (loadingState) {
+            Loading.SHOW_LOADING -> progress.isVisible = true
+            Loading.SHOW_BLOCKING_LOADING -> {
+                isUiBlocked = true
+                progress.isVisible = true
+            }
+            Loading.HIDE_LOADING -> {
+                isUiBlocked = false
+                progress.isVisible = false
             }
         }
     }
@@ -141,7 +161,8 @@ class ToolbarBuilder() {
                 logo = logoPlaceholder
                 toolbar.logoDescription = "logo"
                 toolbar.doOnNextLayout {
-                    val logo =children.filter { it.contentDescription == "logo" }.first() as ImageView
+                    val logo =
+                        children.filter { it.contentDescription == "logo" }.first() as ImageView
                     logo.scaleType = ImageView.ScaleType.CENTER_CROP
                     (logo.layoutParams as? Toolbar.LayoutParams)?.let {
                         it.width = logoSize
