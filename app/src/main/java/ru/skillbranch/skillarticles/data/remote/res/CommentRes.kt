@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 import ru.skillbranch.skillarticles.data.models.User
 import java.util.*
 
+//@JsonClass(generateAdapter = true)
 data class CommentRes(
     val id: String,
     @Json(name = "author")
@@ -13,6 +14,4 @@ data class CommentRes(
     val date: Date,
     val slug: String,
     val answerTo: String? = null
-) {
-
-}
+)
