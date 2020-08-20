@@ -1,16 +1,14 @@
 package ru.skillbranch.skillarticles.data.remote
 
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.ToJson
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.skillbranch.skillarticles.AppConfig.BASE_URL
+import ru.skillbranch.skillarticles.data.JsonConverter.moshi
+import ru.skillbranch.skillarticles.data.remote.interceptors.ErrorStatusInterceptor
 import ru.skillbranch.skillarticles.data.remote.interceptors.NetworkStatusInterceptor
-import java.util.*
+import java.util.concurrent.TimeUnit
 
 object NetworkManager {
     val api: RestService by lazy {
@@ -20,16 +18,13 @@ object NetworkManager {
 
         //client
         val client = OkHttpClient().newBuilder()
-            .addInterceptor(NetworkStatusInterceptor())
-            .addInterceptor(logging)
+            .readTimeout(2, TimeUnit.SECONDS)    // socket timeout (GET)
+            .writeTimeout(5, TimeUnit.SECONDS)   // socket timeout (POST, PUT, etc.)
+            .addInterceptor(NetworkStatusInterceptor()) // intercept network status
+            .addInterceptor(logging)                    // log requests/results
+            .addInterceptor(ErrorStatusInterceptor())   // intercept network errors
             .build()
 
-
-        //json converter
-        val moshi = Moshi.Builder()
-            .add(DateAdapter())
-            .add(KotlinJsonAdapterFactory())
-            .build()
 
         //retrofit
         val retrofit = Retrofit.Builder()
@@ -41,12 +36,4 @@ object NetworkManager {
         retrofit.create(RestService::class.java)
 
     }
-}
-
-class DateAdapter {
-    @FromJson
-    fun fromJson(timestamp: Long) = Date(timestamp)
-
-    @ToJson
-    fun toJson(date: Date) = date.time
 }

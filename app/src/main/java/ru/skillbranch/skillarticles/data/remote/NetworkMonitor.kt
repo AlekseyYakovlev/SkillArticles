@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 
 object NetworkMonitor {
@@ -13,6 +14,11 @@ object NetworkMonitor {
     val networkTypeLive = MutableLiveData(NetworkType.NONE)
 
     private lateinit var cm: ConnectivityManager
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    fun setNetworkIsConnected(isConnected: Boolean = true) {
+        this.isConnected = isConnected
+    }
 
     fun registerNetworkMonitor(context: Context) {
         cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data.repositories
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
@@ -14,6 +15,9 @@ import ru.skillbranch.skillarticles.data.local.entities.ArticleFull
 import ru.skillbranch.skillarticles.data.models.AppSettings
 import ru.skillbranch.skillarticles.data.remote.NetworkManager
 import ru.skillbranch.skillarticles.data.remote.RestService
+import ru.skillbranch.skillarticles.data.remote.err.ApiError
+import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
+import ru.skillbranch.skillarticles.data.remote.req.MessageReq
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.extensions.data.toArticleContent
 
@@ -61,10 +65,10 @@ interface IArticleRepository {
      * отправка сообщения и увеличение счетчика сообщений статьи
      *
      * @param articleId идентификатор статьи
-     * @param comment текст комментария
-     * @param answerToSlug идентификатор статьи
+     * @param message текст комментария
+     * @param answerToMessageId идентификатор статьи
      */
-    suspend fun sendMessage(articleId: String, comment: String, answerToSlug: String?)
+    suspend fun sendMessage(articleId: String, message: String, answerToMessageId: String?)
 
     /**
      *
@@ -78,12 +82,12 @@ interface IArticleRepository {
     /**
      * инвертирование свойства isLike сущности ArticlePersonalInfo
      */
-    suspend fun toggleLike(articleId: String)
+    suspend fun toggleLike(articleId: String): Boolean
 
     /**
      * инвертирование свойства isBookmark сущности ArticlePersonalInfo
      */
-    suspend fun toggleBookmark(articleId: String)
+    suspend fun toggleBookmark(articleId: String): Boolean
 
     /**
      * уменьшение свойства likes сущности ArticleCounts на один
@@ -123,18 +127,87 @@ object ArticleRepository : IArticleRepository {
     }
 
     override fun getAppSettings(): LiveData<AppSettings> =
-        preferences.getAppSettings() //from preferences
+        preferences.appSettings //from preferences
 
-    override suspend fun toggleLike(articleId: String) {
-        articlePersonalDao.toggleLikeOrInsert(articleId)
-    }
+    override suspend fun toggleLike(articleId: String): Boolean =
+        if (articlePersonalDao.toggleLikeOrInsert(articleId)) {
+            incrementLike(articleId)
+            true
+        } else {
+            decrementLike(articleId)
+            false
+        }
 
-    override suspend fun toggleBookmark(articleId: String) {
-        articlePersonalDao.toggleBookmarkOrInsert(articleId)
-    }
+    override suspend fun toggleBookmark(articleId: String): Boolean =
+        if (articlePersonalDao.isBookmarked(articleId)) {
+            removeBookmark(articleId)
+            false
+        } else {
+            addBookmark(articleId)
+            true
+        }
+
+    // articlePersonalDao.toggleBookmarkOrInsert(articleId)
+
 
     override fun updateSettings(appSettings: AppSettings) {
         preferences.setAppSettings(appSettings)
+    }
+
+    override fun isAuth(): LiveData<Boolean> = preferences.isAuthLive
+
+
+    override suspend fun decrementLike(articleId: String) {
+        if (preferences.accessToken.isEmpty()) {
+            articleCountsDao.decrementLike(articleId)
+            return
+        }
+
+        try {
+            val res = network.decrementLike(articleId, preferences.accessToken)
+            articleCountsDao.updateLike(articleId, res.likeCount)
+        } catch (e: Exception) {
+            when (e) {
+                is NoNetworkError -> articleCountsDao.decrementLike(articleId)
+                is ApiError -> throw e
+            }
+        }
+    }
+
+    override suspend fun incrementLike(articleId: String) {
+        if (preferences.accessToken.isEmpty()) {
+            articleCountsDao.incrementLike(articleId)
+            return
+        }
+
+        try {
+            val res = network.incrementLike(articleId, preferences.accessToken)
+            articleCountsDao.updateLike(articleId, res.likeCount)
+        } catch (e: Exception) {
+            when (e) {
+                is NoNetworkError -> articleCountsDao.incrementLike(articleId)
+                is ApiError -> throw e
+            }
+        }
+    }
+
+    override suspend fun sendMessage(
+        articleId: String,
+        message: String,
+        answerToMessageId: String?
+    ) {
+        val (_, messageCount) = network.sendMessage(
+            articleId,
+            MessageReq(message, answerToMessageId),
+            preferences.accessToken
+        )
+        Log.d("123456", messageCount.toString())
+        articleCountsDao.updateCommentsCount(articleId, messageCount)
+    }
+
+    suspend fun refreshCommentsCount(articleId: String) {
+        val counts = network.loadArticleCounts(articleId)
+        articleCountsDao.updateCommentsCount(articleId, counts.comments)
     }
 
     override suspend fun fetchArticleContent(articleId: String) {
@@ -144,9 +217,6 @@ object ArticleRepository : IArticleRepository {
 
     override fun findArticleCommentCount(articleId: String): LiveData<Int> =
         articleCountsDao.getCommentsCount(articleId)
-
-
-    override fun isAuth(): LiveData<Boolean> = preferences.isAuth()
 
     override fun loadAllComments(
         articleId: String,
@@ -160,26 +230,36 @@ object ArticleRepository : IArticleRepository {
             errHandler = errHandler
         )
 
+    suspend fun addBookmark(articleId: String) {
+        articlePersonalDao.setBookmarkOrInsert(articleId, true)
+        if (preferences.accessToken.isEmpty()) {
+            return
+        }
 
-    override suspend fun decrementLike(articleId: String) {
-        articleCountsDao.decrementLike(articleId)
+        try {
+            network.addBookmark(articleId, preferences.accessToken)
+        } catch (e: Exception) {
+            when (e) {
+                is NoNetworkError -> articleCountsDao.incrementLike(articleId)
+                is ApiError -> throw e
+            }
+        }
     }
 
-    override suspend fun incrementLike(articleId: String) {
-        articleCountsDao.incrementLike(articleId)
-    }
+    suspend fun removeBookmark(articleId: String) {
+        articlePersonalDao.setBookmarkOrInsert(articleId, false)
+        if (preferences.accessToken.isEmpty()) {
+            return
+        }
 
-    override suspend fun sendMessage(articleId: String, comment: String, answerToSlug: String?) {
-//        network.sendMessage(
-//            articleId, comment, answerToSlug,
-//            User("777", "John Doe", "https://skill-branch.ru/img/mail/bot/android-category.png")
-//        )
-//        articleCountsDao.incrementCommentsCount(articleId)
-    }
-
-    suspend fun refreshCommentsCount(articleId: String) {
-        val counts = network.loadArticleCounts(articleId)
-        articleCountsDao.updateCommentsCount(articleId, counts.comments)
+        try {
+            network.removeBookmark(articleId, preferences.accessToken)
+        } catch (e: Exception) {
+            when (e) {
+                is NoNetworkError -> articleCountsDao.incrementLike(articleId)
+                is ApiError -> throw e
+            }
+        }
     }
 }
 

@@ -7,7 +7,9 @@ import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import kotlinx.coroutines.*
+import ru.skillbranch.skillarticles.data.remote.err.ApiError
 import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
+import java.net.SocketTimeoutException
 
 abstract class BaseViewModel<T : IViewModelState>(
     private val handleState: SavedStateHandle,
@@ -142,6 +144,21 @@ abstract class BaseViewModel<T : IViewModelState>(
                 is NoNetworkError -> notify(
                     Notify.TextMessage("Network is not available, check internet connection")
                 )
+                is SocketTimeoutException -> notify(
+                    Notify.ActionMessage(
+                        "Network timeout exception - please try again",
+                        "Retry"
+                    ) { launchSafety(errorHandler, completionHandler, block) }
+                )
+                is ApiError.InternalServerError -> notify(
+                    Notify.ErrorMessage(
+                        throwable.message,
+                        "Retry"
+                    ) { launchSafety(errorHandler, completionHandler, block) }
+                )
+                is ApiError -> notify(
+                    Notify.ErrorMessage(throwable.message)
+                )
                 else -> notify(
                     Notify.ErrorMessage(throwable.message ?: "Something wrong")
                 )
@@ -150,7 +167,7 @@ abstract class BaseViewModel<T : IViewModelState>(
 
         (viewModelScope + errHand).launch {
             showLoading()
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 block()
             }
         }.invokeOnCompletion {

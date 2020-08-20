@@ -120,7 +120,7 @@ class ArticlesViewModel(handle: SavedStateHandle) :
 
     fun handleToggleBookmark(articleId: String) {
         launchSafety(
-            {throwable->
+            { throwable ->
                 when (throwable) {
                     is NoNetworkError -> notify(
                         Notify.TextMessage("Network is not available, failed to fetch an article")
@@ -133,7 +133,7 @@ class ArticlesViewModel(handle: SavedStateHandle) :
         ) {
             val isBookmarked = repository.toggleBookmark(articleId)
             if (isBookmarked) repository.fetchArticleContent(articleId)
-            //else repository.
+            else repository.removeArticleContent(articleId)
         }
     }
 

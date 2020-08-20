@@ -27,6 +27,7 @@ interface IArticlesRepository {
     suspend fun findLastArticleId(): String?
     suspend fun incrementTagUseCount(tag: String)
     suspend fun fetchArticleContent(articleId: String)
+    suspend fun removeArticleContent(articleId: String)
 }
 
 object ArticlesRepository : IArticlesRepository {
@@ -45,13 +46,15 @@ object ArticlesRepository : IArticlesRepository {
         articleCountsDao: ArticleCountsDao,
         categoriesDao: CategoriesDao,
         tagsDao: TagsDao,
-        articlePersonalDao: ArticlePersonalInfosDao
+        articlePersonalDao: ArticlePersonalInfosDao,
+        articlesContentDao: ArticleContentsDao
     ) {
         this.articlesDao = articlesDao
         this.articlesCountsDao = articleCountsDao
         this.categoriesDao = categoriesDao
         this.tagsDao = tagsDao
         this.articlesPersonalDao = articlePersonalDao
+        this.articlesContentDao = articlesContentDao
     }
 
     override suspend fun loadArticlesFromNetwork(start: String?, size: Int): Int {
@@ -105,9 +108,9 @@ object ArticlesRepository : IArticlesRepository {
         articlesContentDao.insert(content.toArticleContent())
     }
 
-//    override suspend fun clearArticleContent(articleId: String) {
-//        articlesDao.delete(content.toArticleContent())
-//    }
+    override suspend fun removeArticleContent(articleId: String) {
+        articlesContentDao.deleteById(articleId)
+    }
 
 }
 
