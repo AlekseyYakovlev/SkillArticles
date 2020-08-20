@@ -41,14 +41,28 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
     )
     suspend fun toggleBookmark(articleId: String): Int
 
+    @Query(
+        """
+        SELECT is_like
+        FROM article_personal_infos
+        WHERE article_id = :articleId
+        LIMIT 1
+    """
+    )
+    fun isLiked(articleId: String): Boolean
+
     @Transaction
-    suspend fun toggleLikeOrInsert(articleId: String) {
-        if (toggleLike(articleId) == 0) insert(
-            ArticlePersonalInfo(
-                articleId = articleId,
-                isLike = true
+    suspend fun toggleLikeOrInsert(articleId: String): Boolean {
+        if (toggleLike(articleId) == 0) {
+            insert(
+                ArticlePersonalInfo(
+                    articleId = articleId,
+                    isLike = true
+                )
             )
-        )
+            return true
+        }
+        return isLiked(articleId)
     }
 
     @Transaction
@@ -62,11 +76,33 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
         return isBookmarked(articleId)
     }
 
+
+    @Query(
+        """
+            UPDATE article_personal_infos 
+            SET is_bookmark = :state, updated_at = CURRENT_TIMESTAMP
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun setBookmark(articleId: String, state: Boolean): Int
+
+    @Transaction
+    suspend fun setBookmarkOrInsert(articleId: String, state: Boolean): Boolean {
+        if (setBookmark(articleId, state) == 0) insert(
+            ArticlePersonalInfo(
+                articleId = articleId,
+                isBookmark = state
+            )
+        )
+        return isBookmarked(articleId)
+    }
+
     @Query(
         """
         SELECT is_bookmark
         FROM article_personal_infos
-        WHERE article_id = :articleId
+        WHERE article_id = :articleId        
+        LIMIT 1
     """
     )
     fun isBookmarked(articleId: String): Boolean
@@ -89,4 +125,7 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
     """
     )
     fun findPersonalInfos(articleId: String): LiveData<ArticlePersonalInfo>
+
+    @Query("SELECT * FROM article_personal_infos WHERE article_id = :articleId")
+    suspend fun findPersonalInfosTest(articleId: String): ArticlePersonalInfo
 }

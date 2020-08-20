@@ -37,7 +37,8 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT * FROM articles
+            SELECT * 
+            FROM articles
             WHERE id = :id            
             LIMIT 1
         """
@@ -53,7 +54,8 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT * FROM ArticleItem
+            SELECT * 
+            FROM ArticleItem
             WHERE category_id IN (:categoryIds)
         """
     )
@@ -61,7 +63,8 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT a.* FROM ArticleItem AS a
+            SELECT a.* 
+            FROM ArticleItem AS a
             INNER JOIN article_tag_x_ref AS refs ON refs.a_id = a.id 
             WHERE refs.t_id = :tag
         """
@@ -73,7 +76,8 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT * FROM ArticleFull
+            SELECT * 
+            FROM ArticleFull
             WHERE id = :articleId            
             LIMIT 1
         """
@@ -82,10 +86,23 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT id FROM articles
+            SELECT id 
+            FROM articles
             ORDER BY date DESC           
             LIMIT 1
         """
     )
     fun findLastArticleId(): String?
+
+    @Query("SELECT * FROM articles")
+    suspend fun findArticlesTest(): List<Article>
+
+
+    @Query(
+        """
+            DELETE FROM articles
+            WHERE id = :articleId     
+        """
+    )
+    fun deleteById(articleId: String)
 }

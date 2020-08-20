@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data.local.dao
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
@@ -84,7 +85,24 @@ interface ArticleCountsDao : BaseDao<ArticleCounts> {
             WHERE article_id = :articleId
         """
     )
-    suspend fun updateCommentsCount(articleId: String, comments: Int) {
+    suspend fun updateCommentsCount(articleId: String, comments: Int)
 
-    }
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    @Query(
+        """
+        SELECT * 
+        FROM article_counts 
+        WHERE article_id = :articleId
+        """
+    )
+    suspend fun findArticlesCountsTest(articleId: String): ArticleCounts
+
+    @Query(
+        """
+            UPDATE article_counts 
+            SET likes = :likeCount
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun updateLike(articleId: String, likeCount: Int)
 }
