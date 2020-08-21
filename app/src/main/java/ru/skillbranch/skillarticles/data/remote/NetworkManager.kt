@@ -25,7 +25,6 @@ object NetworkManager {
             .addInterceptor(logging)                    // log requests/results
             .authenticator(TokenAuthenticator())
             .addInterceptor(ErrorStatusInterceptor())   // intercept network errors
-
             .build()
 
 

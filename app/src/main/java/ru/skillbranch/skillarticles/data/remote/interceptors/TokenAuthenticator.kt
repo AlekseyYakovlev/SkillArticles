@@ -16,7 +16,8 @@ class TokenAuthenticator : Authenticator {
 
     @Throws(IOException::class)
     override fun authenticate(route: Route?, response: Response): Request? {
-        return if (prefs.accessToken.isNotEmpty() && response.code == 401) {
+//        return if (prefs.accessToken.isNotEmpty() && response.code == 401) {
+        return if (prefs.accessToken.isNotEmpty()) {
             val updatedToken = getNewToken()
             response.request.newBuilder()
                 .header("Authorization", updatedToken)
