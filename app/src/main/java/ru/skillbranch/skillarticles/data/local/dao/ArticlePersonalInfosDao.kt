@@ -99,6 +99,26 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
 
     @Query(
         """
+            UPDATE article_personal_infos 
+            SET is_like = :state, updated_at = CURRENT_TIMESTAMP
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun setLike(articleId: String, state: Boolean): Int
+
+    @Transaction
+    suspend fun setLikeOrInsert(articleId: String, state: Boolean): Boolean {
+        if (setBookmark(articleId, state) == 0) insert(
+            ArticlePersonalInfo(
+                articleId = articleId,
+                isLike = state
+            )
+        )
+        return isLiked(articleId)
+    }
+
+    @Query(
+        """
         SELECT is_bookmark
         FROM article_personal_infos
         WHERE article_id = :articleId        
@@ -124,8 +144,8 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
         LIMIT 1
     """
     )
-    fun findPersonalInfos(articleId: String): LiveData<ArticlePersonalInfo>
+    fun findPersonalInfosLive(articleId: String): LiveData<ArticlePersonalInfo>
 
-    @Query("SELECT * FROM article_personal_infos WHERE article_id = :articleId")
+    @Query("SELECT * FROM article_personal_infos WHERE article_id = :articleId LIMIT 1 ")
     suspend fun findPersonalInfosTest(articleId: String): ArticlePersonalInfo
 }

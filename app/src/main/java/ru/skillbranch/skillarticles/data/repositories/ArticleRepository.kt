@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.ItemKeyedDataSource
+import kotlinx.coroutines.delay
 import ru.skillbranch.skillarticles.data.local.DbManager.db
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.local.dao.ArticleContentsDao
@@ -20,6 +21,7 @@ import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
 import ru.skillbranch.skillarticles.data.remote.req.MessageReq
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.extensions.data.toArticleContent
+import kotlin.coroutines.coroutineContext
 
 
 interface IArticleRepository {
@@ -129,14 +131,21 @@ object ArticleRepository : IArticleRepository {
     override fun getAppSettings(): LiveData<AppSettings> =
         preferences.appSettings //from preferences
 
-    override suspend fun toggleLike(articleId: String): Boolean =
-        if (articlePersonalDao.toggleLikeOrInsert(articleId)) {
-            incrementLike(articleId)
-            true
-        } else {
+    override suspend fun toggleLike(articleId: String): Boolean {
+        //articlePersonalDao.toggleLikeOrInsert(articleId)
+
+        return if (articlePersonalDao.isLiked(articleId)) {
+
             decrementLike(articleId)
+            Log.d("123456"," dec like")
             false
+        } else {
+            incrementLike(articleId)
+            Log.d("123456"," inc like")
+            true
         }
+    }
+
 
     override suspend fun toggleBookmark(articleId: String): Boolean =
         if (articlePersonalDao.isBookmarked(articleId)) {
@@ -158,6 +167,8 @@ object ArticleRepository : IArticleRepository {
 
 
     override suspend fun decrementLike(articleId: String) {
+        articlePersonalDao.setLikeOrInsert(articleId,false)
+
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.decrementLike(articleId)
             return
@@ -175,6 +186,8 @@ object ArticleRepository : IArticleRepository {
     }
 
     override suspend fun incrementLike(articleId: String) {
+        articlePersonalDao.setLikeOrInsert(articleId,true)
+
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.incrementLike(articleId)
             return
