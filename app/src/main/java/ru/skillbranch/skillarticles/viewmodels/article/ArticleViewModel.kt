@@ -184,8 +184,8 @@ class ArticleViewModel(
             notify(Notify.TextMessage("Comment must be not empty"))
             return
         }
+        updateState { it.copy(commentText = comment) }
         if (!currentState.isAuth) {
-            updateState { it.copy(commentText = comment) }
             navigate(NavigationCommand.StartLogin())
         } else {
             launchSafety(null, {
