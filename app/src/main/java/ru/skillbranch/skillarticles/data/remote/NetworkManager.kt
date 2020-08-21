@@ -8,6 +8,7 @@ import ru.skillbranch.skillarticles.AppConfig.BASE_URL
 import ru.skillbranch.skillarticles.data.JsonConverter.moshi
 import ru.skillbranch.skillarticles.data.remote.interceptors.ErrorStatusInterceptor
 import ru.skillbranch.skillarticles.data.remote.interceptors.NetworkStatusInterceptor
+import ru.skillbranch.skillarticles.data.remote.interceptors.TokenAuthenticator
 import java.util.concurrent.TimeUnit
 
 object NetworkManager {
@@ -22,7 +23,9 @@ object NetworkManager {
             .writeTimeout(5, TimeUnit.SECONDS)   // socket timeout (POST, PUT, etc.)
             .addInterceptor(NetworkStatusInterceptor()) // intercept network status
             .addInterceptor(logging)                    // log requests/results
+            .authenticator(TokenAuthenticator())
             .addInterceptor(ErrorStatusInterceptor())   // intercept network errors
+
             .build()
 
 

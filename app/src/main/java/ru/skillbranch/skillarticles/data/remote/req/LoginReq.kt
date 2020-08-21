@@ -5,3 +5,7 @@ data class LoginReq(
     val login: String,
     val password: String
 )
+
+data class AuthRefresh(
+    val refreshToken: String
+)

@@ -14,7 +14,7 @@ object RootRepository {
 
     suspend fun login(login: String, pass: String) {
         val auth = network.login(LoginReq(login, pass))
-        preferences.profile = auth.user
+        auth.user?.let { preferences.profile = it }
         preferences.accessToken = "Bearer ${auth.accessToken}"
         preferences.refreshToken = auth.refreshToken
 
