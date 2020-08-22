@@ -32,8 +32,8 @@ class TokenAuthenticator : Authenticator {
         val oldRefreshToken = prefs.refreshToken
         val response = network.refreshToken(RefreshReq(oldRefreshToken)).execute().body()!!
         val newAccessToken = "Bearer ${response.accessToken}"
-        Log.d("123456 New A token ",newAccessToken)
-        Log.d("123456 New R token ",response.refreshToken)
+        Log.d("123456 New A token ", newAccessToken)
+        Log.d("123456 New R token ", response.refreshToken)
         prefs.accessToken
         prefs.refreshToken = response.refreshToken
 
