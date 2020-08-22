@@ -5,7 +5,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.ItemKeyedDataSource
-import kotlinx.coroutines.delay
 import ru.skillbranch.skillarticles.data.local.DbManager.db
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.local.dao.ArticleContentsDao
@@ -21,7 +20,6 @@ import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
 import ru.skillbranch.skillarticles.data.remote.req.MessageReq
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.extensions.data.toArticleContent
-import kotlin.coroutines.coroutineContext
 
 
 interface IArticleRepository {
@@ -132,18 +130,24 @@ object ArticleRepository : IArticleRepository {
         preferences.appSettings //from preferences
 
     override suspend fun toggleLike(articleId: String): Boolean {
-        //articlePersonalDao.toggleLikeOrInsert(articleId)
-
-        return if (articlePersonalDao.isLiked(articleId)) {
-
-            decrementLike(articleId)
-            Log.d("123456"," dec like")
-            false
-        } else {
+        return if (articlePersonalDao.toggleLikeOrInsert(articleId)) {
             incrementLike(articleId)
-            Log.d("123456"," inc like")
             true
+        } else {
+            decrementLike(articleId)
+            false
         }
+
+//        return if (articlePersonalDao.isLiked(articleId)) {
+//
+//            decrementLike(articleId)
+//            Log.d("123456"," dec like")
+//            false
+//        } else {
+//
+//            Log.d("123456"," inc like")
+//            true
+//        }
     }
 
 
@@ -167,7 +171,7 @@ object ArticleRepository : IArticleRepository {
 
 
     override suspend fun decrementLike(articleId: String) {
-        articlePersonalDao.setLikeOrInsert(articleId,false)
+       // articlePersonalDao.setLikeOrInsert(articleId, false)
 
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.decrementLike(articleId)
@@ -186,7 +190,7 @@ object ArticleRepository : IArticleRepository {
     }
 
     override suspend fun incrementLike(articleId: String) {
-        articlePersonalDao.setLikeOrInsert(articleId,true)
+       // articlePersonalDao.setLikeOrInsert(articleId, true)
 
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.incrementLike(articleId)
