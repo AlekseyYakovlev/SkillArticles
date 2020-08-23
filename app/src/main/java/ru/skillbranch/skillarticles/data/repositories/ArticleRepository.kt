@@ -131,10 +131,10 @@ object ArticleRepository : IArticleRepository {
 
     override suspend fun toggleLike(articleId: String): Boolean {
         return if (articlePersonalDao.toggleLikeOrInsert(articleId)) {
-            incrementLike(articleId)
+            //incrementLike(articleId)
             true
         } else {
-            decrementLike(articleId)
+            //decrementLike(articleId)
             false
         }
 
