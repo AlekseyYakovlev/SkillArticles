@@ -19,10 +19,10 @@ object NetworkManager {
 
         //client
         val client = OkHttpClient().newBuilder()
-            .readTimeout(2, TimeUnit.SECONDS)    // socket timeout (GET)
-            .writeTimeout(5, TimeUnit.SECONDS)   // socket timeout (POST, PUT, etc.)
+            .readTimeout(2, TimeUnit.SECONDS)   // socket timeout (GET)
+            .writeTimeout(5, TimeUnit.SECONDS)  // socket timeout (POST, PUT, etc.)
+            .authenticator(TokenAuthenticator())        // refresh token if response code == 401
             .addInterceptor(NetworkStatusInterceptor()) // intercept network status
-            .authenticator(TokenAuthenticator())
             .addInterceptor(logging)                    // log requests/results
             .addInterceptor(ErrorStatusInterceptor())   // intercept network errors
             .build()

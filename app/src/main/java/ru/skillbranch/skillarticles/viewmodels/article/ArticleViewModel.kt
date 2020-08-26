@@ -138,8 +138,6 @@ class ArticleViewModel(
             }
         launchSafety(handleLikeErrorHandler, { notify(msg) }) {
             repository.toggleLike(articleId)
-//            if (isLike) repository.decrementLike(articleId)
-//            else repository.incrementLike(articleId)
         }
     }
 
