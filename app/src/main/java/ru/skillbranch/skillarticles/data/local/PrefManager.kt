@@ -59,6 +59,10 @@ object PrefManager {
         isBigText = appSettings.isBigText
     }
 
+    fun replaceAvatarUrl(url: String) {
+        profile = profile?.copy(avatar = url)
+    }
+
 //    private val _isAuth = MutableLiveData(false)
 //    private val _appSettings =
 //        MutableLiveData(AppSettings(isDarkMode = false, isBigText = false))
