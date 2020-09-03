@@ -70,7 +70,7 @@
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/chose_category_dialog" />
+            app:destination="@id/dialog_chose_category" />
         <argument
             android:name="is_bookmarks"
             android:defaultValue="true"
@@ -113,7 +113,7 @@
         app:popUpTo="@id/auth"
         app:popUpToInclusive="true" />
     <dialog
-        android:id="@+id/chose_category_dialog"
+        android:id="@+id/dialog_chose_category"
         android:name="ru.skillbranch.skillarticles.ui.dialogs.ChoseCategoryDialog"
         android:label="ChoseCategoryDialog">
         <argument
