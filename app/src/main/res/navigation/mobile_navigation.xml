@@ -45,7 +45,7 @@
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/chose_category_dialog" />
+            app:destination="@id/dialog_chose_category" />
         <argument
             android:name="is_bookmarks"
             android:defaultValue="false"
@@ -55,7 +55,11 @@
         android:id="@+id/nav_profile"
         android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
+            app:destination="@id/dialog_avatar_actions" />
+    </fragment>
     <fragment
         android:id="@+id/nav_bookmarks"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
@@ -118,6 +122,15 @@
         <argument
             android:name="categories"
             app:argType="ru.skillbranch.skillarticles.data.local.entities.CategoryData[]" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_avatar_actions"
+        android:name="ru.skillbranch.skillarticles.ui.dialogs.AvatarActionsDialog"
+        android:label="AvatarActionsDialog">
+        <argument
+            android:name="has_avatar"
+            app:argType="boolean" />
     </dialog>
 
 </navigation>

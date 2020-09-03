@@ -88,4 +88,10 @@ interface RestService {
         @Part file: MultipartBody.Part?,
         @Header("Authorization") accessToken: String
     ): UploadRes
+
+    //https://skill-articles.skill-branch.ru/api/v1/profile/avatar/remove
+    @PUT("profile/avatar/remove")
+    suspend fun remove(
+        @Header("Authorization") accessToken: String
+    ): UploadRes
 }

@@ -11,8 +11,15 @@ object ProfileRepository {
     private val network = NetworkManager.api
 
     fun getProfile(): LiveData<User?> = prefs.profileLive
+
     suspend fun uploadAvatar(body: MultipartBody.Part) {
         val (url) = network.upload(body, prefs.accessToken)
         prefs.replaceAvatarUrl(url)
     }
+
+    suspend fun removeAvatar() {
+        val (url) = network.remove(prefs.accessToken)
+        prefs.replaceAvatarUrl(url)
+    }
+
 }

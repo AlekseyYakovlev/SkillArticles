@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.viewmodels.profile
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Parcel
 import android.os.Parcelable
 import android.provider.Settings
 import androidx.lifecycle.LifecycleOwner
@@ -46,11 +47,6 @@ class ProfileViewModel(handle: SavedStateHandle) :
         activityResults.value = Event(action)
     }
 
-    fun handleTestAction(uri: Uri) {
-        val pendingAction = PendingAction.GalleryAction("image/jpeg")
-        updateState { it.copy(pendingAction = pendingAction) }
-        requestPermissions(storagePermissions)
-    }
 
     fun handlePermission(permissionsResult: Map<String, Pair<Boolean, Boolean>>) {
         val arePermissionsGranted = !permissionsResult.values.map { it.first }.contains(false)
@@ -91,14 +87,11 @@ class ProfileViewModel(handle: SavedStateHandle) :
     fun handleUploadedPhoto(inputStream: InputStream?) {
         inputStream ?: return
 
-        val byteArray = inputStream.use {
-            it.readBytes()
-        }
+        launchSafety(null, { updateState { it.copy(pendingAction = null) } }) {
+            val byteArray = inputStream.use { it.readBytes() }
 
-        val requestFile = byteArray.toRequestBody("image/jpeg".toMediaType())
-        val body = MultipartBody.Part.createFormData("avatar", "name.jpg", requestFile)
-
-        launchSafety {
+            val requestFile = byteArray.toRequestBody("image/jpeg".toMediaType())
+            val body = MultipartBody.Part.createFormData("avatar", "name.jpg", requestFile)
             repository.uploadAvatar(body)
         }
     }
@@ -107,6 +100,29 @@ class ProfileViewModel(handle: SavedStateHandle) :
         activityResults.observe(owner, EventObserver { handle(it) })
     }
 
+    fun handleCameraAction(uri: Uri) {
+        val pendingAction = PendingAction.CameraAction(uri)
+        updateState { it.copy(pendingAction = pendingAction) }
+        requestPermissions(storagePermissions)
+    }
+
+    fun handleGalleryAction() {
+        val pendingAction = PendingAction.GalleryAction("image/jpeg")
+        updateState { it.copy(pendingAction = pendingAction) }
+        requestPermissions(storagePermissions)
+    }
+
+    fun handleEditAction(source: Uri, destination: Uri) {
+        val pendingAction = PendingAction.EditAction(source to destination)
+        updateState { it.copy(pendingAction = pendingAction) }
+        requestPermissions(storagePermissions)
+    }
+
+    fun handleDeleteAction() {
+        launchSafety {
+            repository.removeAvatar()
+        }
+    }
 }
 
 data class ProfileState(
@@ -137,6 +153,30 @@ sealed class PendingAction() : Parcelable {
 
     @Parcelize
     data class CameraAction(override val payload: Uri) : PendingAction()
+
+
+    data class EditAction(override val payload: Pair<Uri, Uri>) : PendingAction(), Parcelable {
+        constructor(parcel: Parcel) : this(Uri.parse(parcel.readString()) to Uri.parse(parcel.readString()))
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeString(payload.first.toString())
+            parcel.writeString(payload.second.toString())
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<EditAction> {
+            override fun createFromParcel(parcel: Parcel): EditAction {
+                return EditAction(parcel)
+            }
+
+            override fun newArray(size: Int): Array<EditAction?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
 }
 
 
