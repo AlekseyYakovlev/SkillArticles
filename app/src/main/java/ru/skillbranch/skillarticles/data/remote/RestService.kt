@@ -4,12 +4,12 @@ package ru.skillbranch.skillarticles.data.remote
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
-import ru.skillbranch.skillarticles.data.remote.req.LoginReq
-import ru.skillbranch.skillarticles.data.remote.req.MessageReq
-import ru.skillbranch.skillarticles.data.remote.req.RefreshReq
+import ru.skillbranch.skillarticles.data.remote.req.*
 import ru.skillbranch.skillarticles.data.remote.res.*
 
 interface RestService {
+
+    // Articles
     //https://skill-articles.skill-branch.ru/api/v1/articles?last=articleId&limit=10
     @GET("articles")
     suspend fun articles(
@@ -43,10 +43,6 @@ interface RestService {
     @GET("articles/{article}/counts")
     suspend fun loadArticleCounts(@Path("article") articleId: String): ArticleCountsRes
 
-    //https://skill-articles.skill-branch.ru/api/v1/auth/login
-    @POST("auth/login")
-    suspend fun login(@Body loginReq: LoginReq): AuthRes
-
     //https://skill-articles.skill-branch.ru/api/v1/articles/{articleId}/decrementLikes
     @POST("articles/{article}/decrementLikes")
     suspend fun decrementLike(
@@ -75,11 +71,34 @@ interface RestService {
         @Header("Authorization") accessToken: String
     ): BookmarkRes
 
+    // Authorisation
+    //https://skill-articles.skill-branch.ru/api/v1/auth/register
+    @POST("auth/register")
+    suspend fun register(@Body loginReq: RegistrationReq): AuthRes
+
+    //https://skill-articles.skill-branch.ru/api/v1/auth/login
+    @POST("auth/login")
+    suspend fun login(@Body loginReq: LoginReq): AuthRes
+
     // https://skill-articles.skill-branch.ru/api/v1/auth/refresh
     @POST("auth/refresh")
     fun refreshToken(
         @Body refreshToken: RefreshReq
     ): Call<AuthRes>
+
+    // Profile
+    //https://skill-articles.skill-branch.ru/api/v1/profile
+    @GET("profile")
+    suspend fun loadProfile(
+        @Header("Authorization") accessToken: String
+    ): ProfileRes
+
+    //https://skill-articles.skill-branch.ru/api/v1/profile
+    @PUT("profile")
+    suspend fun updateProfile(
+        @Body profileInfo: ProfileReq,
+        @Header("Authorization") accessToken: String
+    ): ProfileRes
 
     //https://skill-articles.skill-branch.ru/api/v1/profile/avatar/upload
     @Multipart
