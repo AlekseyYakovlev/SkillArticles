@@ -11,12 +11,16 @@ android {
     buildToolsVersion '30.0.2'
     defaultConfig {
         applicationId "ru.skillbranch.skillarticles"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        //testInstrumentationRunner "ru.skillbranch.skillarticles.CustomTestRunner"
+        testInstrumentationRunner "ru.skillbranch.skillarticles.CustomTestRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -30,6 +34,17 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+    androidExtensions {
+        experimental = true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -59,8 +74,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
-    // Navigation Dynamic Feature Module Support
-    //implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigation_version"
 
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
@@ -89,19 +102,19 @@ dependencies {
     // Fragment KTX
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
+    androidTestImplementation 'org.mockito:mockito-core:2.28.2'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.25.1'
     androidTestImplementation 'com.github.tmurakami:dexopener:2.0.4'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation "org.mockito:mockito-core:2.28.2"
-    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.25.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'com.jraska.livedata:testing-ktx:1.1.1'
+    androidTestImplementation 'com.jraska.livedata:testing-ktx:1.1.2'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
 
 }
