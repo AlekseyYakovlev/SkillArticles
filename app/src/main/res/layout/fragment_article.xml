@@ -158,6 +158,7 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/colorSurface"
                 android:nestedScrollingEnabled="false"
+                android:paddingStart="16dp"
                 android:paddingBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -165,7 +166,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/wrap_comments"
                 tools:listitem="@layout/item_comment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

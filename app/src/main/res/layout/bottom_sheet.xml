@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take from camera" />
+            android:text="Choose from gallery" />
 
     </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take from camera" />
+            android:text="Edit" />
 
     </LinearLayout>
 
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take from camera" />
+            android:text="Delete" />
 
     </LinearLayout>
 
