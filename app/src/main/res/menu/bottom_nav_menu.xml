@@ -8,10 +8,10 @@
         android:id="@+id/nav_bookmarks"
         android:icon="@drawable/bookmark_states"
         android:title="@string/title_bookmarks"/>
-    <item
-        android:id="@+id/nav_transcriptions"
-        android:icon="@drawable/ic_translate_black_24dp"
-        android:title="@string/title_transcriptions"/>
+<!--    <item-->
+<!--        android:id="@+id/nav_transcriptions"-->
+<!--        android:icon="@drawable/ic_translate_black_24dp"-->
+<!--        android:title="@string/title_transcriptions"/>-->
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
