@@ -5,7 +5,7 @@ import okhttp3.MultipartBody
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.models.User
 import ru.skillbranch.skillarticles.data.remote.NetworkManager
-import ru.skillbranch.skillarticles.data.remote.req.ProfileReq
+import ru.skillbranch.skillarticles.data.remote.req.EditProfileReq
 
 interface IProfileRepository {
     fun getProfile(): LiveData<User?>
