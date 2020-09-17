@@ -96,7 +96,7 @@ interface RestService {
     //https://skill-articles.skill-branch.ru/api/v1/profile
     @PUT("profile")
     suspend fun updateProfile(
-        @Body profileInfo: ProfileReq,
+        @Body profileInfo: EditProfileReq,
         @Header("Authorization") accessToken: String
     ): ProfileRes
 
