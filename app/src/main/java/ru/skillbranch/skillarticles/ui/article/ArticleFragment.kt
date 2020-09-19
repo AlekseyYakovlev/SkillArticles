@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.ui.article
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -13,9 +14,11 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.FileProvider
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -32,6 +35,9 @@ import kotlinx.android.synthetic.main.fragment_article.*
 import kotlinx.android.synthetic.main.layout_bottombar.view.*
 import kotlinx.android.synthetic.main.layout_submenu.view.*
 import kotlinx.android.synthetic.main.search_view_layout.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.Element
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
@@ -92,6 +98,40 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         get() = root.findViewById<Bottombar>(R.id.bottombar)
     private val submenu
         get() = root.findViewById<ArticleSubmenu>(R.id.submenu)
+
+    private val handleShareCallback = {
+        if (binding.source.isNotBlank()) {
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val sourceFile =
+                    Glide.with(root).asFile().load(args.poster).submit()
+                        .get()
+
+                val sourceUri = FileProvider.getUriForFile(
+                    requireContext(),
+                    "${requireContext().packageName}.provider",
+                    sourceFile
+                )
+                withContext(Dispatchers.Main) {
+
+                    val share = Intent.createChooser(Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, binding.source)
+                        putExtra(Intent.EXTRA_TITLE, args.title)
+                        putExtra(Intent.EXTRA_SUBJECT, args.title)
+
+                        //type = "text/plain"
+                        data = sourceUri
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }, null)
+                    startActivity(share)
+                }
+                //Log.d("123456", sourceUri.toString())
+            }
+        }
+
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -299,7 +339,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
     private fun setupBottomBar() {
         bottombar.btn_like.setOnClickListener { viewModel.handleLike() }
         bottombar.btn_bookmark.setOnClickListener { viewModel.handleBookmark() }
-        bottombar.btn_share.setOnClickListener { viewModel.handleShare() }
+        bottombar.btn_share.setOnClickListener { viewModel.handleShare(handleShareCallback) }
         bottombar.btn_settings.setOnClickListener { viewModel.handleToggleMenu() }
 
         bottombar.btn_result_up.setOnClickListener {
@@ -389,7 +429,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             tv_text_content.setContent(it)
         }
 
-        val markdownBuilder = MarkdownBuilder(requireContext())
+        private val markdownBuilder = MarkdownBuilder(requireContext())
 
         private var hashtags: List<String> by RenderProp(emptyList()) {
             tv_hashtags.setText(
@@ -403,7 +443,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             )
         }
 
-        private var source: String by RenderProp("") {
+        var source: String by RenderProp("") {
             if (it.isNotEmpty()) {
                 tv_source.isVisible = true
                 tv_source.setText(

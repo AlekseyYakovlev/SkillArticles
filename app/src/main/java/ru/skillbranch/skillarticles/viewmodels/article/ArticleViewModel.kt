@@ -142,9 +142,11 @@ class ArticleViewModel(
     }
 
     //not implemented
-    override fun handleShare() {
-        val msg = "Share is not implemented"
-        notify(Notify.ErrorMessage(msg, "OK", null))
+    override fun handleShare(handleShareCallback: () -> Unit) {
+//        val msg = "Share is not implemented"
+//        notify(Notify.ErrorMessage(msg, "OK", null))
+        handleShareCallback()
+
     }
 
     //session state
