@@ -55,7 +55,7 @@
         android:id="@+id/nav_profile"
         android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
             app:destination="@id/dialog_avatar_actions" />

@@ -130,24 +130,7 @@ object ArticleRepository : IArticleRepository {
         preferences.appSettings //from preferences
 
     override suspend fun toggleLike(articleId: String): Boolean {
-        return if (articlePersonalDao.toggleLikeOrInsert(articleId)) {
-            //incrementLike(articleId)
-            true
-        } else {
-            //decrementLike(articleId)
-            false
-        }
-
-//        return if (articlePersonalDao.isLiked(articleId)) {
-//
-//            decrementLike(articleId)
-//            Log.d("123456"," dec like")
-//            false
-//        } else {
-//
-//            Log.d("123456"," inc like")
-//            true
-//        }
+        return articlePersonalDao.toggleLikeOrInsert(articleId)
     }
 
 
@@ -160,8 +143,6 @@ object ArticleRepository : IArticleRepository {
             true
         }
 
-    // articlePersonalDao.toggleBookmarkOrInsert(articleId)
-
 
     override fun updateSettings(appSettings: AppSettings) {
         preferences.setAppSettings(appSettings)
@@ -171,8 +152,6 @@ object ArticleRepository : IArticleRepository {
 
 
     override suspend fun decrementLike(articleId: String) {
-       // articlePersonalDao.setLikeOrInsert(articleId, false)
-
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.decrementLike(articleId)
             return

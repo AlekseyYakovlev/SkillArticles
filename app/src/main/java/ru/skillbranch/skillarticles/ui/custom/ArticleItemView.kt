@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.ui.custom
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
+import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,7 +19,8 @@ import ru.skillbranch.skillarticles.extensions.shortFormat
 import kotlin.math.max
 
 class ArticleItemView constructor(
-    context: Context
+    context: Context,
+    attrs: AttributeSet? = null
 ) : ViewGroup(context, null, 0) {
     private val iv_poster: ImageView
     private val iv_category: ImageView
