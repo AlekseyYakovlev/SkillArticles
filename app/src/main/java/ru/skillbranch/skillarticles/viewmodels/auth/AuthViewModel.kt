@@ -6,6 +6,7 @@ import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
+import kotlin.math.log
 
 class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle, AuthState()),
     IAuthViewModel {
@@ -34,6 +35,16 @@ class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle,
     }
 
     fun handleRegister(name: String, login: String, password: String, dest: Int?) {
+        if (name.isEmpty() || login.isEmpty() || password.isEmpty()){
+            notify(
+                //FIXME: Change to "Name, login, password are required fields and must not be empty"
+                Notify.ErrorMessage(
+                    "Name, login, password it is required fields and not must be empty"
+                )
+            )
+            return
+        }
+
         if (!isNameValid(name)) {
             notify(
                 Notify.ErrorMessage(
