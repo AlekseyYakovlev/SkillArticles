@@ -1,11 +1,10 @@
-package ru.skillbranch.skillarticles.ui.registration
+package ru.skillbranch.skillarticles.ui.auth
 
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_registration.*
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.ui.auth.AuthFragmentArgs
 import ru.skillbranch.skillarticles.ui.base.BaseFragment
 import ru.skillbranch.skillarticles.viewmodels.auth.AuthViewModel
 
