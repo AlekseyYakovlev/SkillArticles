@@ -25,7 +25,7 @@ class RegistrationFragment : BaseFragment<AuthViewModel>() {
         }
 
         et_name.doAfterTextChanged {
-            if (nameHasError(it.toString())) {
+            if (viewModel.isNameValid(it.toString())) {
                 wrap_name.error =
                     "Login must be at least 3 symbols long and contain only letters and digits"
             } else wrap_name.error = null
@@ -33,13 +33,13 @@ class RegistrationFragment : BaseFragment<AuthViewModel>() {
         }
 
         et_login.doAfterTextChanged {
-            if (nameHasError(it.toString())) {
+            if (viewModel.isEmailValid(it.toString())) {
                 wrap_login.error = "Incorrect email"
             } else wrap_login.error = null
         }
 
         et_password.doAfterTextChanged {
-            if (nameHasError(it.toString())) {
+            if (viewModel.isPasswordValid(it.toString())) {
                 wrap_password.error =
                     "Password must be at least 8 symbols long and contain only letters and digits"
             } else wrap_password.error = null
@@ -51,14 +51,4 @@ class RegistrationFragment : BaseFragment<AuthViewModel>() {
             } else wrap_confirm.error = null
         }
     }
-
-    private fun nameHasError(name: String): Boolean =
-
-        when {
-            name.isBlank() -> true
-            name.contains(' ') -> true
-            name.length < 3 -> true
-            else -> false
-        }
-
 }
