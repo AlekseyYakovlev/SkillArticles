@@ -46,15 +46,15 @@ class ChoseCategoryDialog : DialogFragment() {
                 }
 
         val adb = AlertDialog.Builder(requireContext())
-            .setTitle("Choose categories")
+            .setTitle(R.string.dialog_choose_category__choose_categories)
             .setView(rv)
-            .setPositiveButton("Apply") { _, _ ->
+            .setPositiveButton(R.string.dialog_choose_category__apply) { _, _ ->
                 setFragmentResult(
                     CHOOSE_CATEGORY_KEY,
                     bundleOf(SELECTED_CATEGORIES to selectedCategories.toList())
                 )
             }
-            .setNegativeButton("Reset") { _, _ ->
+            .setNegativeButton(R.string.dialog_choose_category__reset) { _, _ ->
                 setFragmentResult(
                     CHOOSE_CATEGORY_KEY,
                     bundleOf(SELECTED_CATEGORIES to emptyList<String>())
