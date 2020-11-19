@@ -111,13 +111,11 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
                         putExtra(Intent.EXTRA_TITLE, args.title)
                         putExtra(Intent.EXTRA_SUBJECT, args.title)
 
-                        //type = "text/plain"
                         data = sourceUri
                         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     }, null)
                     startActivity(share)
                 }
-                //Log.d("123456", sourceUri.toString())
             }
         }
 
@@ -368,7 +366,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         }
     }
 
-    inner class ArticleBinding() : Binding() {
+    inner class ArticleBinding : Binding() {
         var isFocusedSearch: Boolean = false
         var searchQuery: String? = null
 

@@ -3,12 +3,14 @@ package ru.skillbranch.skillarticles.ui.auth
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_registration.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.ui.base.BaseFragment
 import ru.skillbranch.skillarticles.viewmodels.auth.AuthViewModel
 
-class RegistrationFragment() : BaseFragment<AuthViewModel>() {
+@AndroidEntryPoint
+class RegistrationFragment : BaseFragment<AuthViewModel>() {
     override val viewModel: AuthViewModel by viewModels()
     override val layout: Int = R.layout.fragment_registration
     private val args: AuthFragmentArgs by navArgs()

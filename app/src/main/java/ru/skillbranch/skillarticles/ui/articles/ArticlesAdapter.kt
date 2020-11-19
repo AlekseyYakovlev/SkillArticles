@@ -5,14 +5,12 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import dagger.hilt.android.scopes.ActivityScoped
 import ru.skillbranch.skillarticles.data.local.entities.ArticleItem
 import ru.skillbranch.skillarticles.ui.custom.ArticleItemView
 import javax.inject.Inject
 
-@ActivityScoped
 class ArticlesAdapter @Inject constructor(
-    private val listener: (ArticleItem, Boolean) -> Unit
+    private val listener: IArticlesView
 ) : PagedListAdapter<ArticleItem, ArticleVH>(ArticleDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleVH {
@@ -21,7 +19,7 @@ class ArticlesAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: ArticleVH, position: Int) {
-        holder.bind(getItem(position), listener)
+        holder.bind(getItem(position), listener::clickArticle)
     }
 }
 

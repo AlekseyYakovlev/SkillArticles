@@ -36,7 +36,7 @@ import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArticlesFragment() : BaseFragment<ArticlesViewModel>(), IArticlesView
+class ArticlesFragment : BaseFragment<ArticlesViewModel>(), IArticlesView
 {
     override val binding: ArticlesBinding by lazy { ArticlesBinding() }
     override val viewModel: ArticlesViewModel by activityViewModels()
@@ -46,24 +46,6 @@ class ArticlesFragment() : BaseFragment<ArticlesViewModel>(), IArticlesView
     @Inject
     lateinit var suggestionsAdapter: SimpleCursorAdapter
 
-
-//    private val articleClickListener = { item: ArticleItem, isBookmarked: Boolean ->
-//        if (isBookmarked) {
-//            viewModel.handleToggleBookmark(item.id)
-//        } else {
-//            val action = ArticlesFragmentDirections.actionToPageArticle(
-//                item.id,
-//                item.author,
-//                item.authorAvatar!!,
-//                item.category,
-//                item.categoryIcon,
-//                item.poster,
-//                item.title,
-//                item.date
-//            )
-//            viewModel.navigate(NavigationCommand.To(action.actionId, action.arguments))
-//        }
-//    }
     @Inject
     lateinit var articlesAdapter: ArticlesAdapter
 
