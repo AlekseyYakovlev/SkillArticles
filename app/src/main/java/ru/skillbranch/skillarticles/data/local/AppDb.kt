@@ -1,21 +1,11 @@
 package ru.skillbranch.skillarticles.data.local
 
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ru.skillbranch.skillarticles.App
 import ru.skillbranch.skillarticles.BuildConfig
 import ru.skillbranch.skillarticles.data.local.dao.*
 import ru.skillbranch.skillarticles.data.local.entities.*
-
-object DbManager {
-    val db = Room.databaseBuilder(
-        App.applicationContext(),
-        AppDb::class.java,
-        AppDb.DATABASE_NAME
-    ).build()
-}
 
 @Database(
     entities = [Article::class,

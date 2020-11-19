@@ -10,15 +10,14 @@ import ru.skillbranch.skillarticles.ui.RootActivity
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.Loading
+import javax.inject.Inject
+
 
 abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment() {
 
-    //mock root for testing
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    var _mockRoot: RootActivity? = null
+    @Inject
+    lateinit var root: RootActivity
 
-    val root: RootActivity
-        get() = _mockRoot ?: activity as RootActivity
     open val binding: Binding? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)

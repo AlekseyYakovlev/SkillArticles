@@ -1,11 +1,9 @@
 package ru.skillbranch.skillarticles.data.repositories
 
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.ItemKeyedDataSource
-import ru.skillbranch.skillarticles.data.local.DbManager.db
 import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.data.local.dao.ArticleContentsDao
 import ru.skillbranch.skillarticles.data.local.dao.ArticleCountsDao
@@ -13,16 +11,16 @@ import ru.skillbranch.skillarticles.data.local.dao.ArticlePersonalInfosDao
 import ru.skillbranch.skillarticles.data.local.dao.ArticlesDao
 import ru.skillbranch.skillarticles.data.local.entities.ArticleFull
 import ru.skillbranch.skillarticles.data.models.AppSettings
-import ru.skillbranch.skillarticles.data.remote.NetworkManager
 import ru.skillbranch.skillarticles.data.remote.RestService
 import ru.skillbranch.skillarticles.data.remote.err.ApiError
 import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
 import ru.skillbranch.skillarticles.data.remote.req.MessageReq
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.extensions.data.toArticleContent
+import javax.inject.Inject
 
 
-interface IArticleRepository {
+interface IArticleRepository : IRepository {
     /**
      * получение настроек приложения из SharedPreferences
      */
@@ -101,26 +99,14 @@ interface IArticleRepository {
 
 }
 
-object ArticleRepository : IArticleRepository {
-    private val network = NetworkManager.api
-    private val preferences = PrefManager
-    private var articleDao = db.articlesDao()
-    private var articlePersonalDao = db.articlePersonalInfosDao()
-    private var articleCountsDao = db.articleCountsDao()
-    private var articleContentDao = db.articleContentsDao()
-
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    fun setupTestDao(
-        articlesDao: ArticlesDao,
-        articlePersonalDao: ArticlePersonalInfosDao,
-        articleCountsDao: ArticleCountsDao,
-        articleContentDao: ArticleContentsDao
-    ) {
-        this.articleDao = articlesDao
-        this.articlePersonalDao = articlePersonalDao
-        this.articleCountsDao = articleCountsDao
-        this.articleContentDao = articleContentDao
-    }
+class ArticleRepository @Inject constructor(
+    private val network: RestService,
+    private val preferences: PrefManager,
+    private val articleDao: ArticlesDao,
+    private val articlePersonalDao: ArticlePersonalInfosDao,
+    private val articleCountsDao: ArticleCountsDao,
+    private val articleContentDao: ArticleContentsDao,
+) : IArticleRepository {
 
     override fun findArticle(articleId: String): LiveData<ArticleFull> {
         return articleDao.findFullArticles(articleId)
@@ -169,7 +155,7 @@ object ArticleRepository : IArticleRepository {
     }
 
     override suspend fun incrementLike(articleId: String) {
-       // articlePersonalDao.setLikeOrInsert(articleId, true)
+        // articlePersonalDao.setLikeOrInsert(articleId, true)
 
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.incrementLike(articleId)

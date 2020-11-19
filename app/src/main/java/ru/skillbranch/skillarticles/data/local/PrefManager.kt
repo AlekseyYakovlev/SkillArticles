@@ -1,12 +1,13 @@
 package ru.skillbranch.skillarticles.data.local
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.map
 import androidx.preference.PreferenceManager
+import com.squareup.moshi.Moshi
 import ru.skillbranch.skillarticles.App
-import ru.skillbranch.skillarticles.data.JsonConverter.moshi
 import ru.skillbranch.skillarticles.data.delegates.PrefDelegate
 import ru.skillbranch.skillarticles.data.delegates.PrefLiveDelegate
 import ru.skillbranch.skillarticles.data.delegates.PrefLiveObjDelegate
@@ -15,13 +16,10 @@ import ru.skillbranch.skillarticles.data.models.AppSettings
 import ru.skillbranch.skillarticles.data.models.User
 
 
-object PrefManager {
-    private const val IS_DARK_MODE = "isDarkMode"
-    private const val IS_BIG_TEXT = "isBigText"
-    private const val PROFILE = "profile"
-    private const val ACCESS_TOKEN = "accessToken"
-
-
+class PrefManager(
+    val context: Context,
+    val moshi: Moshi
+) {
     internal val preferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(App.applicationContext())
     }
@@ -101,4 +99,12 @@ object PrefManager {
 //        _isAuth.postValue(isAuth)
 //        preferences.edit().putBoolean(IS_AUTH, isAuth).apply()
 //    }
+
+    companion object {
+        private const val IS_DARK_MODE = "isDarkMode"
+        private const val IS_BIG_TEXT = "isBigText"
+        private const val PROFILE = "profile"
+        private const val ACCESS_TOKEN = "accessToken"
+    }
+
 }

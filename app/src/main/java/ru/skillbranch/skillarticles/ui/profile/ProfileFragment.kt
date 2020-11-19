@@ -12,19 +12,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.VisibleForTesting
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.savedstate.SavedStateRegistryOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.ui.RootActivity
 import ru.skillbranch.skillarticles.ui.base.BaseFragment
 import ru.skillbranch.skillarticles.ui.base.Binding
 import ru.skillbranch.skillarticles.ui.delegates.RenderProp
@@ -38,30 +36,14 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileFragment() : BaseFragment<ProfileViewModel>() {
+@AndroidEntryPoint
+class ProfileFragment : BaseFragment<ProfileViewModel>() {
 
-    //for testing
     private lateinit var resultRegistry: ActivityResultRegistry
-    var _mockFactory: ((SavedStateRegistryOwner) -> ViewModelProvider.Factory)? = null
 
-    override val viewModel: ProfileViewModel by viewModels {
-        _mockFactory?.invoke(this) ?: defaultViewModelProviderFactory
-    }
-
+    override val viewModel: ProfileViewModel by activityViewModels()
     override val layout: Int = R.layout.fragment_profile
     override val binding: ProfileBinding by lazy { ProfileBinding() }
-
-    //constructor testing
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    constructor(
-        mockRoot: RootActivity,
-        testRegistry: ActivityResultRegistry? = null,
-        mockFactory: ((SavedStateRegistryOwner) -> ViewModelProvider.Factory)? = null
-    ) : this() {
-        _mockRoot = mockRoot
-        _mockFactory = mockFactory
-        testRegistry?.let { resultRegistry = it }
-    }
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

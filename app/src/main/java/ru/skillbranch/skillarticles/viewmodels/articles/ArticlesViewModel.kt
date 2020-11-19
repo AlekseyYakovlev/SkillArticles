@@ -1,11 +1,11 @@
 package ru.skillbranch.skillarticles.viewmodels.articles
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import ru.skillbranch.skillarticles.data.local.entities.ArticleItem
 import ru.skillbranch.skillarticles.data.local.entities.CategoryData
 import ru.skillbranch.skillarticles.data.remote.err.NoNetworkError
@@ -16,9 +16,11 @@ import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
 import java.util.concurrent.Executors
 
-class ArticlesViewModel(handle: SavedStateHandle) :
-    BaseViewModel<ArticlesState>(handle, ArticlesState()) {
-    private val repository = ArticlesRepository
+class ArticlesViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: ArticlesRepository
+) : BaseViewModel<ArticlesState>(handle, ArticlesState()) {
+
     private var isLoadingInitial: Boolean = false
     private var isLoadingAfter: Boolean = false
     private val listConfig by lazy {
@@ -126,7 +128,7 @@ class ArticlesViewModel(handle: SavedStateHandle) :
                         Notify.TextMessage("Network is not available, failed to fetch an article")
                     )
                     else -> notify(
-                        Notify.ErrorMessage(throwable.message ?: "Something wrong")
+                        Notify.ErrorMessage(throwable.message ?: "Something went wrong")
                     )
                 }
             }
@@ -154,9 +156,9 @@ class ArticlesViewModel(handle: SavedStateHandle) :
                 start = lastArticleId,
                 size = if (lastArticleId == null) listConfig.initialLoadSizeHint else -listConfig.pageSize
             )
-            withContext(Dispatchers.Main) {
-                notify(Notify.TextMessage("Load $count new articles"))
-            }
+//            withContext(Dispatchers.Main) {
+//                notify(Notify.TextMessage("Load $count new articles"))
+//            }
         }
     }
 

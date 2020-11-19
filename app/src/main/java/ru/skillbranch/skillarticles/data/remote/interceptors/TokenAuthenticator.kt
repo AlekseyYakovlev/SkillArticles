@@ -1,17 +1,19 @@
 package ru.skillbranch.skillarticles.data.remote.interceptors
 
+import dagger.Lazy
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import ru.skillbranch.skillarticles.data.local.PrefManager
-import ru.skillbranch.skillarticles.data.remote.NetworkManager
+import ru.skillbranch.skillarticles.data.remote.RestService
 import ru.skillbranch.skillarticles.data.remote.req.RefreshReq
+import javax.inject.Inject
 
-class TokenAuthenticator : Authenticator {
-    private val prefs = PrefManager
-    private val api by lazy { NetworkManager.api }
-
+class TokenAuthenticator @Inject constructor(
+    private val prefs: PrefManager,
+    private val lazyApi: Lazy<RestService>,
+) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (prefs.accessToken.isNotEmpty() && response.code == 401) {
             getNewToken()?.let {
@@ -24,7 +26,7 @@ class TokenAuthenticator : Authenticator {
 
     private fun getNewToken(): String? {
         val oldRefreshToken = prefs.refreshToken
-        val response = api.refreshToken(RefreshReq(oldRefreshToken)).execute()
+        val response = lazyApi.get().refreshToken(RefreshReq(oldRefreshToken)).execute()
         return if (response.isSuccessful) {
             response.body()?.let {
                 val newAccessToken = "Bearer ${it.accessToken}"

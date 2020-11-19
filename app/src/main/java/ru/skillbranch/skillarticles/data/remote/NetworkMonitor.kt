@@ -8,7 +8,9 @@ import android.net.NetworkRequest
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 
-object NetworkMonitor {
+class NetworkMonitor(
+    val context: Context
+) {
     var isConnected: Boolean = false
     val isConnectedLive = MutableLiveData(false)
     val networkTypeLive = MutableLiveData(NetworkType.NONE)

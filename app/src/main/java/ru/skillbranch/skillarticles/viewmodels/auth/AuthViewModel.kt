@@ -1,16 +1,24 @@
 package ru.skillbranch.skillarticles.viewmodels.auth
 
+import android.content.Context
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
+import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.RootRepository
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
-import kotlin.math.log
 
-class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle, AuthState()),
+class AuthViewModel @ViewModelInject constructor(
+    @Assisted handle: SavedStateHandle,
+    private val repository: RootRepository,
+) : BaseViewModel<AuthState>(handle, AuthState()),
     IAuthViewModel {
+
     companion object {
+
         //The name must be at least 3 characters long and contain
         // only letters and numbers and can also contain the characters "-" and "_"
         val validNameRegex = """[0-9a-z_\-]{3,}""".toRegex()
@@ -18,9 +26,6 @@ class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle,
         //Password must be at least 8 characters long and contain only letters and numbers
         val validPasswordRegex = """[0-9a-z]{8,}""".toRegex()
     }
-
-
-    private val repository = RootRepository
 
     init {
         subscribeOnDataSource(repository.isAuth()) { isAuth, state ->
@@ -34,39 +39,36 @@ class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle,
         }
     }
 
-    fun handleRegister(name: String, login: String, password: String, dest: Int?) {
-        if (name.isEmpty() || login.isEmpty() || password.isEmpty()){
+    fun handleRegister(
+        name: String,
+        login: String,
+        password: String,
+        dest: Int?,
+        context: Context
+    ) {
+        if (name.isEmpty() || login.isEmpty() || password.isEmpty()) {
             notify(
-                //FIXME: Change to "Name, login, password are required fields and must not be empty"
-                Notify.ErrorMessage(
-                    "Name, login, password it is required fields and not must be empty"
-                )
+                Notify.ErrorMessage(context.getString(R.string.reg_err__empty_field))
             )
             return
         }
 
         if (!isNameValid(name)) {
             notify(
-                Notify.ErrorMessage(
-                    """The name must be at least 3 characters long and contain only letters and numbers and can also contain the characters "-" and "_""""
-                )
+                Notify.ErrorMessage(context.getString(R.string.reg_err__invalid_name))
             )
             return
         }
         if (!isEmailValid(login)) {
             notify(
-                Notify.ErrorMessage(
-                    "Incorrect Email entered"
-                )
+                Notify.ErrorMessage(context.getString(R.string.reg_err__invalid_email))
             )
             return
         }
 
         if (!isPasswordValid(password)) {
             notify(
-                Notify.ErrorMessage(
-                    "Password must be at least 8 characters long and contain only letters and numbers"
-                )
+                Notify.ErrorMessage(context.getString(R.string.reg_err__invalid_password))
             )
             return
         }
@@ -76,15 +78,15 @@ class AuthViewModel(handle: SavedStateHandle) : BaseViewModel<AuthState>(handle,
         }
     }
 
-     fun isNameValid(name: String): Boolean =
-         name.isNotEmpty() && name.matches(validNameRegex)
+    fun isNameValid(name: String): Boolean =
+        name.isNotEmpty() && name.matches(validNameRegex)
 
-     fun isEmailValid(email:String): Boolean =
-         email.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    fun isEmailValid(email: String): Boolean =
+        email.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
 
-     fun isPasswordValid(password: String): Boolean =
-         password.isNotEmpty() && password.matches(validPasswordRegex)
+    fun isPasswordValid(password: String): Boolean =
+        password.isNotEmpty() && password.matches(validPasswordRegex)
 }
 
 data class AuthState(val isAuth: Boolean = false) : IViewModelState
