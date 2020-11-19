@@ -11,7 +11,7 @@ import ru.skillbranch.skillarticles.ui.custom.ArticleItemView
 import javax.inject.Inject
 
 @ActivityScoped
-class ArticlesAdapter (
+class ArticlesAdapter @Inject constructor(
     private val listener: (ArticleItem, Boolean) -> Unit
 ) : PagedListAdapter<ArticleItem, ArticleVH>(ArticleDiffCallback()) {
 

@@ -22,10 +22,10 @@ abstract class ArticlesModule {
         repo: ArticlesRepository
     ): IRepository
 
-//    @Binds
-//    abstract fun bindClickListener(
-//        fragment: ArticlesFragment
-//    ): IArticlesView
+    @Binds
+    abstract fun bindClickListener(
+        fragment: ArticlesFragment
+    ): IArticlesView
 
     companion object {
        @Provides
