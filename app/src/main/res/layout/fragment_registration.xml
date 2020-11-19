@@ -6,31 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.AuthFragment">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="72dp"
-        android:src="@drawable/ic_logo_full"
-        app:layout_constraintBottom_toTopOf="@+id/wrap_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/wrap_name"
         style="@style/Base.Widget.MaterialComponents.TextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="97dp"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="56dp"
-        android:hint="User name"
+        android:hint="@string/reg__name"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="clear_text"
-        app:layout_constraintBottom_toTopOf="@id/wrap_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/et_name"
@@ -43,17 +32,15 @@
         android:id="@+id/wrap_login"
         style="@style/Base.Widget.MaterialComponents.TextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="97dp"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="56dp"
-        android:hint="Email (login)"
+        android:hint="@string/reg__email"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="clear_text"
-        app:layout_constraintBottom_toTopOf="@id/wrap_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wrap_name"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toBottomOf="@+id/wrap_name">
 
         <EditText
             android:id="@+id/et_login"
@@ -66,13 +53,12 @@
         android:id="@+id/wrap_password"
         style="@style/Base.Widget.MaterialComponents.TextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="97dp"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="56dp"
-        android:hint="Enter a password"
+        android:hint="@string/reg__password"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="password_toggle"
-        app:layout_constraintBottom_toTopOf="@id/wrap_confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wrap_login">
@@ -88,12 +74,11 @@
         android:id="@+id/wrap_confirm"
         style="@style/Base.Widget.MaterialComponents.TextInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="97dp"
         android:layout_marginStart="56dp"
         android:layout_marginEnd="56dp"
-        android:hint="Confirm password"
+        android:hint="@string/reg__confirm_password"
         android:theme="@style/TextInputLayoutAppearance"
-        app:layout_constraintBottom_toTopOf="@id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wrap_password">
@@ -113,11 +98,20 @@
         android:layout_marginEnd="56dp"
         android:backgroundTint="@color/color_accent"
         android:enabled="true"
-        android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/reg__btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wrap_confirm" />
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_logo_full"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

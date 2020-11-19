@@ -83,12 +83,12 @@
         tools:layout="@layout/fragment_transcriptions" />
     <navigation
         android:id="@+id/auth"
-        android:label="@string/title_authorization"
+        android:label="@string/auth__title_authorization"
         app:startDestination="@id/nav_auth">
         <fragment
             android:id="@+id/nav_auth"
             android:name="ru.skillbranch.skillarticles.ui.auth.AuthFragment"
-            android:label="@string/title_authorization"
+            android:label="@string/auth__title_authorization"
             tools:layout="@layout/fragment_auth">
 
             <argument
@@ -99,12 +99,12 @@
         <fragment
             android:id="@+id/page_privacy_policy"
             android:name="ru.skillbranch.skillarticles.ui.auth.PrivacyPolicyFragment"
-            android:label="@string/title_privacy_policy"
+            android:label="@string/auth__title_privacy_policy"
             tools:layout="@layout/fragment_privacy_policy" />
         <fragment
             android:id="@+id/registrationFragment"
             android:name="ru.skillbranch.skillarticles.ui.auth.RegistrationFragment"
-            android:label="Registration">
+            android:label="@string/auth__title_registration">
             <argument
                 android:name="private_destination"
                 android:defaultValue="-1"

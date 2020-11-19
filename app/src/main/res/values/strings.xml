@@ -22,6 +22,28 @@ Integer ac magna sed velit luctus maximus. Quisque vehicula bibendum tincidunt. 
 Aenean sit amet nisi ut nibh tempus egestas vel non mauris. Nulla blandit, justo vitae ultrices posuere, felis nulla placerat enim, quis egestas dui massa at nisi. In malesuada porttitor nunc, non malesuada purus tincidunt sit amet. Fusce in arcu nec elit posuere eleifend a vitae eros. Vivamus id efficitur metus, ac congue mi. Sed placerat justo sed risus egestas, ut varius massa tincidunt. Praesent sed mauris sit amet nibh gravida vestibulum sed ut quam. Nam feugiat felis odio, id sagittis ante viverra vel. In fermentum facilisis nibh, non mattis mauris. Nam pretium aliquet nunc, eleifend varius ante maximus vitae. Quisque ante mi, sodales quis posuere in, ornare in lectus. Curabitur rutrum malesuada metus, nec consequat dolor scelerisque at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 
 Nullam sem sem, rhoncus vitae porttitor et, pretium eu ipsum. Sed semper semper arcu ut efficitur. Donec luctus enim sed porttitor malesuada. Donec lectus nisl, tristique eu odio vel, facilisis consequat enim. Sed consectetur lorem suscipit dolor laoreet lobortis. Curabitur molestie velit sit amet pellentesque commodo. Vivamus rhoncus efficitur ante, ac gravida ipsum finibus ac. Quisque ipsum libero, consectetur non justo eget, venenatis congue elit. Nunc orci odio, aliquet quis odio nec, lacinia aliquam lorem. Proin dignissim sollicitudin sapien at imperdiet. Proin in mauris scelerisque, bibendum mauris ut, pharetra magna.</string>
-    <string name="title_authorization">Authorization</string>
-    <string name="title_privacy_policy">Privacy policy</string>
+    <string name="auth__title_authorization">Authorization</string>
+    <string name="auth__title_privacy_policy">Privacy policy</string>
+
+
+    <string name="reg_err__invalid_email">Incorrect email entered</string>
+    <string name="reg_err__invalid_name">The name must be at least 3 characters long and contain only letters, digits, and the \" - \" and \"_ \" symbols</string>
+    <string name="reg_err__invalid_password">The password must be at least 8 characters long and contain only letters and digits</string>
+    <string name="reg_err__mismatching_passwords">"Passwords doesn't match "</string>
+    <string name="reg_err__empty_field">Name, login, password are required fields and must not be empty</string>
+    <string name="reg__name">User name</string>
+    <string name="reg__email" translatable="false">Email</string>
+    <string name="reg__password">Enter a password</string>
+    <string name="reg__confirm_password">Confirm password</string>
+    <string name="reg__btn_register">Register</string>
+    <string name="auth__login">Login (email)</string>
+    <string name="auth__password">Password</string>
+    <string name="auth__btn_login">Login</string>
+    <string name="auth__registration">Registration</string>
+    <string name="auth__privacy_policy">Privacy policy</string>
+    <string name="auth__get_auth_code">How to get authorization code?</string>
+    <string name="auth__title_registration">Registration</string>
+    <string name="dialog_choose_category__choose_categories">Choose categories</string>
+    <string name="dialog_choose_category__apply">Apply</string>
+    <string name="dialog_choose_category__reset">Reset</string>
 </resources>
