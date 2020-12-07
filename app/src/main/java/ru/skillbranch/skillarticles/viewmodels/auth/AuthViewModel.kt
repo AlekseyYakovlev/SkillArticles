@@ -17,16 +17,6 @@ class AuthViewModel @ViewModelInject constructor(
 ) : BaseViewModel<AuthState>(handle, AuthState()),
     IAuthViewModel {
 
-    companion object {
-
-        //The name must be at least 3 characters long and contain
-        // only letters and numbers and can also contain the characters "-" and "_"
-        val validNameRegex = """[0-9a-z_\-]{3,}""".toRegex()
-
-        //Password must be at least 8 characters long and contain only letters and numbers
-        val validPasswordRegex = """[0-9a-z]{8,}""".toRegex()
-    }
-
     init {
         subscribeOnDataSource(repository.isAuth()) { isAuth, state ->
             state.copy(isAuth = isAuth)
@@ -87,6 +77,15 @@ class AuthViewModel @ViewModelInject constructor(
 
     fun isPasswordValid(password: String): Boolean =
         password.isNotEmpty() && password.matches(validPasswordRegex)
+
+    companion object {
+        //The name must be at least 3 characters long and contain
+        // only letters and numbers and can also contain the characters "-" and "_"
+        val validNameRegex = """[0-9a-z_\-]{3,}""".toRegex()
+
+        //Password must be at least 8 characters long and contain only letters and numbers
+        val validPasswordRegex = """[0-9a-z]{8,}""".toRegex()
+    }
 }
 
 data class AuthState(val isAuth: Boolean = false) : IViewModelState

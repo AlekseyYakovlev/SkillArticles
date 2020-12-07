@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.skillbranch.skillarticles.R
+import ru.skillbranch.skillarticles.extensions.hideKeyboard
 import ru.skillbranch.skillarticles.extensions.selectDestination
 import ru.skillbranch.skillarticles.extensions.selectItem
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
@@ -58,6 +59,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
     }
 
     override fun renderNotification(notify: Notify) {
+        hideKeyboard(container)
         val snackbar = Snackbar.make(container, notify.message, Snackbar.LENGTH_LONG)
         snackbar.anchorView = findViewById<Bottombar>(R.id.bottombar) ?: nav_view
 

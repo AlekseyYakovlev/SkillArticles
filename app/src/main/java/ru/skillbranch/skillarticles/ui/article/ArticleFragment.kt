@@ -66,7 +66,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
     override val layout: Int = R.layout.fragment_article
     override val binding: ArticleBinding by lazy { ArticleBinding() }
-    override val prepareToolbar: (ToolbarBuilder.() -> Unit)? = {
+    override val prepareToolbar: (ToolbarBuilder.() -> Unit) = {
         this.setSubtitle(args.category)
             .setLogo(args.categoryIcon)
             .addMenuItem(
@@ -79,7 +79,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             )
     }
 
-    override val prepareBottombar: (BottombarBuilder.() -> Unit)? = {
+    override val prepareBottombar: (BottombarBuilder.() -> Unit) = {
         this.addView(R.layout.layout_submenu)
             .addView(R.layout.layout_bottombar)
             .setVisibility(false)
@@ -240,7 +240,6 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
         et_comment.setOnEditorActionListener { view, _, _ ->
             requireContext().hideKeyboard(view)
             viewModel.handleSendComment(view.text.toString(), requireContext())
-            //view.clearFocus()
             true
         }
 
@@ -324,7 +323,6 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             }
         })
     }
-
 
     private fun setupSubmenu() {
         submenu.btn_text_up.setOnClickListener { viewModel.handleUpText() }
@@ -466,7 +464,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
             if (it.isBlank() && et_comment.hasFocus()) et_comment.clearFocus()
         }
 
-        override val afterInflated: (() -> Unit)? = {
+        override val afterInflated: (() -> Unit) = {
             dependsOn<Boolean, Boolean, List<Pair<Int, Int>>, Int>(
                 ::isLoadingContent,
                 ::isSearch,
@@ -509,12 +507,10 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
         override fun saveUi(outState: Bundle) {
             outState.putBoolean(::isFocusedSearch.name, toolbar.search_view?.hasFocus() ?: false)
-            //outState.putString(::comment.name, comment)
         }
 
         override fun restoreUi(savedState: Bundle?) {
             isFocusedSearch = savedState?.getBoolean(::isFocusedSearch.name) ?: false
-            // comment = savedState?.getString(::comment.name, "dd") ?: ""
         }
     }
 }

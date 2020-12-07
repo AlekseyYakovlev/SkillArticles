@@ -122,10 +122,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
                     }
                 }
             }
-
         }
     }
-
 
     override fun setupViews() {
         iv_avatar.setOnClickListener {
@@ -179,9 +177,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             "${requireContext().packageName}.provider",
             tempFile
         )
-
-//        Log.d("ProfileFragment", "file uri(toUri): ${tempFile.toUri()}")
-//        Log.d("ProfileFragment", "content uri: $contentUri")
 
         return contentUri
     }
@@ -250,7 +245,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         //TODO Do something
     }
 
-    inner class ProfileBinding() : Binding() {
+    inner class ProfileBinding : Binding() {
         var pendingAction: PendingAction? = null
 
         var avatar by RenderProp("") {

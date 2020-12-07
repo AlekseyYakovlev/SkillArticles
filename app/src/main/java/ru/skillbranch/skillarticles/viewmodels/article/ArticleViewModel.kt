@@ -148,10 +148,7 @@ class ArticleViewModel @ViewModelInject constructor(
 
     //not implemented
     override fun handleShare(handleShareCallback: () -> Unit) {
-//        val msg = "Share is not implemented"
-//        notify(Notify.ErrorMessage(msg, "OK", null))
         handleShareCallback()
-
     }
 
     //session state

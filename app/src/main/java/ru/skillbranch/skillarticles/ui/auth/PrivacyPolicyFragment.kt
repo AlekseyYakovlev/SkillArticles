@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.skillbranch.skillarticles.R
 
-/**
- * A simple [Fragment] subclass.
- */
 class PrivacyPolicyFragment : Fragment() {
 
     override fun onCreateView(

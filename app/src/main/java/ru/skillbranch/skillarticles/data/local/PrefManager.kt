@@ -61,45 +61,6 @@ class PrefManager(
         profile = profile?.copy(avatar = url)
     }
 
-//    private val _isAuth = MutableLiveData(false)
-//    private val _appSettings =
-//        MutableLiveData(AppSettings(isDarkMode = false, isBigText = false))
-//
-//    val isDarkMode: Boolean? = _appSettings.value?.isDarkMode
-//
-//    var profile: User? by PrefObjDelegate(moshi.adapter(User::class.java))
-//
-//    init {
-//        _isAuth.postValue(preferences.getBoolean(IS_AUTH, false))
-//        _appSettings.postValue(
-//            AppSettings(
-//                isDarkMode = preferences.getBoolean(IS_DARK_MODE, false),
-//                isBigText = preferences.getBoolean(IS_BIG_TEXT, false)
-//            )
-//        )
-//    }
-//
-//    fun clearAll() {
-//        preferences.edit().clear().apply()
-//    }
-//
-//    fun getAppSettings(): LiveData<AppSettings> = _appSettings.distinctUntilChanged()
-//
-//    fun setAppSettings(appSettings: AppSettings) {
-//        _appSettings.postValue(appSettings)
-//        preferences.edit()
-//            .putBoolean(IS_DARK_MODE, appSettings.isDarkMode)
-//            .putBoolean(IS_BIG_TEXT, appSettings.isBigText)
-//            .apply()
-//    }
-//
-//    fun isAuth(): LiveData<Boolean> = _isAuth
-//
-//    fun setAuth(isAuth: Boolean) {
-//        _isAuth.postValue(isAuth)
-//        preferences.edit().putBoolean(IS_AUTH, isAuth).apply()
-//    }
-
     companion object {
         private const val IS_DARK_MODE = "isDarkMode"
         private const val IS_BIG_TEXT = "isBigText"

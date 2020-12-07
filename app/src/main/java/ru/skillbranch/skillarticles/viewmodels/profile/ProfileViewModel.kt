@@ -26,7 +26,6 @@ class ProfileViewModel @ViewModelInject constructor(
     private val repository: ProfileRepository,
 ) : BaseViewModel<ProfileState>(handle, ProfileState()) {
 
-
     private val activityResults = MutableLiveData<Event<PendingAction>>()
 
     private val storagePermissions = listOf<String>(
@@ -149,7 +148,7 @@ data class ProfileState(
     }
 }
 
-sealed class PendingAction() : Parcelable {
+sealed class PendingAction : Parcelable {
     abstract val payload: Any?
 
     @Parcelize
@@ -185,5 +184,3 @@ sealed class PendingAction() : Parcelable {
         }
     }
 }
-
-

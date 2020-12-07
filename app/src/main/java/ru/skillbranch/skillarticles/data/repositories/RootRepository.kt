@@ -13,7 +13,12 @@ class RootRepository @Inject constructor(
 ) {
     fun isAuth(): LiveData<Boolean> = preferences.isAuthLive
 
-    suspend fun login(login: String, pass: String) {
+    /** Login to the server
+     * @param login Login string
+     * @param pass Password string
+     * @return True if login successful and False if login failed
+     **/
+    suspend fun login(login: String, pass: String): Boolean {
         val auth = network.login(LoginReq(login, pass))
         auth.user?.let { preferences.profile = it }
         preferences.accessToken = "Bearer ${auth.accessToken}"
