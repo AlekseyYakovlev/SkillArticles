@@ -52,15 +52,6 @@
             app:argType="boolean" />
     </fragment>
     <fragment
-        android:id="@+id/nav_profile"
-        android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
-            app:destination="@id/dialog_avatar_actions" />
-    </fragment>
-    <fragment
         android:id="@+id/nav_bookmarks"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
         android:label="@string/title_bookmarks"
@@ -76,6 +67,16 @@
             android:defaultValue="true"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
+            app:destination="@id/dialog_avatar_actions" />
+    </fragment>
+
     <fragment
         android:id="@+id/nav_transcriptions"
         android:name="ru.skillbranch.skillarticles.ui.transcriptions.TranscriptionsFragment"
@@ -116,7 +117,8 @@
     <!--global actions -->
     <action
         android:id="@+id/start_login"
-        app:destination="@id/auth" />
+        app:destination="@id/auth"
+        app:launchSingleTop="true" />
     <action
         android:id="@+id/finish_login"
         app:popUpTo="@id/auth"
@@ -141,5 +143,25 @@
             android:name="has_avatar"
             app:argType="boolean" />
     </dialog>
+
+    <action
+        android:id="@+id/start_nav_articles"
+        app:destination="@id/nav_articles"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_bookmarks"
+        app:destination="@id/nav_bookmarks"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_transcriptions"
+        app:destination="@id/nav_transcriptions"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_profile"
+        app:destination="@id/nav_profile"
+        app:launchSingleTop="true" />
 
 </navigation>
