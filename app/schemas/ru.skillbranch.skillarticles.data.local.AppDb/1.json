@@ -1,0 +1,354 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7b6c233bccc04dd27f32748af28b4b20",
+    "entities": [
+      {
+        "tableName": "articles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `category_id` TEXT NOT NULL, `poster` TEXT NOT NULL, `date` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `author_user_id` TEXT NOT NULL, `author_avatar` TEXT, `author_name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "poster",
+            "columnName": "poster",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author.userId",
+            "columnName": "author_user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author.avatar",
+            "columnName": "author_avatar",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "author.name",
+            "columnName": "author_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "article_counts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`article_id` TEXT NOT NULL, `likes` INTEGER NOT NULL, `comments` INTEGER NOT NULL, `read_duration` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`article_id`), FOREIGN KEY(`article_id`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "articleId",
+            "columnName": "article_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "likes",
+            "columnName": "likes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "comments",
+            "columnName": "comments",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "readDuration",
+            "columnName": "read_duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "article_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "articles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "article_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "article_categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category_id` TEXT NOT NULL, `icon` TEXT NOT NULL, `title` TEXT NOT NULL, PRIMARY KEY(`category_id`))",
+        "fields": [
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "category_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "article_personal_infos",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`article_id` TEXT NOT NULL, `is_like` INTEGER NOT NULL, `is_bookmark` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`article_id`))",
+        "fields": [
+          {
+            "fieldPath": "articleId",
+            "columnName": "article_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isLike",
+            "columnName": "is_like",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBookmark",
+            "columnName": "is_bookmark",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "article_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "article_tags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tag` TEXT NOT NULL, `use_count` INTEGER NOT NULL, PRIMARY KEY(`tag`))",
+        "fields": [
+          {
+            "fieldPath": "tag",
+            "columnName": "tag",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "useCount",
+            "columnName": "use_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "tag"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "article_tag_x_ref",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`a_id` TEXT NOT NULL, `t_id` TEXT NOT NULL, PRIMARY KEY(`t_id`, `a_id`), FOREIGN KEY(`a_id`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "articleId",
+            "columnName": "a_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tagId",
+            "columnName": "t_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "t_id",
+            "a_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_article_tag_x_ref_a_id_t_id",
+            "unique": true,
+            "columnNames": [
+              "a_id",
+              "t_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_article_tag_x_ref_a_id_t_id` ON `${TABLE_NAME}` (`a_id`, `t_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "articles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "a_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "article_contents",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`article_id` TEXT NOT NULL, `content` TEXT NOT NULL, `source` TEXT, `share_link` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`article_id`), FOREIGN KEY(`article_id`) REFERENCES `articles`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "articleId",
+            "columnName": "article_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "shareLink",
+            "columnName": "share_link",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "article_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "articles",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "article_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewName": "ArticleItem",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT id, date, author_name AS author, author_avatar, article.title AS title, description, poster, article.category_id AS category_id,\n        counts.likes AS like_count, counts.comments AS comment_count, counts.read_duration AS read_duration,\n        category.title AS category, category.icon AS category_icon,\n        personal.is_bookmark AS is_bookmark\n        FROM articles AS article\n        INNER JOIN article_counts AS counts ON counts.article_id = id\n        INNER JOIN article_categories AS category ON category.category_id = article.category_id\n        LEFT JOIN article_personal_infos AS personal ON personal.article_id = id"
+      },
+      {
+        "viewName": "ArticleFull",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT id, article.title AS title, description, author_user_id, author_avatar, author_name, date, \n        category.category_id AS category_category_id, category.title AS category_title, category.icon AS category_icon,\n        content.share_link AS share_link, content.content AS content, \n        personal.is_bookmark AS is_bookmark, personal.is_like AS is_like, content.source AS source,\n        GROUP_CONCAT (refs.t_id, \";\") AS tags\n        FROM articles AS article\n        INNER JOIN article_categories AS category ON category.category_id = article.category_id\n        LEFT JOIN article_contents AS content ON content.article_id = id\n        LEFT JOIN article_personal_infos AS personal ON personal.article_id = id\n        LEFT JOIN article_tag_x_ref AS refs ON refs.a_id = id\n        GROUP BY article.id"
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7b6c233bccc04dd27f32748af28b4b20')"
+    ]
+  }
+}

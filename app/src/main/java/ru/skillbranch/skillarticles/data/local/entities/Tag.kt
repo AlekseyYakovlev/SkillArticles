@@ -1,9 +1,6 @@
 package ru.skillbranch.skillarticles.data.local.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "article_tags")
 data class Tag(
@@ -22,7 +19,8 @@ data class Tag(
             parentColumns = ["id"],
             childColumns = ["a_id"],
             onDelete = ForeignKey.CASCADE
-        )]
+        )],
+    indices = [Index(value = ["a_id", "t_id"], unique = true)]
 )
 data class ArticleTagXRef(
     @ColumnInfo(name = "a_id")
