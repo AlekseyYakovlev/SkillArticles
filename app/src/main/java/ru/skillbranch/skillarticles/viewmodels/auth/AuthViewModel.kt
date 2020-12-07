@@ -24,8 +24,11 @@ class AuthViewModel @ViewModelInject constructor(
     }
 
     override fun handleLogin(login: String, pass: String, dest: Int?) {
-        launchSafety(null, { navigate(NavigationCommand.FinishLogin(dest)) }) {
-            repository.login(login, pass)
+        var isLoggingSuccessful = false
+        launchSafety(null, {
+            if (isLoggingSuccessful) navigate(NavigationCommand.FinishLogin(dest))
+        }) {
+            isLoggingSuccessful = repository.login(login, pass)
         }
     }
 

@@ -17,6 +17,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.skillbranch.skillarticles.data.repositories.ProfileRepository
+import ru.skillbranch.skillarticles.data.repositories.RootRepository
 import ru.skillbranch.skillarticles.viewmodels.base.*
 import java.io.InputStream
 
@@ -24,6 +25,7 @@ import java.io.InputStream
 class ProfileViewModel @ViewModelInject constructor(
     @Assisted handle: SavedStateHandle,
     private val repository: ProfileRepository,
+    private val rootRepository: RootRepository,
 ) : BaseViewModel<ProfileState>(handle, ProfileState()) {
 
     private val activityResults = MutableLiveData<Event<PendingAction>>()
@@ -128,6 +130,11 @@ class ProfileViewModel @ViewModelInject constructor(
         launchSafety {
             repository.removeAvatar()
         }
+    }
+
+    fun handleLogout() {
+        rootRepository.logout()
+        navigate(NavigationCommand.StartLogin())
     }
 }
 

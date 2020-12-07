@@ -54,7 +54,9 @@ class RootActivity : BaseActivity<RootViewModel>() {
                 val private = arguments?.get("private_destination") as Int?
                 if (private != null) controller.navigate(private)
             }
-
+            if (!isAuth && destination.id == R.id.nav_profile) {
+                controller.popBackStack()
+            }
         }
     }
 

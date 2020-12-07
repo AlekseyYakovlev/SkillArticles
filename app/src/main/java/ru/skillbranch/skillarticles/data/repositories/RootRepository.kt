@@ -23,6 +23,13 @@ class RootRepository @Inject constructor(
         auth.user?.let { preferences.profile = it }
         preferences.accessToken = "Bearer ${auth.accessToken}"
         preferences.refreshToken = auth.refreshToken
+        return (auth.user != null)
+    }
+
+    fun logout() {
+        preferences.profile = null
+        preferences.accessToken = ""
+        preferences.refreshToken = ""
     }
 
     suspend fun register(name: String, login: String, password: String) {

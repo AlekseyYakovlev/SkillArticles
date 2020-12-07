@@ -145,6 +145,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             }
         }
 
+        iv_exit.setOnClickListener { viewModel.handleLogout() }
+
     }
 
     private fun updateAvatar(avatarUrl: String) {
