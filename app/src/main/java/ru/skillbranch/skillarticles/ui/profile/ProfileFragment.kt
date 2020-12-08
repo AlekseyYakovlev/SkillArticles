@@ -46,20 +46,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
     override val binding: ProfileBinding by lazy { ProfileBinding() }
 
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    lateinit var permissionsLauncher: ActivityResultLauncher<Array<out String>>
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    lateinit var cameraLauncher: ActivityResultLauncher<Uri>
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    lateinit var galleryLauncher: ActivityResultLauncher<String>
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    lateinit var editPhotoLauncher: ActivityResultLauncher<Pair<Uri, Uri>>
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    lateinit var settingsLauncher: ActivityResultLauncher<Intent>
+    private lateinit var permissionsLauncher: ActivityResultLauncher<Array<out String>>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+    private lateinit var editPhotoLauncher: ActivityResultLauncher<Pair<Uri, Uri>>
+    private lateinit var settingsLauncher: ActivityResultLauncher<Intent>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -157,7 +148,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         } else {
             Glide.with(this)
                 .load(avatarUrl)
-                //.signature { SimpleDateFormat("HHmmss", Locale.getDefault()).format(Date()) }
                 .placeholder(R.drawable.ic_avatar)
                 .apply(RequestOptions.circleCropTransform())
                 .into(iv_avatar)
@@ -174,13 +164,11 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             storageDir
         )
 
-        val contentUri = FileProvider.getUriForFile(
+        return FileProvider.getUriForFile(
             requireContext(),
             "${requireContext().packageName}.provider",
             tempFile
         )
-
-        return contentUri
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -200,6 +188,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
                 )
             }
         }
+
         // remove temp file by uri if permissions are denied
         val arePermissionsGranted = !permissionsResult.values.map { it.first }.contains(false)
         if (!arePermissionsGranted) {
@@ -261,10 +250,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             tv_about.text = it
         }
         var rating by RenderProp(0) {
-            tv_rating.text = "Rating: $it"
+            tv_rating.text = requireContext().resources.getString(R.string.profile_fragment__rating, it)
         }
         var respect by RenderProp(0) {
-            tv_respect.text = "Respect: $it"
+            tv_respect.text = requireContext().resources.getString(R.string.profile_fragment__respect, it)
         }
 
         override fun bind(data: IViewModelState) {

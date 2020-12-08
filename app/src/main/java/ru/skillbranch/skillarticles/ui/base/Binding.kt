@@ -56,6 +56,4 @@ abstract class Binding {
             }
         }
     }
-
-
 }

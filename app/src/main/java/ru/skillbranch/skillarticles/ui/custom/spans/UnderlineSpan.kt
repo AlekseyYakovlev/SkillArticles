@@ -5,7 +5,6 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.Path
 import android.text.style.ReplacementSpan
-import androidx.annotation.VisibleForTesting
 
 class UnderlineSpan(
     private val underlineColor: Int,
@@ -13,8 +12,8 @@ class UnderlineSpan(
 ) : ReplacementSpan() {
     private var textWidth = 0
     private val dashs = DashPathEffect(floatArrayOf(dotWidth, dotWidth), 0f)
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var path = Path()
+
+    private var path = Path()
 
     override fun draw(
         canvas: Canvas,

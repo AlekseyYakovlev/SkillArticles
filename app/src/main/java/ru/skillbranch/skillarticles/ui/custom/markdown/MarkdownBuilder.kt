@@ -7,6 +7,7 @@ import android.text.SpannedString
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
+import androidx.core.content.ContextCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
 import ru.skillbranch.skillarticles.R
@@ -29,8 +30,8 @@ class MarkdownBuilder(context: Context) {
     private val headerMarginBottom = context.dpToPx(8)
     private val ruleWidth = context.dpToPx(2)
     private val cornerRadius = context.dpToPx(8)
-    private val linkIcon =
-        context.getDrawable(R.drawable.ic_link_black_24dp)!!.apply { setTint(colorSecondary) }
+    private val linkIcon = ContextCompat.getDrawable(context, R.drawable.ic_link_black_24dp)!!
+        .apply { setTint(colorSecondary) }
 
     fun markdownToSpan(textContent: MarkdownElement.Text): SpannedString {
         return buildSpannedString {
@@ -53,7 +54,7 @@ class MarkdownBuilder(context: Context) {
 
                 is Element.Quote -> {
                     inSpans(
-                        BlockquotesSpan(gap, strikeWidth, colorSecondary),
+                        BlockQuotesSpan(gap, strikeWidth, colorSecondary),
                         StyleSpan(Typeface.ITALIC)
                     ) {
                         for (child in element.elements) {
@@ -107,7 +108,14 @@ class MarkdownBuilder(context: Context) {
                 }
 
                 is Element.InlineCode -> {
-                    inSpans(InlineCodeSpan(colorOnSurface, opacityColorSurface, cornerRadius, gap)) {
+                    inSpans(
+                        InlineCodeSpan(
+                            colorOnSurface,
+                            opacityColorSurface,
+                            cornerRadius,
+                            gap
+                        )
+                    ) {
                         append(element.text)
                     }
                 }

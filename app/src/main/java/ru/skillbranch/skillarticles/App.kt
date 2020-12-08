@@ -9,7 +9,7 @@ import ru.skillbranch.skillarticles.data.remote.NetworkMonitor
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App() : Application() {
+class App : Application() {
 
     companion object {
         private var instance: App? = null
@@ -25,7 +25,6 @@ class App() : Application() {
 
     @Inject
     lateinit var preferences: PrefManager
-
 
     init {
         instance = this

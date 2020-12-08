@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.data.remote.res
 
 
-//@JsonClass(generateAdapter = true)
 data class ProfileRes(
     val updatedAt: Long? = null,
     val id: String,

@@ -100,14 +100,14 @@ class ArticleFilter(
     val search: String? = null,
     val isBookmark: Boolean = false,
     val categories: List<String> = listOf(),
-    val isHashtag: Boolean = false
+    val isHashTag: Boolean = false
 ) {
     fun toQuery(): String {
         val qb = QueryBuilder()
         qb.table("ArticleItem")
 
-        if (search != null && !isHashtag) qb.appendWhere("title LIKE '%$search%'")
-        if (search != null && isHashtag) {
+        if (search != null && !isHashTag) qb.appendWhere("title LIKE '%$search%'")
+        if (search != null && isHashTag) {
             qb.innerJoin("article_tag_x_ref AS refs", "refs.a_id = id")
             qb.appendWhere("refs.t_id = '$search'")
         }
@@ -128,7 +128,7 @@ class ArticleFilter(
     }
 }
 
-class QueryBuilder() {
+class QueryBuilder {
     private var table: String? = null
     private var selectColumns: String = "*"
     private var joinTables: String? = null

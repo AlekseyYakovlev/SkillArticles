@@ -1,9 +1,7 @@
 package ru.skillbranch.skillarticles.extensions
 
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
 import androidx.core.view.*
 import androidx.navigation.NavDestination
@@ -47,22 +45,6 @@ fun BottomNavigationView.selectItem(itemId: Int?) {
             item.isChecked = true
             break
         }
-    }
-}
-
-fun View.hideKeyboard() {
-    if (isFocused) {
-        val inputMethodManager =
-            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
-    }
-}
-
-fun View.showKeyboard() {
-    if (isFocused) {
-        val inputMethodManager =
-            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(this, 0)
     }
 }
 

@@ -63,10 +63,10 @@ object NetworkModule {
         OkHttpClient().newBuilder()
             .readTimeout(2, TimeUnit.SECONDS)  // socket timeout (GET)
             .writeTimeout(5, TimeUnit.SECONDS) // socket timeout (POST, PUT, etc.)
-            .authenticator(tokenAuthenticator)        // refresh token if response code == 401
-            .addInterceptor(networkStatusInterceptor) // intercept network status
-            .addInterceptor(httpLoggingInterceptor)   // log requests/results
-            .addInterceptor(errorStatusInterceptor)   // intercept network errors
+            .authenticator(tokenAuthenticator)         // refresh token if response code == 401
+            .addInterceptor(networkStatusInterceptor)  // intercept network status
+            .addInterceptor(httpLoggingInterceptor)    // log requests/results
+            .addInterceptor(errorStatusInterceptor)    // intercept network errors
             .build()
 
     @Provides

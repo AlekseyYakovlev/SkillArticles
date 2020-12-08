@@ -136,7 +136,7 @@ class ShimmerDrawable private constructor(private val pattern: MutableList<Shape
         if (shimmerAnimator.isRunning || shimmerAnimator.isStarted) shimmerAnimator.pause()
     }
 
-    class Builder() {
+    class Builder {
         private val shapes: MutableList<Shape> = mutableListOf()
         private var shimmerDuration: Long = 0
         private var baseColor: Int? = null
@@ -265,7 +265,7 @@ class ShimmerDrawable private constructor(private val pattern: MutableList<Shape
             }
     }
 
-    sealed class Shape() {
+    sealed class Shape {
         abstract val width: Int
         abstract val height: Int
         abstract var offset: Pair<Int, Int>
@@ -429,9 +429,7 @@ class ShimmerDrawable private constructor(private val pattern: MutableList<Shape
                 is ImagePlaceholder -> this.copy()
             }
         }
-
     }
-
 }
 
 private fun Path.withTranslation(x: Int, y: Int, block: Path.() -> Unit) {

@@ -6,7 +6,6 @@ import android.text.Layout
 import android.text.style.LeadingMarginSpan
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
-import androidx.annotation.VisibleForTesting
 
 
 class OrderedListSpan(
@@ -16,8 +15,6 @@ class OrderedListSpan(
     @ColorInt
     private val orderColor: Int
 ) : LeadingMarginSpan {
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-
     override fun getLeadingMargin(first: Boolean): Int =
         (order.length.inc() * gapWidth).toInt()
 

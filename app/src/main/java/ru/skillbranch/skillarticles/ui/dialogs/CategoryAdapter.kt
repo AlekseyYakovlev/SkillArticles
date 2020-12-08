@@ -25,7 +25,6 @@ class CategoryAdapter(
         val item = getItem(position)
         (holder as CategoriesVH).bind(item)
     }
-
 }
 
 private class CategoriesVH(

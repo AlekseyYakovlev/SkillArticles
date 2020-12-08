@@ -29,7 +29,6 @@ class ArticleSubmenu @JvmOverloads constructor(
 
     init {
         requestLayout()
-//        View.inflate(context, R.layout.layout_submenu, this)
         //add material bg for handle elevation and color surface
         val materialBg = MaterialShapeDrawable.createWithElevationOverlay(context)
         materialBg.elevation = elevation

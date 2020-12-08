@@ -28,7 +28,7 @@ abstract class ArticlesModule {
     ): IArticlesView
 
     companion object {
-       @Provides
+        @Provides
         fun provideArticlesFragment(
             fragment: Fragment
         ): ArticlesFragment =

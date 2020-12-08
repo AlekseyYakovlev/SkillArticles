@@ -10,7 +10,7 @@ import javax.inject.Inject
 class RootRepository @Inject constructor(
     private val preferences: PrefManager,
     private val network: RestService,
-) {
+): IRepository {
     fun isAuth(): LiveData<Boolean> = preferences.isAuthLive
 
     /** Login to the server

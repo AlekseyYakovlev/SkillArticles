@@ -69,7 +69,7 @@ interface IArticleRepository : IRepository {
     suspend fun sendMessage(articleId: String, message: String, answerToMessageId: String?)
 
     /**
-     *
+     * загрузить все комментарии
      */
     fun loadAllComments(
         articleId: String,

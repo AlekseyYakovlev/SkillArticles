@@ -88,7 +88,7 @@ class MarkdownContentView @JvmOverloads constructor(
             )
             .addShape(
                 ShimmerDrawable.Shape.Rectangle(
-                    shimmerWidth ,
+                    shimmerWidth,
                     context.dpToIntPx(56),
                     cornerRadius = defaultSpace,
                     offset = defaultPadding to defaultSpace
@@ -115,7 +115,8 @@ class MarkdownContentView @JvmOverloads constructor(
                 shimmerDrawable.stop()
             }
 
-            override fun onViewAttachedToWindow(v: View?) {/*nothing*/}
+            override fun onViewAttachedToWindow(v: View?) {/*nothing*/
+            }
         })
     }
 
@@ -161,7 +162,7 @@ class MarkdownContentView @JvmOverloads constructor(
 
     fun setContent(content: List<MarkdownElement>) {
         elements = content
-        var index =0
+        var index = 0
         content.forEach {
             when (it) {
                 is MarkdownElement.Text -> {
@@ -273,16 +274,13 @@ class MarkdownContentView @JvmOverloads constructor(
     }
 
     private fun hideShimmer() {
-//        shimmerDrawable.stop()
         (foreground as? ShimmerDrawable)?.stop()
         foreground = null
     }
 
     private fun showShimmer() {
-//        shimmerListener = doOnPreDraw {
-            foreground = shimmerDrawable
-            shimmerDrawable.start()
-//        }
+        foreground = shimmerDrawable
+        shimmerDrawable.start()
     }
 
     private class LayoutManager() : Parcelable {

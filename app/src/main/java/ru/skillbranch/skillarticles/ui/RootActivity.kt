@@ -78,6 +78,8 @@ class RootActivity : BaseActivity<RootViewModel>() {
                     setAction(notify.errLabel) { notify.errHandler?.invoke() }
                 }
             }
+            is Notify.TextMessage -> {
+            }
         }
 
         snackbar.show()

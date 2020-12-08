@@ -38,5 +38,4 @@ class ArticleVH(private val containerView: View) : RecyclerView.ViewHolder(conta
     ) {
         (containerView as ArticleItemView).bind(item!!, listener)
     }
-
 }

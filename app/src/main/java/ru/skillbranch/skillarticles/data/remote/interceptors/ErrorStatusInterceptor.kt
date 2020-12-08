@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.data.remote.interceptors
 
-import android.util.Log
 import com.squareup.moshi.JsonEncodingException
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
@@ -23,9 +22,7 @@ class ErrorStatusInterceptor @Inject constructor(private val moshi: Moshi) : Int
 
         when (response.code) {
             400 -> throw ApiError.BadRequest(errMessage)
-            401 -> {
-                Log.d("123456"," 401 Intercepted")
-                throw ApiError.Unauthorized(errMessage)}
+            401 -> throw ApiError.Unauthorized(errMessage)
             403 -> throw ApiError.Forbidden(errMessage)
             404 -> throw ApiError.NotFound(errMessage)
             500 -> throw ApiError.InternalServerError(errMessage)

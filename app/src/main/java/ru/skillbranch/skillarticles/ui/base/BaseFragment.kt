@@ -47,10 +47,9 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
         viewModel.restoreState()
         binding?.restoreUi(savedInstanceState)
 
-        //owner it is view
         viewModel.observeState(viewLifecycleOwner) { binding?.bind(it) }
 
-        //bind default values if viewmodel not loaded data
+        //bind default values if data is not loaded from viewmodel
         if (binding?.isInflated == false) binding?.onFinishInflate()
 
         viewModel.observeNotifications(viewLifecycleOwner) { root.renderNotification(it) }
@@ -102,5 +101,4 @@ abstract class BaseFragment<T : BaseViewModel<out IViewModelState>> : Fragment()
     open fun renderLoading(loadingState: Loading) {
         root.renderLoading(loadingState)
     }
-
 }

@@ -15,11 +15,4 @@ class TranscriptionsFragment : Fragment(R.layout.fragment_transcriptions) {
 
 //TODO Add translation functionality from ML Kit
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.fragment_transcriptions, container, false)
-//    }
-
 }

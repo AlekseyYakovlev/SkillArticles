@@ -7,7 +7,6 @@ import android.graphics.Typeface
 import android.text.style.ReplacementSpan
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
-import androidx.annotation.VisibleForTesting
 
 class InlineCodeSpan(
     @ColorInt
@@ -19,10 +18,8 @@ class InlineCodeSpan(
     @Px
     private val padding: Float
 ) : ReplacementSpan() {
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var rect: RectF = RectF()
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var measureWidth: Int = 0
+    private var rect: RectF = RectF()
+    private var measureWidth: Int = 0
     lateinit var bounds: IntRange
 
     override fun getSize(
@@ -92,11 +89,11 @@ class InlineCodeSpan(
         style = oldStyle
     }
 
-    fun getExtraPadding(spanStart: Int, spanEnd: Int, horizontalPadding: Int) : Pair<Int, Int> {
+    fun getExtraPadding(spanStart: Int, spanEnd: Int, horizontalPadding: Int): Pair<Int, Int> {
         var startPad = 0
         var endPad = 0
-        if(spanStart != bounds.first) startPad = (padding).toInt() + horizontalPadding
-        if(spanEnd != bounds.last) endPad = -horizontalPadding
+        if (spanStart != bounds.first) startPad = (padding).toInt() + horizontalPadding
+        if (spanEnd != bounds.last) endPad = -horizontalPadding
         return startPad to endPad
     }
 }

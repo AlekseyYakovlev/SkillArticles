@@ -28,7 +28,7 @@ class CommentVH(private val containerView: View, val listener: (CommentRes) -> U
     }
 }
 
-class CommentDiffCallback() : DiffUtil.ItemCallback<CommentRes>() {
+class CommentDiffCallback : DiffUtil.ItemCallback<CommentRes>() {
     override fun areItemsTheSame(oldItem: CommentRes, newItem: CommentRes): Boolean =
         oldItem.id == newItem.id
 

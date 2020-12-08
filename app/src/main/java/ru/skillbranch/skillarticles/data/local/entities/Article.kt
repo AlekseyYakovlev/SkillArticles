@@ -29,7 +29,6 @@ data class Author(
     val name: String
 )
 
-
 @DatabaseView(
     """
         SELECT id, date, author_name AS author, author_avatar, article.title AS title, description, poster, article.category_id AS category_id,

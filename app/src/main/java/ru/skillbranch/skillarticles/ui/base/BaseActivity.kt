@@ -112,7 +112,7 @@ abstract class BaseActivity<T : BaseViewModel<out IViewModelState>> : AppCompatA
     }
 }
 
-class ToolbarBuilder() {
+class ToolbarBuilder {
     var subtitle: String? = null
     var logo: String? = null
     var visibility: Boolean = true
@@ -148,7 +148,7 @@ class ToolbarBuilder() {
 
     fun build(context: FragmentActivity) {
 
-        //show appbar if hidden due to scroll behavior
+        //show appbar if it is hidden due to scroll behavior
         context.appbar.setExpanded(true, true)
 
         with(context.toolbar) {
@@ -192,7 +192,7 @@ data class MenuItemHolder(
     val clickListener: ((MenuItem) -> Unit)? = null
 )
 
-class BottombarBuilder() {
+class BottombarBuilder {
     private var visible: Boolean = true
     private val views = mutableListOf<Int>()
     private val tempViews = mutableListOf<Int>()
@@ -241,7 +241,7 @@ class BottombarBuilder() {
 
         with(context.nav_view) {
             isVisible = visible
-            //show bottombar if hidden due to scroll behavior
+            //show bottombar if it is hidden due to scroll behavior
             ((layoutParams as CoordinatorLayout.LayoutParams).behavior as HideBottomViewOnScrollBehavior)
                 .slideUp(this)
         }
