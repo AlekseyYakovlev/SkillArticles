@@ -65,6 +65,10 @@
         <item name="layout_insetEdge">bottom</item>
     </style>
 
+    <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="TextInputLayoutAppearance" parent="Widget.Design.TextInputLayout">
         <item name="colorControlNormal">@color/color_gray</item>
         <item name="colorControlActivated">@color/color_accent</item>

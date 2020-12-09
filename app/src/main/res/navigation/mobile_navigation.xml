@@ -104,7 +104,7 @@
             tools:layout="@layout/fragment_privacy_policy" />
         <fragment
             android:id="@+id/registrationFragment"
-            android:name="ru.skillbranch.skillarticles.ui.auth.RegistrationFragment"
+            android:name="ru.skillbranch.skillarticles.ui.registration.RegistrationFragment"
             android:label="@string/auth__title_registration">
             <argument
                 android:name="private_destination"

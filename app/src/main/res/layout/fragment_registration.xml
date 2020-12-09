@@ -17,6 +17,7 @@
         android:hint="@string/reg__name"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="clear_text"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,6 +39,7 @@
         android:hint="@string/reg__email"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="clear_text"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/wrap_name">
@@ -59,6 +61,7 @@
         android:hint="@string/reg__password"
         android:theme="@style/TextInputLayoutAppearance"
         app:endIconMode="password_toggle"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wrap_login">
@@ -79,6 +82,8 @@
         android:layout_marginEnd="56dp"
         android:hint="@string/reg__confirm_password"
         android:theme="@style/TextInputLayoutAppearance"
+        android:visibility="visible"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wrap_password">

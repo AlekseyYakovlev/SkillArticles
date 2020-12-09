@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
@@ -29,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take from camera" />
+            android:text="@string/layout_bottom_sheet__take_from_camera" />
 
     </LinearLayout>
 
@@ -54,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Choose from gallery" />
+            android:text="@string/layout_bottom_sheet__choose_from_gallery" />
 
     </LinearLayout>
 
@@ -79,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Edit" />
+            android:text="@string/layout_bottom_sheet__edit" />
 
     </LinearLayout>
 
@@ -104,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Delete" />
+            android:text="@string/layout_bottom_sheet__delete" />
 
     </LinearLayout>
 

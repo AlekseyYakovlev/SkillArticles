@@ -7,9 +7,9 @@
     android:theme="@style/ArticleBarsTheme"
     android:layout_width="200dp"
     android:layout_height="96dp"
-    android:layout_gravity="bottom|right"
+    android:layout_gravity="bottom|end"
     android:elevation="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     app:layout_dodgeInsetEdges="bottom"
     android:visibility="gone"
@@ -76,11 +76,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Темный режим"
+        android:text="@string/layout_submenu__dark_mode"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_h"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textColor="?attr/colorOnSurface"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginStart="16dp"/>
 
 </ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu>
