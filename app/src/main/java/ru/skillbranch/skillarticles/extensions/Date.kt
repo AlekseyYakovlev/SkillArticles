@@ -1,5 +1,7 @@
 package ru.skillbranch.skillarticles.extensions
 
+import android.content.Context
+import ru.skillbranch.skillarticles.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +26,7 @@ fun Date.add(value: Int, unit: TimeUnits = TimeUnits.SECOND): Date {
     return this
 }
 
-fun Date.shortFormat(): String? {
+fun Date.shortFormat(): String {
     val pattern = if (this.isSameDay(Date())) "HH:mm" else "dd.MM.yy"
     return this.format(pattern)
 }
@@ -35,120 +37,64 @@ fun Date.isSameDay(date: Date): Boolean {
     return day1 == day2
 }
 
-fun Date.humanizeDiff(date: Date = Date()): String {
-    val diff = date.time - this.time
-
-    return when (Locale.getDefault()) {
-        Locale("ru") -> humanizeDiffRu(diff)
-        else -> humanizeDiffEng(diff)
-    }
-}
-
-private fun humanizeDiffRu(timeDiff: Long): String {
-    var diff = timeDiff
-    var isInFuture = false
+fun Date.humanizeDiff(context: Context, date: Date = Date()): String {
+    var diff = date.time - this.time
     val pattern =
-        if (diff > 0) "%s назад"
+        if (diff > 0) context.resources.getString(R.string.comment_item_view__date_ago) //"%s назад"
         else {
-            isInFuture = true
             diff = -diff
-            "через %s"
+            context.resources.getString(R.string.comment_item_view__date_future) //"через %s"
         }
 
-    return when (diff) {
-        in (0..SECOND) ->
-            "только что"
-        in (SECOND..45 * SECOND) ->
-            pattern.format("несколько секунд")
-        in (45 * SECOND..75 * SECOND) ->
-            pattern.format("минуту")
-        in (75 * SECOND..45 * MINUTE) ->
-            pattern.format(TimeUnits.MINUTE.pluralRu((diff / MINUTE).toInt()))
-        in (45 * MINUTE..75 * MINUTE) ->
-            pattern.format("час")
-        in (75 * MINUTE..22 * HOUR) ->
-            pattern.format(TimeUnits.HOUR.pluralRu((diff / HOUR).toInt()))
-        in (22 * HOUR..26 * HOUR) ->
-            pattern.format("день")
-        in (26 * HOUR..360 * DAY) ->
-            pattern.format(TimeUnits.DAY.pluralRu((diff / DAY).toInt()))
-        in (360 * DAY..Long.MAX_VALUE) ->
-            if (isInFuture) pattern.format("более чем год")
-            else pattern.format("более года")
-        else -> "Ошибка!"
-    }
-}
-
-private fun humanizeDiffEng(timeDiff: Long): String {
-    var diff = timeDiff
-    val seconds = (diff / 1000)
+    val seconds = (diff / 1000).toInt()
     val minutes = (seconds / 60)
     val hours = (minutes / 60)
     val days = (hours / 24)
-
-    var isInFuture = false
-    val pattern =
-        if (diff > 0) "%s ago"
-        else {
-            isInFuture = true
-            diff = -diff
-            "in %s"
-        }
+    val years = (days / 365)
 
     return when (diff) {
         in 0L..1 * SECOND -> "just now"
-        in 1 * SECOND..45 * SECOND -> pattern.format("a few seconds")
-        in 45 * SECOND..75 * SECOND -> pattern.format("a minute")
-        in 75 * SECOND..45 * MINUTE -> pattern.format("$minutes minutes")
-        in 45 * MINUTE..75 * MINUTE -> pattern.format("an hour")
-        in 75 * MINUTE..22 * HOUR -> pattern.format("$hours hour")
-        in 22 * HOUR..26 * HOUR -> pattern.format("one day")
-        in 26 * HOUR..360 * DAY -> pattern.format("$days days")
-        else -> pattern.format("more than a year")
+        in 1 * SECOND..60 * SECOND -> pattern.format(
+            context.resources.getQuantityString(
+                R.plurals.comment_item_view__time_second,
+                seconds,
+                seconds
+            )
+        )
+        in 60 * SECOND..60 * MINUTE -> pattern.format(
+            context.resources.getQuantityString(
+                R.plurals.comment_item_view__time_minute,
+                minutes,
+                minutes
+            )
+        )
+        in 60 * MINUTE..24 * HOUR -> pattern.format(
+            context.resources.getQuantityString(
+                R.plurals.comment_item_view__time_hour,
+                hours,
+                hours
+            )
+        )
+        in 24 * HOUR..365 * DAY -> pattern.format(
+            context.resources.getQuantityString(
+                R.plurals.comment_item_view__time_day,
+                days,
+                days
+            )
+        )
+        else -> pattern.format(
+            context.resources.getQuantityString(
+                R.plurals.comment_item_view__time_year,
+                years,
+                years
+            )
+        )
     }
 }
-
 
 enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
-    DAY;
-
-    fun pluralRu(value: Int): String {
-
-        val rangeType = when {
-            value in (5..20) || value % 10 in (5..10) -> 3
-            value % 10 == 1 -> 1
-            value % 10 in (2..4) -> 2
-            else -> 3
-        }
-
-        return when (this) {
-            SECOND -> when (rangeType) {
-                1 -> "$value секунду"
-                2 -> "$value секунды"
-                3 -> "$value секунд"
-                else -> "er1ошибка"
-            }
-            MINUTE -> when (rangeType) {
-                1 -> "$value минуту"
-                2 -> "$value минуты"
-                3 -> "$value минут"
-                else -> "er2ошибка"
-            }
-            HOUR -> when (rangeType) {
-                1 -> "$value час"
-                2 -> "$value часа"
-                3 -> "$value часов"
-                else -> "er3ошибка"
-            }
-            DAY -> when (rangeType) {
-                1 -> "$value день"
-                2 -> "$value дня"
-                3 -> "$value дней"
-                else -> "er4ошибка"
-            }
-        }
-    }
+    DAY,
 }

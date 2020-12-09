@@ -203,7 +203,7 @@ class CommentItemView(context: Context) : ViewGroup(context, null, 0) {
                 .into(iv_avatar)
 
             tv_author.text = item.user.name
-            tv_date.text = item.date.humanizeDiff()
+            tv_date.text = item.date.humanizeDiff(context)
             tv_body.text = item.body
             tv_answer_to.text = item.answerTo
             tv_answer_to.isVisible = item.answerTo != null

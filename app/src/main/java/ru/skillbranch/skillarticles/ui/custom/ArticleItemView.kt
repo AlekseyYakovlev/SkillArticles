@@ -289,7 +289,11 @@ class ArticleItemView constructor(
         tv_description.text = item.description
         tv_likes_count.text = "${item.likeCount}"
         tv_comments_count.text = "${item.commentCount}"
-        tv_read_duration.text = "${item.readDuration} min read"
+        tv_read_duration.text = context.resources.getQuantityString(
+            R.plurals.article_item_view__minutes_to_read,
+            item.readDuration,
+            item.readDuration
+        )
         iv_bookmark.isChecked = item.isBookmark
         iv_bookmark.setOnClickListener { listener.invoke(item, true) }
         this.setOnClickListener { listener.invoke(item, false) }
