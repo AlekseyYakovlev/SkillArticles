@@ -85,7 +85,7 @@ class ArticlesViewModel @ViewModelInject constructor(
         if (isLoadingAfter) return
         else isLoadingAfter = true
 
-        launchSafety(null, { isLoadingAfter = false }) {
+        launchSafely(null, { isLoadingAfter = false }) {
             repository.loadArticlesFromNetwork(
                 start = lastLoadArticle.id,
                 size = listConfig.pageSize
@@ -98,7 +98,7 @@ class ArticlesViewModel @ViewModelInject constructor(
         if (isLoadingInitial) return
         else isLoadingInitial = true
 
-        launchSafety(null, { isLoadingInitial = false }) {
+        launchSafely(null, { isLoadingInitial = false }) {
             repository.loadArticlesFromNetwork(
                 start = null,
                 size = listConfig.initialLoadSizeHint
@@ -121,7 +121,7 @@ class ArticlesViewModel @ViewModelInject constructor(
     }
 
     fun handleToggleBookmark(articleId: String) {
-        launchSafety(
+        launchSafely(
             { throwable ->
                 when (throwable) {
                     is NoNetworkError -> notify(
@@ -140,7 +140,7 @@ class ArticlesViewModel @ViewModelInject constructor(
     }
 
     fun handleSuggestions(tag: String) {
-        launchSafety {
+        launchSafely {
             repository.incrementTagUseCount(tag)
         }
     }
@@ -150,18 +150,14 @@ class ArticlesViewModel @ViewModelInject constructor(
     }
 
     fun refresh() {
-        launchSafety {
+        launchSafely {
             val lastArticleId: String? = repository.findLastArticleId()
-            val count = repository.loadArticlesFromNetwork(
+            repository.loadArticlesFromNetwork(
                 start = lastArticleId,
                 size = if (lastArticleId == null) listConfig.initialLoadSizeHint else -listConfig.pageSize
             )
-//            withContext(Dispatchers.Main) {
-//                notify(Notify.TextMessage("Load $count new articles"))
-//            }
         }
     }
-
 }
 
 private fun ArticlesState.toArticleFilter(): ArticleFilter = ArticleFilter(
