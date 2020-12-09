@@ -8,6 +8,7 @@ import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.launch
+import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.remote.err.ApiError
 import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
@@ -79,7 +80,7 @@ class ArticleViewModel @ViewModelInject constructor(
     }
 
     fun refresh() {
-        launchSafety {
+        launchSafely {
             launch { repository.fetchArticleContent(articleId) }
             launch { repository.refreshCommentsCount(articleId) }
         }
@@ -98,7 +99,7 @@ class ArticleViewModel @ViewModelInject constructor(
     }
 
     private fun fetchContent() {
-        launchSafety {
+        launchSafely {
             repository.fetchArticleContent(articleId)
         }
     }
@@ -118,30 +119,30 @@ class ArticleViewModel @ViewModelInject constructor(
     }
 
     //personal article info
-    override fun handleBookmark() {
+    override fun handleBookmark(context: Context) {
         val isBookmark = currentState.isBookmark
         val msg =
-            if (!isBookmark) Notify.TextMessage("Add to bookmarks")
+            if (!isBookmark) Notify.TextMessage(context.resources.getString(R.string.article_view_model__added_to_bookmarks))
             else {
-                Notify.TextMessage("Remove from bookmarks")
+                Notify.TextMessage(context.resources.getString(R.string.article_view_model__removed_from_bookmarks))
             }
 
-        launchSafety(handleLikeErrorHandler, { notify(msg) }) {
+        launchSafely(handleLikeErrorHandler, { notify(msg) }) {
             repository.toggleBookmark(articleId)
         }
     }
 
-    override fun handleLike() {
+    override fun handleLike(context: Context) {
         val isLike = currentState.isLike
         val msg =
-            if (!isLike) Notify.TextMessage("Mark is liked")
-            else { //FIXME change to "Marked as liked"
+            if (!isLike) Notify.TextMessage(context.resources.getString(R.string.article_view_model__marked_as_liked))
+            else {
                 Notify.ActionMessage(
-                    "Don`t like it anymore", //FIXME change to "Don't like it anymore?"
-                    "No, still like it"
-                ) { handleLike() }
+                    context.resources.getString(R.string.article_view_model__dont_like_it),
+                    context.resources.getString(R.string.article_view_model__i_like_it),
+                ) { handleLike(context) }
             }
-        launchSafety(handleLikeErrorHandler, { notify(msg) }) {
+        launchSafely(handleLikeErrorHandler, { notify(msg) }) {
             repository.toggleLike(articleId)
         }
     }
@@ -177,20 +178,20 @@ class ArticleViewModel @ViewModelInject constructor(
         updateState { it.copy(searchPosition = it.searchPosition.inc()) }
     }
 
-    override fun handleCopyCode() {
-        notify(Notify.TextMessage("Code copy to clipboard"))
+    override fun handleCopyCode(context: Context) {
+        notify(Notify.TextMessage(context.resources.getString(R.string.article_view_model__copied_to_clipboard)))
     }
 
-    override fun handleSendComment(comment: String?, context: Context) {
+    override fun handleSendComment(context: Context, comment: String?) {
         if (comment.isNullOrBlank()) {
-            notify(Notify.TextMessage("Comment must be not empty"))
+            notify(Notify.TextMessage(context.resources.getString(R.string.article_view_model__comment_must_not_be_empty)))
             return
         }
         updateState { it.copy(commentText = comment) }
         if (!currentState.isAuth) {
             navigate(NavigationCommand.StartLogin())
         } else {
-            launchSafety(null, {
+            launchSafely(null, {
                 updateState {
                     it.copy(
                         answerTo = null,
@@ -234,8 +235,13 @@ class ArticleViewModel @ViewModelInject constructor(
         updateState { it.copy(answerTo = null, answerToMessageId = null, commentText = null) }
     }
 
-    fun handleReplyTo(messageId: String, name: String) {
-        updateState { it.copy(answerToMessageId = messageId, answerTo = "Reply to $name") }
+    fun handleReplyTo(context: Context, messageId: String, name: String) {
+        updateState {
+            it.copy(
+                answerToMessageId = messageId,
+                answerTo = context.resources.getString(R.string.article_view_model__reply_to, name)
+            )
+        }
     }
 
 }

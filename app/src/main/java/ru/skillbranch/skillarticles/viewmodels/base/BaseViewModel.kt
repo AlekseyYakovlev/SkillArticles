@@ -2,7 +2,6 @@ package ru.skillbranch.skillarticles.viewmodels.base
 
 import android.os.Bundle
 import androidx.annotation.UiThread
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
@@ -15,22 +14,17 @@ abstract class BaseViewModel<T : IViewModelState>(
     private val handleState: SavedStateHandle,
     initState: T
 ) : ViewModel() {
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    val notifications = MutableLiveData<Event<Notify>>()
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    val navigation = MutableLiveData<Event<NavigationCommand>>()
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    val permissions = MutableLiveData<Event<List<String>>>()
-    val loading = MutableLiveData<Loading>(Loading.HIDE_LOADING)
+    private val notifications = MutableLiveData<Event<Notify>>()
+    protected val navigation = MutableLiveData<Event<NavigationCommand>>()
+    private val permissions = MutableLiveData<Event<List<String>>>()
+    private val loading = MutableLiveData<Loading>(Loading.HIDE_LOADING)
 
     /***
      * Инициализация начального состояния аргументом конструктоа, и объявления состояния как
      * MediatorLiveData - медиатор исспользуется для того чтобы учитывать изменяемые данные модели
      * и обновлять состояние ViewModel исходя из полученных данных
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     val state: MediatorLiveData<T> = MediatorLiveData<T>().apply {
         value = initState
     }
@@ -38,7 +32,6 @@ abstract class BaseViewModel<T : IViewModelState>(
     /***
      * getter для получения not null значения текущего состояния ViewModel
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     val currentState
         get() = state.value!!
 
@@ -58,9 +51,8 @@ abstract class BaseViewModel<T : IViewModelState>(
      * соответсвенно при изменении конфигурации и пересоздании Activity уведомление не будет вызвано
      * повторно
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     @UiThread
-    fun notify(content: Notify) {
+    protected fun notify(content: Notify) {
         notifications.value = Event(content)
     }
 
@@ -138,7 +130,7 @@ abstract class BaseViewModel<T : IViewModelState>(
         state.value = currentState.restore(handleState) as T
     }
 
-    protected fun launchSafety(
+    protected fun launchSafely(
         errorHandler: ((Throwable) -> Unit)? = null,
         completionHandler: ((Throwable?) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
@@ -152,19 +144,19 @@ abstract class BaseViewModel<T : IViewModelState>(
                     Notify.ActionMessage(
                         "Network timeout exception - please try again",
                         "Retry"
-                    ) { launchSafety(errorHandler, completionHandler, block) }
+                    ) { launchSafely(errorHandler, completionHandler, block) }
                 )
                 is ApiError.InternalServerError -> notify(
                     Notify.ErrorMessage(
                         throwable.message,
                         "Retry"
-                    ) { launchSafety(errorHandler, completionHandler, block) }
+                    ) { launchSafely(errorHandler, completionHandler, block) }
                 )
                 is ApiError -> notify(
                     Notify.ErrorMessage(throwable.message)
                 )
                 else -> notify(
-                    Notify.ErrorMessage(throwable.message ?: "Something wrong")
+                    Notify.ErrorMessage(throwable.message ?: "Something went wrong")
                 )
             }
         }
@@ -221,10 +213,9 @@ class EventObserver<E>(private val onEventUnhandledContent: (E) -> Unit) : Obser
             onEventUnhandledContent(it)
         }
     }
-
 }
 
-sealed class Notify() {
+sealed class Notify {
 
     abstract val message: String
 
@@ -244,7 +235,7 @@ sealed class Notify() {
 
 }
 
-sealed class NavigationCommand() {
+sealed class NavigationCommand {
 
     data class To(
         val destination: Int,

@@ -1,12 +1,12 @@
 package ru.skillbranch.skillarticles.viewmodels.profile
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.Settings
-import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LifecycleOwner
@@ -16,6 +16,7 @@ import kotlinx.android.parcel.Parcelize
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.ProfileRepository
 import ru.skillbranch.skillarticles.data.repositories.RootRepository
 import ru.skillbranch.skillarticles.viewmodels.base.*
@@ -49,31 +50,28 @@ class ProfileViewModel @ViewModelInject constructor(
         }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun startForResult(action: PendingAction) {
+    private fun startForResult(action: PendingAction) {
         activityResults.value = Event(action)
     }
 
-
-    fun handlePermission(permissionsResult: Map<String, Pair<Boolean, Boolean>>) {
+    fun handlePermission(context: Context, permissionsResult: Map<String, Pair<Boolean, Boolean>>) {
         val arePermissionsGranted = !permissionsResult.values.map { it.first }.contains(false)
         val isPermissionRequestBlocked = permissionsResult.values.map { it.second }.contains(false)
 
         when {
             arePermissionsGranted -> executePendingAction()
-            isPermissionRequestBlocked -> executeOpenSettings()
+            isPermissionRequestBlocked -> executeOpenSettings(context)
             else -> {
                 val msg = Notify.ErrorMessage(
-                    "Need permissions for storage",
-                    "Retry"
+                    context.getString(R.string.profile_view_model__storage_permissions_required), //"Need permissions for storage"
+                    context.getString(R.string.retry),
                 ) { requestPermissions(storagePermissions) }
                 notify(msg)
             }
         }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun executeOpenSettings() {
+    private fun executeOpenSettings(context: Context) {
         val errHandler = {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                 data = Uri.parse("package:ru.skillbranch.skillarticles")
@@ -82,20 +80,20 @@ class ProfileViewModel @ViewModelInject constructor(
         }
         notify(
             Notify.ErrorMessage(
-                "Need permissions for storage",
-                "Open settings"
+                context.getString(R.string.profile_view_model__storage_permissions_required),
+                context.getString(R.string.profile_view_model__open_settings),
             ) { errHandler() }
         )
     }
 
-    fun executePendingAction() {
+    private fun executePendingAction() {
         currentState.pendingAction?.let { startForResult(it) }
     }
 
     fun handleUploadPhoto(inputStream: InputStream?) {
         inputStream ?: return
 
-        launchSafety(null, { updateState { it.copy(pendingAction = null) } }) {
+        launchSafely(null, { updateState { it.copy(pendingAction = null) } }) {
             val byteArray = inputStream.use { it.readBytes() }
 
             val requestFile = byteArray.toRequestBody("image/jpeg".toMediaType())
@@ -127,7 +125,7 @@ class ProfileViewModel @ViewModelInject constructor(
     }
 
     fun handleDeleteAction() {
-        launchSafety {
+        launchSafely {
             repository.removeAvatar()
         }
     }

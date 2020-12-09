@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.VisibleForTesting
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
@@ -137,7 +136,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         }
 
         iv_exit.setOnClickListener { viewModel.handleLogout() }
-
     }
 
     private fun updateAvatar(avatarUrl: String) {
@@ -154,8 +152,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun prepareTempUri(): Uri {
+    private fun prepareTempUri(): Uri {
         val timestamp = SimpleDateFormat("HHmmss", Locale.getDefault()).format(Date())
         val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val tempFile = File.createTempFile(
@@ -171,8 +168,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         )
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun removeTempUri(uri: Uri?) {
+    private fun removeTempUri(uri: Uri?) {
         uri ?: return
         requireContext().contentResolver.delete(uri, null, null)
     }
@@ -200,7 +196,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             removeTempUri(tempUri)
         }
 
-        viewModel.handlePermission(permissionsResult)
+        viewModel.handlePermission(requireContext(), permissionsResult)
     }
 
     private fun callbackCamera(result: Boolean) {
@@ -250,10 +246,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             tv_about.text = it
         }
         var rating by RenderProp(0) {
-            tv_rating.text = requireContext().resources.getString(R.string.profile_fragment__rating, it)
+            tv_rating.text =
+                requireContext().resources.getString(R.string.profile_fragment__rating, it)
         }
         var respect by RenderProp(0) {
-            tv_respect.text = requireContext().resources.getString(R.string.profile_fragment__respect, it)
+            tv_respect.text =
+                requireContext().resources.getString(R.string.profile_fragment__respect, it)
         }
 
         override fun bind(data: IViewModelState) {

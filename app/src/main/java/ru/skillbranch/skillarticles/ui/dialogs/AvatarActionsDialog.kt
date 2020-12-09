@@ -26,7 +26,6 @@ class AvatarActionsDialog : BottomSheetDialogFragment() {
 
     private val args: AvatarActionsDialogArgs by navArgs()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

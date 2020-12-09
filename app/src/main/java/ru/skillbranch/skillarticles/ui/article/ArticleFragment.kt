@@ -118,8 +118,6 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
                 }
             }
         }
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -239,7 +237,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
 
         et_comment.setOnEditorActionListener { view, _, _ ->
             requireContext().hideKeyboard(view)
-            viewModel.handleSendComment(view.text.toString(), requireContext())
+            viewModel.handleSendComment(requireContext(), view.text.toString())
             true
         }
 
@@ -278,7 +276,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
     }
 
     override fun clickOnComment(comment: CommentRes) {
-        viewModel.handleReplyTo(comment.id, comment.user.name)
+        viewModel.handleReplyTo(requireContext(), comment.id, comment.user.name)
         et_comment.requestFocus()
         scroll.smoothScrollTo(0, wrap_comments.top)
         requireContext().showKeyboard(et_comment)
@@ -331,8 +329,8 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
     }
 
     private fun setupBottomBar() {
-        bottombar.btn_like.setOnClickListener { viewModel.handleLike() }
-        bottombar.btn_bookmark.setOnClickListener { viewModel.handleBookmark() }
+        bottombar.btn_like.setOnClickListener { viewModel.handleLike(requireContext()) }
+        bottombar.btn_bookmark.setOnClickListener { viewModel.handleBookmark(requireContext()) }
         bottombar.btn_share.setOnClickListener { viewModel.handleShare(handleShareCallback) }
         bottombar.btn_settings.setOnClickListener { viewModel.handleToggleMenu() }
 
@@ -360,7 +358,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
                 requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Copied code", copy)
             clipboard.setPrimaryClip(clip)
-            viewModel.handleCopyCode()
+            viewModel.handleCopyCode(requireContext())
         }
     }
 

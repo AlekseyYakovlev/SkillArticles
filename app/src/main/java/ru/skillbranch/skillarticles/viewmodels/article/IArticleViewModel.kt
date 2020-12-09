@@ -27,7 +27,7 @@ interface IArticleViewModel {
      * необходимо отобразить сообщение пользователю "Add to bookmarks" или "Remove from bookmarks"
      * в соответствии с текущим состоянием
      */
-    fun handleBookmark()
+    fun handleBookmark(context: Context)
 
     /**
      * добавление/удалние статьи в понравившееся, обрабока нажатия на кнопку btn_like
@@ -36,7 +36,7 @@ interface IArticleViewModel {
      * если пользователь убрал Like необходимо добавить  actionLabel в снекбар
      * "No, still like it" при нажатиии на который состояние вернется к isLike = true
      */
-    fun handleLike()
+    fun handleLike(context: Context)
 
     /**
      * поделиться статьей, обрабока нажатия на кнопку btn_share
@@ -77,10 +77,10 @@ interface IArticleViewModel {
     /**
      * обрабока нажатия на iv_copy в MarkdownCodeView, необходимо скопировать код из MarkdownCodeView в буфер обмена
      **/
-    fun handleCopyCode()
+    fun handleCopyCode(context: Context)
 
     /**
      * обрабока отправки комментария, если пользователь не авторизован отобразить экран авторизации
      **/
-    fun handleSendComment(comment: String?, context: Context)
+    fun handleSendComment(context: Context, comment: String?)
 }
