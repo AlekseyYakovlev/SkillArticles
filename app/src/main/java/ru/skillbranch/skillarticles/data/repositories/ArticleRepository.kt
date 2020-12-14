@@ -116,7 +116,12 @@ class ArticleRepository @Inject constructor(
         preferences.appSettings //from preferences
 
     override suspend fun toggleLike(articleId: String): Boolean {
-        return articlePersonalDao.toggleLikeOrInsert(articleId)
+        val isLiked = articlePersonalDao.toggleLikeOrInsert(articleId)
+
+        if (isLiked) incrementLike(articleId)
+        else decrementLike(articleId)
+
+        return isLiked
     }
 
 
@@ -155,8 +160,6 @@ class ArticleRepository @Inject constructor(
     }
 
     override suspend fun incrementLike(articleId: String) {
-        // articlePersonalDao.setLikeOrInsert(articleId, true)
-
         if (preferences.accessToken.isEmpty()) {
             articleCountsDao.incrementLike(articleId)
             return
