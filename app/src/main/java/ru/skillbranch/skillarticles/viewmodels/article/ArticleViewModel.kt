@@ -85,7 +85,9 @@ class ArticleViewModel @ViewModelInject constructor(
     }
 
     private fun commentLoadErrorHandler(throwable: Throwable) {
-        //TODO handle network error
+        throwable.localizedMessage?.let {
+            notify(Notify.ErrorMessage(it))
+        }
     }
 
     private val handleLikeErrorHandler: (Throwable) -> Unit = { e ->
