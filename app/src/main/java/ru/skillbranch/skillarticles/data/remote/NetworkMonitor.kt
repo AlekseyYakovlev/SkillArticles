@@ -50,10 +50,12 @@ class NetworkMonitor(
         networkCapabilities == null -> NetworkType.NONE
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> NetworkType.WIFI
         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> NetworkType.CELLULAR
+        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> NetworkType.ETHERNET
+        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> NetworkType.BLUETOOTH
         else -> NetworkType.UNKNOWN
     }
 }
 
 enum class NetworkType {
-    NONE, UNKNOWN, WIFI, CELLULAR
+    NONE, UNKNOWN, WIFI, CELLULAR, ETHERNET, BLUETOOTH
 }

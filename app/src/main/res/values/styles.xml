@@ -5,6 +5,10 @@
     <attr name="darkOnSurfaceColor" format="color" />
     <attr name="lightOnSurfaceColor" format="color" />
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->

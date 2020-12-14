@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.viewmodels.article
 
 import android.content.Context
-import androidx.annotation.VisibleForTesting
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -39,8 +38,7 @@ class ArticleViewModel @ViewModelInject constructor(
             .build()
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val listData: LiveData<PagedList<CommentRes>> =
+    private val listData: LiveData<PagedList<CommentRes>> =
         Transformations.switchMap(repository.findArticleCommentCount(articleId)) {
             buildPagedList(repository.loadAllComments(articleId, it, ::commentLoadErrorHandler))
         }
@@ -93,7 +91,7 @@ class ArticleViewModel @ViewModelInject constructor(
     private val handleLikeErrorHandler: (Throwable) -> Unit = { e ->
         when (e) {
             is ApiError.BadRequest -> Notify.ErrorMessage(e.message)
-            else -> { // do nothing }
+            else -> { // do nothing
             }
         }
     }

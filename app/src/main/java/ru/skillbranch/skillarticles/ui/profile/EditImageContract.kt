@@ -8,7 +8,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 
-class EditImageContract : ActivityResultContract<Pair<Uri, Uri>, Uri?>() {
+class EditImageContract(
+    private val chooserText: String = "Choose application to edit avatar"
+) : ActivityResultContract<Pair<Uri, Uri>, Uri?>() {
 
     override fun createIntent(context: Context, input: Pair<Uri, Uri>?): Intent {
         val intent = Intent(Intent.ACTION_EDIT).apply {
@@ -19,7 +21,7 @@ class EditImageContract : ActivityResultContract<Pair<Uri, Uri>, Uri?>() {
             addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             putExtra("return-value", true)
         }
-        return Intent.createChooser(intent, "Choose application to edit avatar")
+        return Intent.createChooser(intent, chooserText)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? =

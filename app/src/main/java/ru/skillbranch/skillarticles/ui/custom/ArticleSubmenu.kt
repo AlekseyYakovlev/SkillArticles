@@ -78,7 +78,7 @@ class ArticleSubmenu @JvmOverloads constructor(
     }
 
     //save state
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.ssIsOpen = isOpen
         return savedState
@@ -114,5 +114,4 @@ class ArticleSubmenu @JvmOverloads constructor(
             override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
-
 }

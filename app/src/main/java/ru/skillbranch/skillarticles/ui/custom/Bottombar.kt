@@ -12,6 +12,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.android.synthetic.main.layout_bottombar.view.*
+import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.ui.custom.behaviors.BottombarBehavior
 import kotlin.math.hypot
 
@@ -33,7 +34,7 @@ class Bottombar @JvmOverloads constructor(
     }
 
     //save state
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.ssIsSearchMode = isSearchMode
         return savedState
@@ -86,11 +87,12 @@ class Bottombar @JvmOverloads constructor(
 
     fun bindSearchInfo(searchCount: Int = 0, position: Int = 0) {
         if (searchCount == 0) {
-            tv_search_result.text = "Not found"
+            tv_search_result.text = context.getString(R.string.bottombar__not_found)
             btn_result_up.isEnabled = false
             btn_result_down.isEnabled = false
         } else {
-            tv_search_result.text = "${position.inc()} of $searchCount"
+            tv_search_result.text =
+                context.getString(R.string.bottombar__found_pos_of_all, position.inc(), searchCount)
             btn_result_up.isEnabled = true
             btn_result_down.isEnabled = true
         }

@@ -9,7 +9,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -73,7 +73,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             ::callbackGallery
         )
         editPhotoLauncher = registerForActivityResult(
-            EditImageContract(),
+            EditImageContract(resources.getString(R.string.profile_fragment__choose_app_to_edit_in)),
             resultRegistry,
             ::callbackEditPhoto
         )
@@ -178,7 +178,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             if (isGranted) {
                 true to true
             } else {
-                false to ActivityCompat.shouldShowRequestPermissionRationale(
+                false to shouldShowRequestPermissionRationale(
                     requireActivity(),
                     permission
                 )
@@ -229,7 +229,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
     }
 
     private fun callbackSettings(result: ActivityResult) {
-        //TODO Do something
+        viewModel.executePendingAction()
     }
 
     inner class ProfileBinding : Binding() {

@@ -20,7 +20,7 @@ abstract class BaseViewModel<T : IViewModelState>(
     private val permissions = MutableLiveData<Event<List<String>>>()
     private val loading = MutableLiveData<Loading>(Loading.HIDE_LOADING)
 
-    /***
+    /**
      * Инициализация начального состояния аргументом конструктоа, и объявления состояния как
      * MediatorLiveData - медиатор исспользуется для того чтобы учитывать изменяемые данные модели
      * и обновлять состояние ViewModel исходя из полученных данных
@@ -29,14 +29,14 @@ abstract class BaseViewModel<T : IViewModelState>(
         value = initState
     }
 
-    /***
+    /**
      * getter для получения not null значения текущего состояния ViewModel
      */
     val currentState
         get() = state.value!!
 
 
-    /***
+    /**
      * лямбда выражение принимает в качестве аргумента текущее состояние и возвращает
      * модифицированное состояние, которое присваивается текущему состоянию
      */
@@ -46,7 +46,7 @@ abstract class BaseViewModel<T : IViewModelState>(
         state.value = updatedState
     }
 
-    /***
+    /**
      * функция для создания уведомления пользователя о событии (событие обрабатывается только один раз)
      * соответсвенно при изменении конфигурации и пересоздании Activity уведомление не будет вызвано
      * повторно
@@ -56,14 +56,14 @@ abstract class BaseViewModel<T : IViewModelState>(
         notifications.value = Event(content)
     }
 
-    /***
+    /**
      * отображение индикатора загрузки
      */
     protected fun showLoading(loadingType: Loading = Loading.SHOW_LOADING) {
         loading.value = loadingType
     }
 
-    /***
+    /**
      * скрытие индикатора загрузки
      */
     protected fun hideLoading() {
@@ -74,7 +74,7 @@ abstract class BaseViewModel<T : IViewModelState>(
         navigation.value = Event(command)
     }
 
-    /***
+    /**
      * более компактная форма записи observe() метода LiveData принимает последним аргумент лямбда
      * выражение обрабатывающее изменение текущего стостояния
      */
@@ -82,7 +82,7 @@ abstract class BaseViewModel<T : IViewModelState>(
         state.observe(owner, Observer { onChanged(it!!) })
     }
 
-    /***
+    /**
      * более компактная форма записи observe() метода LiveData принимает последним аргумент лямбда
      * выражение обрабатывающее изменение текущего стостояния индикатора загрузки
      */
@@ -90,7 +90,7 @@ abstract class BaseViewModel<T : IViewModelState>(
         loading.observe(owner, Observer { onChanged(it!!) })
     }
 
-    /***
+    /**
      * более компактная форма записи observe() метода LiveData вызывает лямбда выражение обработчик
      * только в том случае если уведомление не было уже обработанно ранее,
      * реализует данное поведение с помощью EventObserver
@@ -105,7 +105,7 @@ abstract class BaseViewModel<T : IViewModelState>(
             EventObserver { onNavigate(it) })
     }
 
-    /***
+    /**
      * функция принимает источник данных и лямбда выражение обрабатывающее поступающие данные источника
      * лямбда принимает новые данные и текущее состояние ViewModel в качестве аргументов,
      * изменяет его и возвращает модифицированное состояние, которое устанавливается как текущее
@@ -161,7 +161,7 @@ abstract class BaseViewModel<T : IViewModelState>(
             }
         }
 
-        (viewModelScope + errHand).launch {
+        (viewModelScope + errHand).launch(Dispatchers.Main) {
             showLoading()
             withContext(Dispatchers.IO) {
                 block()
@@ -185,7 +185,7 @@ class Event<out E>(private val content: E) {
 
     var hasBeenHandled = false
 
-    /***
+    /**
      * возвращает контент который еще не был обработан иначе null
      */
     fun getContentIfNotHandled(): E? {
@@ -200,7 +200,7 @@ class Event<out E>(private val content: E) {
 
 }
 
-/***
+/**
  * в качестве аргумента конструктора принимает лямбда выражение обработчик в аргумент которой передается
  * необработанное ранее событие получаемое в реализации метода Observer`a onChanged
  */

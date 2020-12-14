@@ -1,34 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Skill Articles</string>
-    <string name="search">Поиск</string>
-    <string name="loading">Загрузка…</string>
-    <string name="bb_search_not_found">Не найдено</string>
-    <string name="bb_search_position">%d из %d</string>
-    <string name="menu_title_search">Поиск</string>
-    <string name="article_search_placeholder">Поиск</string>
-    <string name="retry">Повторить попытку</string>
 
-    <string name="title_articles">Статьи</string>
-    <string name="title_bookmarks">Закладки</string>
-    <string name="title_transcriptions">Transcriptions</string>
-    <string name="title_profile">Профиль</string>
+    <string name="menu_search__title">Поиск</string>
 
-    <string name="lorem_ipsum">orem ipsum dolor sit amet, consectetur adipiscing elit. Fusce blandit enim elit, id fringilla magna blandit vitae. Pellentesque eu purus sed enim dapibus tempus. Cras tincidunt dolor sapien, sed tempor lorem pulvinar ac. Maecenas pretium fringilla nibh posuere tincidunt. Donec facilisis elementum velit eget vulputate. Nullam efficitur bibendum dapibus. Sed vitae aliquam turpis. Vivamus porttitor porta elit et dignissim. Nunc viverra, sem eget vehicula elementum, ex nisi sollicitudin enim, id gravida ligula quam at libero. Sed id diam at ante maximus congue ac vel tellus. Donec scelerisque tincidunt nunc, pulvinar tristique diam condimentum posuere. Curabitur vehicula in sapien eget maximus. Nam ut suscipit elit. Phasellus sit amet congue odio. Donec porta augue lectus, ac molestie magna vehicula quis. Sed blandit dictum euismod. Nullam gravida est vel facilisis sollicitudin. Curabitur nec est massa. Nam sagittis quam massa, in egestas sem mollis at. Cras vestibulum arcu in dapibus hendrerit. Nam faucibus, enim vitae accumsan molestie, lacus ligula accumsan nibh, sed posuere turpis justo at nulla. Nam a varius metus, vitae vulputate leo. Fusce at ipsum faucibus, rhoncus mauris ut, rhoncus libero. Vivamus tempor dapibus nisi. Ut quis elit nisi. Quisque consequat lorem sit amet magna vehicula, in porta neque porta. In justo neque, malesuada ut elit eget, dignissim semper magna. Duis faucibus risus id tellus tempor iaculis. Quisque eget elementum tortor. Integer ac magna sed velit luctus maximus. Quisque vehicula bibendum tincidunt. Nam facilisis, diam vel elementum luctus, tellus nisl fringilla libero, vel finibus dolor velit id est. Vivamus nec ultricies ante. Etiam ornare semper ligula, sed cursus lectus feugiat ut. Mauris sit amet ante nulla. Nam porta est at nibh laoreet, ut ultrices diam placerat. Nam ac elit vel justo vulputate ornare et at turpis. Vivamus sit amet dignissim est. Aenean sit amet nisi ut nibh tempus egestas vel non mauris. Nulla blandit, justo vitae ultrices posuere, felis nulla placerat enim, quis egestas dui massa at nisi. In malesuada porttitor nunc, non malesuada purus tincidunt sit amet. Fusce in arcu nec elit posuere eleifend a vitae eros. Vivamus id efficitur metus, ac congue mi. Sed placerat justo sed risus egestas, ut varius massa tincidunt. Praesent sed mauris sit amet nibh gravida vestibulum sed ut quam. Nam feugiat felis odio, id sagittis ante viverra vel. In fermentum facilisis nibh, non mattis mauris. Nam pretium aliquet nunc, eleifend varius ante maximus vitae. Quisque ante mi, sodales quis posuere in, ornare in lectus. Curabitur rutrum malesuada metus, nec consequat dolor scelerisque at. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam sem sem, rhoncus vitae porttitor et, pretium eu ipsum. Sed semper semper arcu ut efficitur. Donec luctus enim sed porttitor malesuada. Donec lectus nisl, tristique eu odio vel, facilisis consequat enim. Sed consectetur lorem suscipit dolor laoreet lobortis. Curabitur molestie velit sit amet pellentesque commodo. Vivamus rhoncus efficitur ante, ac gravida ipsum finibus ac. Quisque ipsum libero, consectetur non justo eget, venenatis congue elit. Nunc orci odio, aliquet quis odio nec, lacinia aliquam lorem. Proin dignissim sollicitudin sapien at imperdiet. Proin in mauris scelerisque, bibendum mauris ut, pharetra magna.</string>
-
+    <string name="reg__name">Имя пользователя</string>
+    <string name="reg__password">Введите пароль</string>
+    <string name="reg__confirm_password">Подтвердите пароль</string>
+    <string name="reg__btn_register">Зарегистрироваться</string>
     <string name="reg_err__invalid_name">Имя должено состоять не менее чем из 3-х символов и содержать только буквы, цифры и символы \" - \"и\"_\"</string>
     <string name="reg_err__invalid_password">Пароль должен состоять не менее чем из 8-и символов и содержать только буквы и цифры</string>
     <string name="reg_err__mismatching_passwords">Пароли не совпадают</string>
     <string name="reg_err__invalid_email">Неверно введенный email</string>
     <string name="reg_err__empty_field">Имя, логин и пароль являются обязательными полями и должны быть заполнены</string>
 
-    <string name="reg__name">Имя пользователя</string>
-    <string name="reg__password">Введите пароль</string>
-    <string name="reg__confirm_password">Подтвердите пароль</string>
-    <string name="reg__btn_register">Зарегистрироваться</string>
-
     <string name="auth__title_authorization">Авторизация</string>
-    <string name="auth__title_privacy_policy">Политика конфидециальности</string>    <string name="auth__login">Логин (email)</string>
+    <string name="auth__title_privacy_policy">Политика конфидециальности</string>
+    <string name="auth__login">Логин (email)</string>
     <string name="auth__password">Пароль</string>
     <string name="auth__btn_login">Войти</string>
     <string name="auth__registration">Зарегистрироваться</string>
@@ -36,18 +24,32 @@
     <string name="auth__get_auth_code">Как получить код авторизации?</string>
     <string name="auth__title_registration">Регистрация</string>
 
+    <string name="profile_fragment__rating">Рейтинг: %d</string>
+    <string name="profile_fragment__respect">Уважение: %d</string>
+    <string name="profile_fragment__choose_app_to_edit_in">Выберите приложение для редактирования вашего аватара</string>
+    <string name="profile_view_model__storage_permissions_required">Необходимо разрешение для доступа к медиафайлам</string>
+    <string name="profile_view_model__open_settings">Открыть настройки</string>
+    <string name="profile_view_model__retry">Повторить попытку</string>
+
+    <string name="layout_submenu__dark_mode">Темный режим</string>
+    <string name="layout_bottombar__not_found">Не найдено</string>
+    <string name="layout_bottom_sheet__take_from_camera">Сделать снимок</string>
+    <string name="layout_bottom_sheet__choose_from_gallery">Выбрать из галлереи</string>
+    <string name="layout_bottom_sheet__edit">Редактировать</string>
+    <string name="layout_bottom_sheet__delete">Удалить</string>
+    <string name="bottombar__not_found">Не найдено</string>
+    <string name="bottombar__found_pos_of_all">%1$d из %2$d</string>
+    <string name="bottom_nav_menu__articles">Статьи</string>
+    <string name="bottom_nav_menu__bookmarks">Закладки</string>
+    <string name="bottom_nav_menu__translations">Переводы</string>
+    <string name="bottom_nav_menu__profile">Профиль</string>
+
     <string name="dialog_choose_category__choose_categories">Выберите категории</string>
     <string name="dialog_choose_category__apply">Применить</string>
     <string name="dialog_choose_category__reset">Сбросить</string>
 
-    <string name="comment_item_view__date_ago">%s назад</string>
-    <string name="comment_item_view__date_future">%s назад</string>
-
-    <string name="profile_fragment__rating">Рейтинг: %d</string>
-    <string name="profile_fragment__respect">Уважение: %d</string>
-    <string name="profile_view_model__storage_permissions_required">Необходимо разрешение для доступа к медиафайлам</string>
-    <string name="profile_view_model__open_settings">Открыть настройки</string>
-
+    <string name="layout_fragment_article__comment">Комментировать</string>
+    <string name="article_fragment__search_placeholder">Поиск</string>
     <string name="article_view_model__added_to_bookmarks">Добавлено в закладки</string>
     <string name="article_view_model__removed_from_bookmarks">Исключено из закладок</string>
     <string name="article_view_model__marked_as_liked">Помечено как понравившееся</string>
@@ -57,14 +59,15 @@
     <string name="article_view_model__comment_must_not_be_empty">Комментарий не должен быть пустым</string>
     <string name="article_view_model__reply_to">Ответить %s</string>
 
-    <string name="layout_submenu__dark_mode">Темный режим</string>
-    <string name="layout_bottombar__not_found">Not found</string>
-    <string name="layout_fragment_article__comment">Comment</string>
-    <string name="layout_bottom_sheet__take_from_camera">Take from camera</string>
-    <string name="layout_bottom_sheet__choose_from_gallery">Choose from gallery</string>
-    <string name="layout_bottom_sheet__edit">Edit</string>
-    <string name="layout_bottom_sheet__delete">Delete</string>
+    <plurals name="article_item_view__minutes_to_read">
+        <item quantity="one">читать %d минуту</item>
+        <item quantity="few">читать %d минуты</item>
+        <item quantity="many">читать %d минут</item>
+        <item quantity="other">читать %d минут</item>
+    </plurals>
 
+    <string name="comment_item_view__date_ago">%s назад</string>
+    <string name="comment_item_view__date_future">%s назад</string>
 
     <plurals name="comment_item_view__time_second">
         <item quantity="one">%d секунду</item>
@@ -100,12 +103,4 @@
         <item quantity="many">%d лет</item>
         <item quantity="other">%d лет</item>
     </plurals>
-
-    <plurals name="article_item_view__minutes_to_read">
-        <item quantity="one">читать %d минуту</item>
-        <item quantity="few">читать %d минуты</item>
-        <item quantity="many">читать %d минут</item>
-        <item quantity="other">читать %d минут</item>
-    </plurals>
-
 </resources>

@@ -3,17 +3,17 @@
     <item
         android:id="@+id/start_nav_articles"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_articles"/>
+        android:title="@string/bottom_nav_menu__articles"/>
     <item
         android:id="@+id/start_nav_bookmarks"
         android:icon="@drawable/bookmark_states"
-        android:title="@string/title_bookmarks"/>
+        android:title="@string/bottom_nav_menu__bookmarks"/>
 <!--    <item-->
 <!--        android:id="@+id/start_nav_transcriptions"-->
 <!--        android:icon="@drawable/ic_translate_black_24dp"-->
-<!--        android:title="@string/title_transcriptions"/>-->
+<!--        android:title="@string/bottom_nav_menu__translations"/>-->
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="@string/title_profile"/>
+        android:title="@string/bottom_nav_menu__profile"/>
 </menu>

@@ -64,7 +64,7 @@ class ProfileViewModel @ViewModelInject constructor(
             else -> {
                 val msg = Notify.ErrorMessage(
                     context.getString(R.string.profile_view_model__storage_permissions_required), //"Need permissions for storage"
-                    context.getString(R.string.retry),
+                    context.getString(R.string.profile_view_model__retry),
                 ) { requestPermissions(storagePermissions) }
                 notify(msg)
             }
@@ -86,7 +86,7 @@ class ProfileViewModel @ViewModelInject constructor(
         )
     }
 
-    private fun executePendingAction() {
+     fun executePendingAction() {
         currentState.pendingAction?.let { startForResult(it) }
     }
 

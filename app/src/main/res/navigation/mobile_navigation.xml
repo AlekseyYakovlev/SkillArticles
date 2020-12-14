@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/nav_articles"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
-        android:label="@string/title_articles"
+        android:label="@string/bottom_nav_menu__articles"
         tools:layout="@layout/fragment_articles">
         <action
             android:id="@+id/action_to_page_article"
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/nav_bookmarks"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
-        android:label="@string/title_bookmarks"
+        android:label="@string/bottom_nav_menu__bookmarks"
         tools:layout="@layout/fragment_articles">
         <action
             android:id="@+id/action_to_page_article"
@@ -70,7 +70,7 @@
     <fragment
         android:id="@+id/nav_profile"
         android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
+        android:label="@string/bottom_nav_menu__profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
@@ -80,7 +80,7 @@
     <fragment
         android:id="@+id/nav_transcriptions"
         android:name="ru.skillbranch.skillarticles.ui.transcriptions.TranscriptionsFragment"
-        android:label="@string/title_transcriptions"
+        android:label="@string/bottom_nav_menu__translations"
         tools:layout="@layout/fragment_transcriptions" />
     <navigation
         android:id="@+id/auth"
