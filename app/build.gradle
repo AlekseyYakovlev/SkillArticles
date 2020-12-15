@@ -5,8 +5,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-
-    id "scabbard.gradle"
 }
 
 apply from: "../versions.gradle"
@@ -14,7 +12,7 @@ apply from: "../versions.gradle"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "ru.skillbranch.skillarticles"
         minSdkVersion 23
@@ -55,12 +53,6 @@ android {
     }
 }
 
-scabbard{
-    enabled true
-    failOnError true
-    outputFormat "svg"
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -78,10 +70,7 @@ dependencies {
     // Lifecycle, ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    // implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-    // kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-    //testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
