@@ -26,6 +26,8 @@ class RootActivity : BaseActivity<RootViewModel>() {
     public override val viewModel: RootViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // switching from a splash screen theme
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         //top level destination

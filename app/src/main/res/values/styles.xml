@@ -5,8 +5,10 @@
     <attr name="darkOnSurfaceColor" format="color" />
     <attr name="lightOnSurfaceColor" format="color" />
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <!-- Base application theme. -->
@@ -30,10 +32,10 @@
         <item name="colorOnBackground">@color/color_gray</item>
         <item name="snackbarStyle">@style/CustomSnackbar</item>
 
-        <item name="darkSurfaceColor"  >#272727</item>
-        <item name="lightSurfaceColor"  >#F6F6F6</item>
-        <item name="darkOnSurfaceColor" >#F6F6F6</item>
-        <item name="lightOnSurfaceColor" >#202020</item>
+        <item name="darkSurfaceColor">#272727</item>
+        <item name="lightSurfaceColor">#F6F6F6</item>
+        <item name="darkOnSurfaceColor">#F6F6F6</item>
+        <item name="lightOnSurfaceColor">#202020</item>
 
     </style>
 
