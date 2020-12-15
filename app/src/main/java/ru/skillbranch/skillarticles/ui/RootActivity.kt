@@ -35,7 +35,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
             setOf(
                 R.id.nav_articles,
                 R.id.nav_bookmarks,
-                R.id.nav_transcriptions,
+                R.id.nav_translations,
                 R.id.nav_profile
             )
         )
@@ -83,7 +83,6 @@ class RootActivity : BaseActivity<RootViewModel>() {
             is Notify.TextMessage -> {
             }
         }
-
         snackbar.show()
     }
 

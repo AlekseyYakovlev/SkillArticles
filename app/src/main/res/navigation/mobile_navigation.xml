@@ -78,7 +78,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_transcriptions"
+        android:id="@+id/nav_translations"
         android:name="ru.skillbranch.skillarticles.ui.transcriptions.TranscriptionsFragment"
         android:label="@string/bottom_nav_menu__translations"
         tools:layout="@layout/fragment_transcriptions" />
@@ -156,7 +156,7 @@
 
     <action
         android:id="@+id/start_nav_transcriptions"
-        app:destination="@id/nav_transcriptions"
+        app:destination="@id/nav_translations"
         app:launchSingleTop="true" />
 
     <action
