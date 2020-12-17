@@ -13,11 +13,6 @@ class TranscriptionsFragment : Fragment(R.layout.fragment_transcriptions) {
 
     private val viewModel: TranscriptionsViewModel by viewModels()
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.fragment_transcriptions, container, false)
-//    }
+//TODO Add translation functionality from ML Kit
 
 }

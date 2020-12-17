@@ -19,17 +19,17 @@ class ArticleSubmenu @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) , CoordinatorLayout.AttachedBehavior {
+) : ConstraintLayout(context, attrs, defStyleAttr), CoordinatorLayout.AttachedBehavior {
     override fun getBehavior(): CoordinatorLayout.Behavior<ArticleSubmenu> {
         return SubmenuBehavior()
     }
+
     var isOpen = false
     private var centerX: Float = context.dpToPx(200)
     private var centerY: Float = context.dpToPx(96)
 
     init {
         requestLayout()
-//        View.inflate(context, R.layout.layout_submenu, this)
         //add material bg for handle elevation and color surface
         val materialBg = MaterialShapeDrawable.createWithElevationOverlay(context)
         materialBg.elevation = elevation
@@ -79,7 +79,7 @@ class ArticleSubmenu @JvmOverloads constructor(
     }
 
     //save state
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.ssIsOpen = isOpen
         return savedState
@@ -115,5 +115,4 @@ class ArticleSubmenu @JvmOverloads constructor(
             override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
-
 }

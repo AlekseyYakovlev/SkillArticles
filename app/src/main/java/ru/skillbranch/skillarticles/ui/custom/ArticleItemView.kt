@@ -3,6 +3,7 @@ package ru.skillbranch.skillarticles.ui.custom
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
+import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,7 +19,8 @@ import ru.skillbranch.skillarticles.extensions.shortFormat
 import kotlin.math.max
 
 class ArticleItemView constructor(
-    context: Context
+    context: Context,
+    attrs: AttributeSet? = null
 ) : ViewGroup(context, null, 0) {
     private val iv_poster: ImageView
     private val iv_category: ImageView
@@ -287,7 +289,11 @@ class ArticleItemView constructor(
         tv_description.text = item.description
         tv_likes_count.text = "${item.likeCount}"
         tv_comments_count.text = "${item.commentCount}"
-        tv_read_duration.text = "${item.readDuration} min read"
+        tv_read_duration.text = context.resources.getQuantityString(
+            R.plurals.article_item_view__minutes_to_read,
+            item.readDuration,
+            item.readDuration
+        )
         iv_bookmark.isChecked = item.isBookmark
         iv_bookmark.setOnClickListener { listener.invoke(item, true) }
         this.setOnClickListener { listener.invoke(item, false) }

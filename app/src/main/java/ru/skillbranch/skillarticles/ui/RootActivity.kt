@@ -5,8 +5,10 @@ import androidx.activity.viewModels
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.skillbranch.skillarticles.R
+import ru.skillbranch.skillarticles.extensions.hideKeyboard
 import ru.skillbranch.skillarticles.extensions.selectDestination
 import ru.skillbranch.skillarticles.extensions.selectItem
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
@@ -17,12 +19,15 @@ import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
 
+@AndroidEntryPoint
 class RootActivity : BaseActivity<RootViewModel>() {
     var isAuth: Boolean = false
     override val layout: Int = R.layout.activity_root
     public override val viewModel: RootViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // switching from a splash screen theme
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         //top level destination
@@ -30,7 +35,7 @@ class RootActivity : BaseActivity<RootViewModel>() {
             setOf(
                 R.id.nav_articles,
                 R.id.nav_bookmarks,
-                R.id.nav_transcriptions,
+                R.id.nav_translations,
                 R.id.nav_profile
             )
         )
@@ -51,11 +56,14 @@ class RootActivity : BaseActivity<RootViewModel>() {
                 val private = arguments?.get("private_destination") as Int?
                 if (private != null) controller.navigate(private)
             }
-
+            if (!isAuth && destination.id == R.id.nav_profile) {
+                controller.popBackStack()
+            }
         }
     }
 
     override fun renderNotification(notify: Notify) {
+        hideKeyboard(container)
         val snackbar = Snackbar.make(container, notify.message, Snackbar.LENGTH_LONG)
         snackbar.anchorView = findViewById<Bottombar>(R.id.bottombar) ?: nav_view
 
@@ -72,8 +80,9 @@ class RootActivity : BaseActivity<RootViewModel>() {
                     setAction(notify.errLabel) { notify.errHandler?.invoke() }
                 }
             }
+            is Notify.TextMessage -> {
+            }
         }
-
         snackbar.show()
     }
 

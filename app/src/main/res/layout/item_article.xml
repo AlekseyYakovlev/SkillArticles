@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -98,12 +97,12 @@
         android:id="@+id/iv_likes"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:tint="@color/color_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_likes_count"
         app:layout_constraintEnd_toStartOf="@id/tv_likes_count"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_likes_count"
-        app:srcCompat="@drawable/ic_favorite_black_24dp" />
+        app:srcCompat="@drawable/ic_favorite_black_24dp"
+        app:tint="@color/color_gray" />
 
     <TextView
         android:id="@+id/tv_likes_count"
@@ -123,12 +122,12 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"
-        android:tint="@color/color_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_comments_count"
         app:layout_constraintEnd_toStartOf="@id/tv_comments_count"
         app:layout_constraintStart_toEndOf="@id/tv_likes_count"
         app:layout_constraintTop_toTopOf="@+id/tv_comments_count"
-        app:srcCompat="@drawable/ic_insert_comment_black_24dp" />
+        app:srcCompat="@drawable/ic_insert_comment_black_24dp"
+        app:tint="@color/color_gray" />
 
     <TextView
         android:id="@+id/tv_comments_count"
@@ -161,10 +160,10 @@
         android:id="@+id/iv_bookmark"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:tint="@color/color_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_read_duration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_read_duration"
         app:layout_constraintTop_toTopOf="@+id/tv_read_duration"
-        app:srcCompat="@drawable/bookmark_states" />
+        app:srcCompat="@drawable/bookmark_states"
+        app:tint="@color/color_gray" />
 </androidx.constraintlayout.widget.ConstraintLayout>

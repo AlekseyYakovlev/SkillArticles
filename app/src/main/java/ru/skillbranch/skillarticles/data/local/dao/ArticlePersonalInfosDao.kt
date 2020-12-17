@@ -14,7 +14,7 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
      * @param objList the object to be updated
      */
     @Transaction
-    fun upsert(objList: List<ArticlePersonalInfo>) {
+    suspend fun upsert(objList: List<ArticlePersonalInfo>) {
         insert(objList)
             .mapIndexed { index, l -> if (l == -1L) objList[index] else null }
             .filterNotNull()
@@ -30,7 +30,7 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
             WHERE article_id = :articleId
         """
     )
-    fun toggleLike(articleId: String): Int
+    suspend fun toggleLike(articleId: String): Int
 
     @Query(
         """
@@ -39,39 +39,113 @@ interface ArticlePersonalInfosDao : BaseDao<ArticlePersonalInfo> {
             WHERE article_id = :articleId
         """
     )
-    fun toggleBookmark(articleId: String): Int
+    suspend fun toggleBookmark(articleId: String): Int
+
+    @Query(
+        """
+        SELECT is_like
+        FROM article_personal_infos
+        WHERE article_id = :articleId
+        LIMIT 1
+    """
+    )
+    fun isLiked(articleId: String): Boolean
 
     @Transaction
-    fun toggleLikeOrInsert(articleId: String) {
-        if (toggleLike(articleId) == 0) insert(
-            ArticlePersonalInfo(
-                articleId = articleId,
-                isLike = true
+    suspend fun toggleLikeOrInsert(articleId: String): Boolean {
+        if (toggleLike(articleId) == 0) {
+            insert(
+                ArticlePersonalInfo(
+                    articleId = articleId,
+                    isLike = true
+                )
             )
-        )
+            return true
+        }
+        return isLiked(articleId)
     }
 
     @Transaction
-    fun toggleBookmarkOrInsert(articleId: String) {
+    suspend fun toggleBookmarkOrInsert(articleId: String): Boolean {
         if (toggleBookmark(articleId) == 0) insert(
             ArticlePersonalInfo(
                 articleId = articleId,
                 isBookmark = true
             )
         )
+        return isBookmarked(articleId)
     }
 
-    @Query("""
+
+    @Query(
+        """
+            UPDATE article_personal_infos 
+            SET is_bookmark = :state, updated_at = CURRENT_TIMESTAMP
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun setBookmark(articleId: String, state: Boolean): Int
+
+    @Transaction
+    suspend fun setBookmarkOrInsert(articleId: String, state: Boolean): Boolean {
+        if (setBookmark(articleId, state) == 0) insert(
+            ArticlePersonalInfo(
+                articleId = articleId,
+                isBookmark = state
+            )
+        )
+        return isBookmarked(articleId)
+    }
+
+    @Query(
+        """
+            UPDATE article_personal_infos 
+            SET is_like = :state, updated_at = CURRENT_TIMESTAMP
+            WHERE article_id = :articleId
+        """
+    )
+    suspend fun setLike(articleId: String, state: Boolean): Int
+
+    @Transaction
+    suspend fun setLikeOrInsert(articleId: String, state: Boolean): Boolean {
+        if (setBookmark(articleId, state) == 0) insert(
+            ArticlePersonalInfo(
+                articleId = articleId,
+                isLike = state
+            )
+        )
+        return isLiked(articleId)
+    }
+
+    @Query(
+        """
+        SELECT is_bookmark
+        FROM article_personal_infos
+        WHERE article_id = :articleId        
+        LIMIT 1
+    """
+    )
+    fun isBookmarked(articleId: String): Boolean
+
+
+    @Query(
+        """
         SELECT *
         FROM article_personal_infos
-    """)
+    """
+    )
     fun findPersonalInfos(): LiveData<List<ArticlePersonalInfo>>
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM article_personal_infos
         WHERE article_id = :articleId
         LIMIT 1
-    """)
-    fun findPersonalInfos(articleId: String): LiveData<ArticlePersonalInfo>
+    """
+    )
+    fun findPersonalInfosLive(articleId: String): LiveData<ArticlePersonalInfo>
+
+    @Query("SELECT * FROM article_personal_infos WHERE article_id = :articleId LIMIT 1 ")
+    suspend fun findPersonalInfosTest(articleId: String): ArticlePersonalInfo
 }

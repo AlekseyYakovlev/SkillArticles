@@ -5,31 +5,33 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.skillbranch.skillarticles.data.models.CommentItemData
+import ru.skillbranch.skillarticles.data.remote.res.CommentRes
 import ru.skillbranch.skillarticles.ui.custom.CommentItemView
+import javax.inject.Inject
 
-class CommentsAdapter(private val listener: (CommentItemData) -> Unit) :
-    PagedListAdapter<CommentItemData, CommentVH>(CommentDiffCallback()) {
+class CommentsAdapter @Inject constructor(
+    val listener: IArticleView
+) : PagedListAdapter<CommentRes, CommentVH>(CommentDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentVH =
-        CommentVH(CommentItemView(parent.context), listener)
+        CommentVH(CommentItemView(parent.context), listener::clickOnComment)
 
     override fun onBindViewHolder(holder: CommentVH, position: Int) {
         holder.bind(getItem(position))
     }
 }
 
-class CommentVH(private val containerView: View, val listener: (CommentItemData) -> Unit) :
+class CommentVH(private val containerView: View, val listener: (CommentRes) -> Unit) :
     RecyclerView.ViewHolder(containerView) {
-    fun bind(item: CommentItemData?) {
+    fun bind(item: CommentRes?) {
         (containerView as CommentItemView).bind(item)
         if (item != null) itemView.setOnClickListener { listener(item) }
     }
 }
 
-class CommentDiffCallback() : DiffUtil.ItemCallback<CommentItemData>() {
-    override fun areItemsTheSame(oldItem: CommentItemData, newItem: CommentItemData): Boolean =
+class CommentDiffCallback : DiffUtil.ItemCallback<CommentRes>() {
+    override fun areItemsTheSame(oldItem: CommentRes, newItem: CommentRes): Boolean =
         oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: CommentItemData, newItem: CommentItemData): Boolean =
+    override fun areContentsTheSame(oldItem: CommentRes, newItem: CommentRes): Boolean =
         oldItem == newItem
 }

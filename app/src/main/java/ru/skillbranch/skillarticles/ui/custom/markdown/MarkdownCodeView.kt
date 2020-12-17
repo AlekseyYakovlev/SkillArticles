@@ -46,21 +46,21 @@ class MarkdownCodeView private constructor(
     private lateinit var codeString: CharSequence
 
     //views
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val iv_copy: ImageView
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val iv_switch: ImageView
+    private val iv_copy: ImageView
+    private val iv_switch: ImageView
     private val tv_codeView: MarkdownTextView
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val sv_scroll: HorizontalScrollView
+    private val sv_scroll: HorizontalScrollView
 
     //colors
     @ColorInt
     private val darkSurface: Int = context.attrValue(R.attr.darkSurfaceColor)
+
     @ColorInt
     private val darkOnSurface: Int = context.attrValue(R.attr.darkOnSurfaceColor)
+
     @ColorInt
     private val lightSurface: Int = context.attrValue(R.attr.lightSurfaceColor)
+
     @ColorInt
     private val lightOnSurface: Int = context.attrValue(R.attr.lightOnSurfaceColor)
 
@@ -270,7 +270,6 @@ class MarkdownCodeView private constructor(
             override fun createFromParcel(parcel: Parcel): SavedState = SavedState(parcel)
 
             override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
-
         }
     }
 }

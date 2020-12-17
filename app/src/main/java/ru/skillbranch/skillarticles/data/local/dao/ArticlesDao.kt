@@ -19,7 +19,7 @@ interface ArticlesDao : BaseDao<Article> {
      * @param objList the object to be updated
      */
     @Transaction
-    fun upsert(objList: List<Article>) {
+    suspend fun upsert(objList: List<Article>) {
         insert(objList)
             .mapIndexed { index, l -> if (l == -1L) objList[index] else null }
             .filterNotNull()
@@ -37,7 +37,8 @@ interface ArticlesDao : BaseDao<Article> {
 
     @Query(
         """
-            SELECT * FROM articles
+            SELECT * 
+            FROM articles
             WHERE id = :id            
             LIMIT 1
         """
@@ -49,34 +50,59 @@ interface ArticlesDao : BaseDao<Article> {
             SELECT * FROM ArticleItem
         """
     )
-    fun findArticleItems():  LiveData<List<ArticleItem>>
+    fun findArticleItems(): LiveData<List<ArticleItem>>
 
     @Query(
         """
-            SELECT * FROM ArticleItem
+            SELECT * 
+            FROM ArticleItem
             WHERE category_id IN (:categoryIds)
         """
     )
-    fun findArticleItemsByCategoryIds(categoryIds: List<String>):  LiveData<List<ArticleItem>>
+    fun findArticleItemsByCategoryIds(categoryIds: List<String>): LiveData<List<ArticleItem>>
 
     @Query(
         """
-            SELECT a.* FROM ArticleItem AS a
+            SELECT a.* 
+            FROM ArticleItem AS a
             INNER JOIN article_tag_x_ref AS refs ON refs.a_id = a.id 
             WHERE refs.t_id = :tag
         """
     )
-    fun findArticlesByTagId(tag: String):  LiveData<List<ArticleItem>>
+    fun findArticlesByTagId(tag: String): LiveData<List<ArticleItem>>
 
     @RawQuery(observedEntities = [ArticleItem::class])
     fun findArticlesByRaw(simpleSQLiteQuery: SimpleSQLiteQuery): DataSource.Factory<Int, ArticleItem>
 
     @Query(
         """
-            SELECT * FROM ArticleFull
+            SELECT * 
+            FROM ArticleFull
             WHERE id = :articleId            
             LIMIT 1
         """
     )
     fun findFullArticles(articleId: String): LiveData<ArticleFull>
+
+    @Query(
+        """
+            SELECT id 
+            FROM articles
+            ORDER BY date DESC           
+            LIMIT 1
+        """
+    )
+    fun findLastArticleId(): String?
+
+    @Query("SELECT * FROM articles")
+    suspend fun findArticlesTest(): List<Article>
+
+
+    @Query(
+        """
+            DELETE FROM articles
+            WHERE id = :articleId     
+        """
+    )
+    fun deleteById(articleId: String)
 }

@@ -53,14 +53,9 @@ class MarkdownImageView private constructor(
     private lateinit var imageUrl: String
     private lateinit var imageTitle: CharSequence
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val iv_image: ImageView
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    val tv_title: MarkdownTextView
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    var tv_alt: TextView? = null
+    private val iv_image: ImageView
+    private val tv_title: MarkdownTextView
+    private var tv_alt: TextView? = null
 
     @Px
     private val titleTopMargin: Int = context.dpToIntPx(8)
@@ -147,7 +142,6 @@ class MarkdownImageView private constructor(
             iv_image.setOnClickListener {
                 if (tv_alt?.isVisible == true) animateHideAlt()
                 else animateShowAlt()
-                //isAltTextOpen = !isAltTextOpen
             }
         }
     }
@@ -167,12 +161,9 @@ class MarkdownImageView private constructor(
         var usedHeight = 0
         val width = View.getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
-        //create measureSpec for children EXACTLY
-        //all children width == parent width (constraint parent width)
         val wms = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
 
         if (aspectRatio != 0f) {
-            //restore width/height by aspectRatio
             val hms =
                 MeasureSpec.makeMeasureSpec((width / aspectRatio).toInt(), MeasureSpec.EXACTLY)
             iv_image.measure(wms, hms)

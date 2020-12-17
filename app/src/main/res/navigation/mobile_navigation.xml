@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/page_article"
         android:name="ru.skillbranch.skillarticles.ui.article.ArticleFragment"
-        android:label="ArticleFragment">
+        android:label="{title}">
         <argument
             android:name="article_id"
             android:defaultValue="-1"
@@ -38,53 +38,61 @@
     <fragment
         android:id="@+id/nav_articles"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
-        android:label="@string/title_articles"
+        android:label="@string/bottom_nav_menu__articles"
         tools:layout="@layout/fragment_articles">
         <action
             android:id="@+id/action_to_page_article"
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/chose_category_dialog" />
+            app:destination="@id/dialog_chose_category" />
         <argument
             android:name="is_bookmarks"
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
     <fragment
-        android:id="@+id/nav_profile"
-        android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
-    <fragment
         android:id="@+id/nav_bookmarks"
         android:name="ru.skillbranch.skillarticles.ui.articles.ArticlesFragment"
-        android:label="@string/title_bookmarks"
+        android:label="@string/bottom_nav_menu__bookmarks"
         tools:layout="@layout/fragment_articles">
         <action
             android:id="@+id/action_to_page_article"
             app:destination="@id/page_article" />
         <action
             android:id="@+id/choose_category"
-            app:destination="@id/chose_category_dialog" />
+            app:destination="@id/dialog_chose_category" />
         <argument
             android:name="is_bookmarks"
             android:defaultValue="true"
             app:argType="boolean" />
     </fragment>
     <fragment
-        android:id="@+id/nav_transcriptions"
+        android:id="@+id/nav_profile"
+        android:name="ru.skillbranch.skillarticles.ui.profile.ProfileFragment"
+        android:label="@string/bottom_nav_menu__profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
+            app:destination="@id/dialog_avatar_actions" />
+        <action
+            android:id="@+id/action_nav_profile_to_updateProfileDialog"
+            app:destination="@id/updateProfileDialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_translations"
         android:name="ru.skillbranch.skillarticles.ui.transcriptions.TranscriptionsFragment"
-        android:label="@string/title_transcriptions"
+        android:label="@string/bottom_nav_menu__translations"
         tools:layout="@layout/fragment_transcriptions" />
     <navigation
         android:id="@+id/auth"
-        android:label="@string/title_authorization"
+        android:label="@string/auth__title_authorization"
         app:startDestination="@id/nav_auth">
         <fragment
             android:id="@+id/nav_auth"
             android:name="ru.skillbranch.skillarticles.ui.auth.AuthFragment"
-            android:label="@string/title_authorization"
+            android:label="@string/auth__title_authorization"
             tools:layout="@layout/fragment_auth">
 
             <argument
@@ -95,21 +103,31 @@
         <fragment
             android:id="@+id/page_privacy_policy"
             android:name="ru.skillbranch.skillarticles.ui.auth.PrivacyPolicyFragment"
-            android:label="@string/title_privacy_policy"
+            android:label="@string/auth__title_privacy_policy"
             tools:layout="@layout/fragment_privacy_policy" />
+        <fragment
+            android:id="@+id/registrationFragment"
+            android:name="ru.skillbranch.skillarticles.ui.registration.RegistrationFragment"
+            android:label="@string/auth__title_registration">
+            <argument
+                android:name="private_destination"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </fragment>
 
     </navigation>
 
     <!--global actions -->
     <action
         android:id="@+id/start_login"
-        app:destination="@id/auth" />
+        app:destination="@id/auth"
+        app:launchSingleTop="true" />
     <action
         android:id="@+id/finish_login"
         app:popUpTo="@id/auth"
         app:popUpToInclusive="true" />
     <dialog
-        android:id="@+id/chose_category_dialog"
+        android:id="@+id/dialog_chose_category"
         android:name="ru.skillbranch.skillarticles.ui.dialogs.ChoseCategoryDialog"
         android:label="ChoseCategoryDialog">
         <argument
@@ -118,6 +136,49 @@
         <argument
             android:name="categories"
             app:argType="ru.skillbranch.skillarticles.data.local.entities.CategoryData[]" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/dialog_avatar_actions"
+        android:name="ru.skillbranch.skillarticles.ui.dialogs.AvatarActionsDialog"
+        android:label="AvatarActionsDialog">
+        <argument
+            android:name="has_avatar"
+            app:argType="boolean" />
+    </dialog>
+
+    <action
+        android:id="@+id/start_nav_articles"
+        app:destination="@id/nav_articles"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_bookmarks"
+        app:destination="@id/nav_bookmarks"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_transcriptions"
+        app:destination="@id/nav_translations"
+        app:launchSingleTop="true" />
+
+    <action
+        android:id="@+id/start_nav_profile"
+        app:destination="@id/nav_profile"
+        app:launchSingleTop="true" />
+
+    <dialog
+        android:id="@+id/updateProfileDialog"
+        android:name="ru.skillbranch.skillarticles.ui.dialogs.UpdateProfileDialog"
+        android:label="UpdateProfileDialog" >
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="about"
+            app:argType="string"
+            android:defaultValue="" />
     </dialog>
 
 </navigation>
