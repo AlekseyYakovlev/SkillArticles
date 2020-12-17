@@ -241,9 +241,17 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
 
         var name by RenderProp("") {
             tv_name.text = it
+            tv_name.setOnClickListener {
+                viewModel.handleProfileUpdateClick()
+            }
         }
         var about by RenderProp("") {
-            tv_about.text = it
+            tv_about.text =
+                if (it.isBlank()) resources.getString(R.string.profile_fragment__about_me)
+                else it
+            tv_about.setOnClickListener {
+                viewModel.handleProfileUpdateClick()
+            }
         }
         var rating by RenderProp(0) {
             tv_rating.text =

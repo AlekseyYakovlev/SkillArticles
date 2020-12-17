@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData
 class NetworkMonitor(
     val context: Context
 ) {
-    var isConnected: Boolean = false
-    val isConnectedLive = MutableLiveData(false)
+    var isConnected: Boolean = true
+    val isConnectedLive = MutableLiveData(true)
     val networkTypeLive = MutableLiveData(NetworkType.NONE)
 
     private lateinit var cm: ConnectivityManager

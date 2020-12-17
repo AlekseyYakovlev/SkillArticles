@@ -32,8 +32,7 @@ class ProfileViewModel @ViewModelInject constructor(
     private val activityResults = MutableLiveData<Event<PendingAction>>()
 
     private val storagePermissions = listOf<String>(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
+        Manifest.permission.READ_EXTERNAL_STORAGE,
     )
 
     init {
@@ -86,7 +85,7 @@ class ProfileViewModel @ViewModelInject constructor(
         )
     }
 
-     fun executePendingAction() {
+    fun executePendingAction() {
         currentState.pendingAction?.let { startForResult(it) }
     }
 
@@ -133,6 +132,16 @@ class ProfileViewModel @ViewModelInject constructor(
     fun handleLogout() {
         rootRepository.logout()
         navigate(NavigationCommand.StartLogin())
+    }
+
+    fun handleProfileDataChange(newName: String, newAbout: String) {
+        launchSafely {
+            repository.editProfile(newName, newAbout)
+        }
+    }
+
+    fun handleProfileUpdateClick() {
+        navigate(NavigationCommand.To(R.id.action_nav_profile_to_updateProfileDialog))
     }
 }
 

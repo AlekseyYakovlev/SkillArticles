@@ -28,9 +28,15 @@
     <string name="profile_fragment__rating">Rating: %d</string>
     <string name="profile_fragment__respect">Respect: %d</string>
     <string name="profile_fragment__choose_app_to_edit_in">Choose an application to edit your avatar in</string>
+    <string name="profile_fragment__about_me">About me (click to edit)</string>
     <string name="profile_view_model__storage_permissions_required">Storage permission is required</string>
     <string name="profile_view_model__open_settings">Open settings</string>
     <string name="profile_view_model__retry">Retry</string>
+    <string name="layout_update_profile_dialog__name">Name</string>
+    <string name="layout_update_profile_dialog__about_me">About me</string>
+    <string name="update_profile_dialog__update">Update</string>
+    <string name="update_profile_dialog__cancel">Cancel</string>
+    <string name="update_profile_dialog__title">Update profile data</string>
 
     <string name="layout_submenu__dark_mode">Dark mode</string>
     <string name="layout_bottombar__not_found">Not found</string>
@@ -64,7 +70,6 @@
         <item quantity="one">%d minute to read</item>
         <item quantity="other">%d minutes to read</item>
     </plurals>
-
 
     <string name="comment_item_view__date_ago">%s ago</string>
     <string name="comment_item_view__date_future">in %s</string>

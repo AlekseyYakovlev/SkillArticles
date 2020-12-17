@@ -53,7 +53,7 @@ abstract class BaseViewModel<T : IViewModelState>(
      */
     @UiThread
     protected fun notify(content: Notify) {
-        notifications.value = Event(content)
+        notifications.postValue(Event(content))
     }
 
     /**

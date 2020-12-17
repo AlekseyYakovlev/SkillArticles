@@ -27,9 +27,15 @@
     <string name="profile_fragment__rating">Рейтинг: %d</string>
     <string name="profile_fragment__respect">Уважение: %d</string>
     <string name="profile_fragment__choose_app_to_edit_in">Выберите приложение для редактирования вашего аватара</string>
+    <string name="profile_fragment__about_me">Об о мне (нажмите для редактирования)</string>
     <string name="profile_view_model__storage_permissions_required">Необходимо разрешение для доступа к медиафайлам</string>
     <string name="profile_view_model__open_settings">Открыть настройки</string>
     <string name="profile_view_model__retry">Повторить попытку</string>
+    <string name="layout_update_profile_dialog__name">Имя</string>
+    <string name="layout_update_profile_dialog__about_me">Об о мне</string>
+    <string name="update_profile_dialog__update">Сохранить</string>
+    <string name="update_profile_dialog__cancel">Отменить</string>
+    <string name="update_profile_dialog__title">Обновить данные профиля</string>
 
     <string name="layout_submenu__dark_mode">Темный режим</string>
     <string name="layout_bottombar__not_found">Не найдено</string>

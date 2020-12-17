@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_nav_profile_to_dialog_avatar_actions"
             app:destination="@id/dialog_avatar_actions" />
+        <action
+            android:id="@+id/action_nav_profile_to_updateProfileDialog"
+            app:destination="@id/updateProfileDialog" />
     </fragment>
 
     <fragment
@@ -163,5 +166,19 @@
         android:id="@+id/start_nav_profile"
         app:destination="@id/nav_profile"
         app:launchSingleTop="true" />
+
+    <dialog
+        android:id="@+id/updateProfileDialog"
+        android:name="ru.skillbranch.skillarticles.ui.dialogs.UpdateProfileDialog"
+        android:label="UpdateProfileDialog" >
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="about"
+            app:argType="string"
+            android:defaultValue="" />
+    </dialog>
 
 </navigation>
