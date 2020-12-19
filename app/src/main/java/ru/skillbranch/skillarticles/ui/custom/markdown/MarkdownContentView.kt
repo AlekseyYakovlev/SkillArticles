@@ -24,6 +24,8 @@ class MarkdownContentView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
+    var copyListener: ((String) -> Unit)? = null
+
     private lateinit var elements: List<MarkdownElement>
     private var layoutManager: LayoutManager = LayoutManager()
 
@@ -163,8 +165,8 @@ class MarkdownContentView @JvmOverloads constructor(
     fun setContent(content: List<MarkdownElement>) {
         elements = content
         var index = 0
-        content.forEach {
-            when (it) {
+        content.forEach { element ->
+            when (element) {
                 is MarkdownElement.Text -> {
                     val tv = MarkdownTextView(context, textSize).apply {
                         setPaddingOptionally(
@@ -174,7 +176,7 @@ class MarkdownContentView @JvmOverloads constructor(
                         setLineSpacing(fontSize * 0.5f, 1f)
                     }
                     MarkdownBuilder(context)
-                        .markdownToSpan(it)
+                        .markdownToSpan(element)
                         .run { tv.setText(this, TextView.BufferType.SPANNABLE) }
                     addView(tv)
                 }
@@ -183,9 +185,9 @@ class MarkdownContentView @JvmOverloads constructor(
                     val iv = MarkdownImageView(
                         context,
                         textSize,
-                        it.image.url,
-                        it.image.text,
-                        it.image.alt
+                        element.image.url,
+                        element.image.text,
+                        element.image.alt
                     )
                     addView(iv)
                     layoutManager.attachToParent(iv, index)
@@ -196,8 +198,8 @@ class MarkdownContentView @JvmOverloads constructor(
                     val sv = MarkdownCodeView(
                         context,
                         textSize,
-                        it.blockCode.text
-                    )
+                        element.blockCode.text
+                    ).also { it.copyListener = copyListener }
                     addView(sv)
                     layoutManager.attachToParent(sv, index)
                     index++
@@ -247,11 +249,6 @@ class MarkdownContentView @JvmOverloads constructor(
             view as IMarkdownView
             view.clearSearchResult()
         }
-    }
-
-    fun setCopyListener(listener: (String) -> Unit) {
-        children.filterIsInstance<MarkdownCodeView>()
-            .forEach { it.copyListener = listener }
     }
 
     override fun onSaveInstanceState(): Parcelable? {

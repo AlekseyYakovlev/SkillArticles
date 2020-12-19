@@ -353,7 +353,7 @@ class ArticleFragment : BaseFragment<ArticleViewModel>(), IArticleView {
     }
 
     private fun setupCopyListener() {
-        tv_text_content.setCopyListener { copy ->
+        tv_text_content.copyListener = { copy ->
             val clipboard =
                 requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Copied code", copy)
