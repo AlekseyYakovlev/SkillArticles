@@ -229,7 +229,7 @@ class MarkdownCodeView private constructor(
         tv_codeView.setTextColor(textColor)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.isManual = isManual
         savedState.isDark = isDark
