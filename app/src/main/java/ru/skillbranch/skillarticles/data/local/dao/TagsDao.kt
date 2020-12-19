@@ -22,7 +22,7 @@ interface TagsDao : BaseDao<Tag> {
     @Query(
         """
             UPDATE article_tags 
-            SET use_count = use_count+1
+            SET use_count = use_count + 1
             WHERE tag = :tag
         """
     )
