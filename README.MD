@@ -16,7 +16,7 @@ SKILL ARTICLES
 * Управления профилем пользователя (обновление данных пользователя, создание и загрузка на сервер аватара)
 
 
-## Стэк
+## Стек
 * Kotlin
 * MVVM
 * Dagger 2, Hilt
@@ -28,3 +28,17 @@ SKILL ARTICLES
 * Glide
 * CustomViews
 * Lottie
+
+## Скриншоты
+<p align="left">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/1.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/2.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/3.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/4.png">
+</p>
+<p align="left">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/5.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/6.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/7.png">
+  <img width="216" height="456" src="https://raw.githubusercontent.com/AlekseyYakovlev/SkillArticles/master/screenshots/8.png">
+</p>
