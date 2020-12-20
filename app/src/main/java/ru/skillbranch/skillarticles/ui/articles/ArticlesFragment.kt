@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
@@ -36,8 +37,7 @@ import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArticlesFragment : BaseFragment<ArticlesViewModel>(), IArticlesView
-{
+class ArticlesFragment : BaseFragment<ArticlesViewModel>(), IArticlesView {
     override val binding: ArticlesBinding by lazy { ArticlesBinding() }
     override val viewModel: ArticlesViewModel by activityViewModels()
     override val layout: Int = R.layout.fragment_articles

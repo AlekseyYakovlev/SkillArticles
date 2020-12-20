@@ -2,15 +2,16 @@ package ru.skillbranch.skillarticles.ui
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.graphics.Insets
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_root.*
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.extensions.hideKeyboard
-import ru.skillbranch.skillarticles.extensions.selectDestination
-import ru.skillbranch.skillarticles.extensions.selectItem
+import ru.skillbranch.skillarticles.extensions.*
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
 import ru.skillbranch.skillarticles.ui.custom.Bottombar
 import ru.skillbranch.skillarticles.viewmodels.RootState
@@ -89,5 +90,22 @@ class RootActivity : BaseActivity<RootViewModel>() {
     override fun subscribeOnState(state: IViewModelState) {
         state as RootState
         isAuth = state.isAuth
+    }
+
+    private fun handleLeftAndRightInsets() {
+      container.doOnApplyWindowInsets { view, insets, initialPadding ->
+            view.updatePadding(
+                left = initialPadding.left + insets.systemWindowInsetLeft,
+                right = initialPadding.right + insets.systemWindowInsetRight
+            )
+            WindowInsetsCompat.Builder(insets).setSystemWindowInsets(
+                Insets.of(
+                    0,
+                    insets.systemWindowInsetTop,
+                    0,
+                    insets.systemWindowInsetBottom
+                )
+            ).build()
+        }
     }
 }

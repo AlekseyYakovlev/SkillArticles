@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
             android:theme="@style/ArticleBarsTheme"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|enterAlways|snap|snapMargins"
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
 

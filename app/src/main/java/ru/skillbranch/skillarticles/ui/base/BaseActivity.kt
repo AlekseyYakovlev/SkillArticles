@@ -19,9 +19,12 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.circleCropTransform
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.*
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.activity_root.view.*
+import kotlinx.android.synthetic.main.fragment_article.view.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.viewmodels.base.*
@@ -151,7 +154,17 @@ class ToolbarBuilder {
         //show appbar if it is hidden due to scroll behavior
         context.appbar.setExpanded(true, true)
 
+
+
         with(context.toolbar) {
+            val params = (layoutParams as AppBarLayout.LayoutParams).apply {
+                scrollFlags = SCROLL_FLAG_SCROLL or
+                        SCROLL_FLAG_ENTER_ALWAYS or
+                        SCROLL_FLAG_SNAP or
+                        SCROLL_FLAG_SNAP_MARGINS
+            }
+            layoutParams = params
+
             subtitle = this@ToolbarBuilder.subtitle
             if (this@ToolbarBuilder.logo != null) {
                 val logoSize = context.dpToIntPx(40)
