@@ -16,7 +16,11 @@ class NetworkMonitor(
 
     private lateinit var cm: ConnectivityManager
 
-    fun registerNetworkMonitor(context: Context) {
+    init {
+        registerNetworkMonitor()
+    }
+
+    private fun registerNetworkMonitor() {
         cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         obtainNetworkType(cm.activeNetwork?.let { cm.getNetworkCapabilities(it) })
