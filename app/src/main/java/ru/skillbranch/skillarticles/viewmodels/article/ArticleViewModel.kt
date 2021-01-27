@@ -1,11 +1,10 @@
 package ru.skillbranch.skillarticles.viewmodels.article
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.remote.err.ApiError
@@ -22,9 +21,11 @@ import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
-class ArticleViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class ArticleViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: ArticleRepository,
 ) : BaseViewModel<ArticleState>(handle, ArticleState()), IArticleViewModel {
 

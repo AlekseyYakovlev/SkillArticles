@@ -1,18 +1,19 @@
 package ru.skillbranch.skillarticles.viewmodels.registration
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.repositories.RootRepository
 import ru.skillbranch.skillarticles.viewmodels.base.BaseViewModel
 import ru.skillbranch.skillarticles.viewmodels.base.IViewModelState
 import ru.skillbranch.skillarticles.viewmodels.base.NavigationCommand
 import ru.skillbranch.skillarticles.viewmodels.base.Notify
+import javax.inject.Inject
 
-class RegistrationViewModel @ViewModelInject constructor(
-    @Assisted handle: SavedStateHandle,
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(
+    handle: SavedStateHandle,
     private val repository: RootRepository,
 ) : BaseViewModel<RegistrationState>(handle, RegistrationState()) {
 
